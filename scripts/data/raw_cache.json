@@ -1,0 +1,2968 @@
+{
+  "test": [
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.2055238,
+          "lng": -75.5637764
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.206839730291501,
+            "lng": -75.56247826970849
+          },
+          "southwest": {
+            "lat": 6.204141769708497,
+            "lng": -75.5651762302915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
+      "icon_background_color": "#909CE1",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/hotel_pinlet",
+      "international_phone_number": "+57 316 2130862",
+      "name": "Bambú Glamping Ecolodge",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 3888,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/106239526224752934748\">Bambú Glamping Ecolodge</a>"
+          ],
+          "photo_reference": "ATCDNfWpYE6qrXpDaVbVuEbmUg7g8JBhs7sOTm0KDfu24zPuPTCDVUZYEk9Q1Z2Je6yGqy76ySKPnVj9-B0cy4wXmCU8IayXIORQPhdz5KVQEI31GP03PMkCLxriDD3o6x9KDwa1DXkwAFSB9nVd954MmYiXs3h1Z93MYd9vvAnpHiDlKSFR8gRGipWuVXrFQdjx_Lne8GCjLh6cTDo21Hao-6vQ7nLyq6oLjodn4DKzbQVPGM77Q_AZxLpPv3mziLtfGB-_aKxskuMawWquD12pi63VosLFV2oFF2o2URu_YOpZeRMzBB1CxZCdvkLXweZjFZkz0Zb1jo4",
+          "width": 5184
+        }
+      ],
+      "place_id": "ChIJ72daM5mCRo4RqauhwweaInw",
+      "plus_code": {
+        "compound_code": "6C4P+6F Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4P+6F"
+      },
+      "rating": 4.4,
+      "reference": "ChIJ72daM5mCRo4RqauhwweaInw",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "lodging",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 196,
+      "vicinity": "Calle 6 #32-164"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.1978141,
+          "lng": -75.5597018
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.199207180291502,
+            "lng": -75.5584118697085
+          },
+          "southwest": {
+            "lat": 6.196509219708497,
+            "lng": -75.5611098302915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "international_phone_number": "+57 318 3062049",
+      "name": "LEÑOS GOURMET",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 730,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/114082124994415197083\">Toby 5star</a>"
+          ],
+          "photo_reference": "ATCDNfWQ73Rbq0isEiyoSJOyqxdMW1ySBV1rX1RkFEXvlJcS_sHhFG5x-QRRE3EHJzelZjtGFOgjcA-4YA-ggD76Y8CukoJXmlkAiv0TX80P7sdTsW3qSgTv8CISZl8toFZUTP_QE1SruSJPeG9tXfj_2oh__nmTNiy8Feu_NvtJLAETvmNlvPqxtBiZX6oiLelpbbyuezHerhKaVWkHo2C_N7t8TJyjvpFP8qZlsLdabjvd9jfOC98gZ09Oz377TbheD2O5lckqJE2TLHycaZlg8EQvuN2rTnDlvVc0uuKAdBEkeM6rJVFqQ4gC1xINHz-TtyGLvMLXe_-la5_UKPbMlJ4G57Js815ZPcNf8QEkqmhnv0klxDyoCH9gWJsOsjnplF-Roi0grNGbJqZEagbcV9XVdySXV_CXlPm07fuKrqoE_50aPpiCia2yBn8mQJHgjTOBOz7Ct0aWwjXvcBblx748UxyKYFWGFvlfk4rqYHFDa5IAqg577qaFhihYGSnvprIJlTKf1Nk6jUmgeeEdo1gdxUMTyKdeVAGaItte7Tbh3CI0kOZxILR4jROkkm9X-530574DmJsZb6r8-Y9x-DXQlLdgFeizHsOCU0H28AHlXvqKtuaxm11CCbVhVhHAaNQ8Bg",
+          "width": 1175
+        }
+      ],
+      "place_id": "ChIJc6UjYJqCRo4RuIMdTUi02lU",
+      "plus_code": {
+        "compound_code": "5CXR+44 Medellin, Antioquia, Colombia",
+        "global_code": "67R65CXR+44"
+      },
+      "rating": 3.6,
+      "reference": "ChIJc6UjYJqCRo4RuIMdTUi02lU",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "user_ratings_total": 14,
+      "vicinity": "Local 3565, Carrera 29 #1A Sur - 45"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.1974126,
+          "lng": -75.5593457
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.198924880291502,
+            "lng": -75.5581655697085
+          },
+          "southwest": {
+            "lat": 6.196226919708498,
+            "lng": -75.56086353029151
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+      "name": "Chef Burger",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 4120,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/107882810361194386548\">Chef Burger C.C. El Tesoro</a>"
+          ],
+          "photo_reference": "ATCDNfUr60kECaTJt2a1jzRky8TvOKzaZsWA0lLoNDP0uhtTOwTFFG3fXh6_Bs8T5ZV41HAHyz4GQd97YA17carWnUU9SVtMz1U0lRegMZsKQj0NqvggxUNpHLVafVDOQ8AywVXI0q49kCdsNtL1fo_EGwyjg-p1G2JeX2ltC3McEPBmtPJQNyfsjiTPhYXtSyner5qaiAhSWcqgbK1IR1YEfrnmn93Ac7TYL_7szJ9T4PL7O3f8NV76maJQxJU38SO8182-FNyfjaIuKAC0Ca5tZCzcSfCU5ctXnNQhnLm_gtMuUhEq6i9a1yIu6MTdtEtMZGD5L2nRQiE",
+          "width": 8428
+        }
+      ],
+      "place_id": "ChIJz1gZfZqCRo4RIIibKDJWCkM",
+      "plus_code": {
+        "compound_code": "5CWR+X7 Medellin, Antioquia, Colombia",
+        "global_code": "67R65CWR+X7"
+      },
+      "price_level": 2,
+      "rating": 4.8,
+      "reference": "ChIJz1gZfZqCRo4RIIibKDJWCkM",
+      "scope": "GOOGLE",
+      "types": [
+        "meal_takeaway",
+        "bar",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "user_ratings_total": 1637,
+      "vicinity": "Centro Comercial El Tesoro #Local 1545"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.19794,
+          "lng": -75.5590943
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.199380130291503,
+            "lng": -75.5578653197085
+          },
+          "southwest": {
+            "lat": 6.196682169708498,
+            "lng": -75.5605632802915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "international_phone_number": "+57 310 3002740",
+      "name": "Mistico Bar El Tesoro",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 1848,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/115676007051067307853\">Christopher Lodge</a>"
+          ],
+          "photo_reference": "ATCDNfUuWL9WzmPCsZaTYXlVYrj0igdT5Jn1Xu-dBrg0r2Pi_7CeZfxt7LofgSmUk0U2AH8RLttmli5JXJ38C5S5lNYoi9DNsXmVGZE-sx27-FDtaiEtI7mUdVPC4O5jCEjlA4sNwec4QFMHcXo8fWg8aZhm1DqsprNj-aWyZ_0b9u2lkBJK4tH1XYHDYjUOJUC7nQtWCYHCLqi0aAC04PMXn8IzhuXoWSCpheyWQfTpC-x_IDbOnXz2u2i77zH5BRvByymUZlUET4X3zgZUQ34tXqzUVtaGrd9l4-BJ3h5hQd0lcQHZPrQP3x5dZbbVk2mYugJAk9Tg2JWa9MZStt0CQUzkyNEA91BNzvHWo3RoX0G70pIVEBqpIXQneGEl923AHxZbDaXZ9UO1LIB_SkHdh4CSqS8Nqsxsdnc5c0jsfh4bpKAnb4ty15z8zp2dZcUthcGVcuXzpTegmrhYOxFi9aqmupli5fSFc1mGEQ8NDewikmXC5KLozd1xREF-X7AEDJhDJVpzfziQ98-Ck__ZfqSXfzgsXmevkdY-W0l9nTnaQl6jWID9-a2lv4U91lhDyqPNbWSAnMsNVa8QSlzUPlUx37DpZMQecQBCWgQARYmRwIPSgg4i9x3icAmyJmgZqrPnYOTo50u72UYXGdizZhzGLkU",
+          "width": 4000
+        }
+      ],
+      "place_id": "ChIJJXT6S1KDRo4Rj54z2Fy7lV8",
+      "plus_code": {
+        "compound_code": "5CXR+59 Medellin, Antioquia, Colombia",
+        "global_code": "67R65CXR+59"
+      },
+      "rating": 3.6,
+      "reference": "ChIJJXT6S1KDRo4Rj54z2Fy7lV8",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 14,
+      "vicinity": "Bar, Cra. 25a #1a Sur 45, El Poblado, Medellín Modulo 7, Puente occidente El Tesoro Parque Comercial, segundo nivel"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.197603299999999,
+          "lng": -75.5595724
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.199012880291501,
+            "lng": -75.5582860697085
+          },
+          "southwest": {
+            "lat": 6.196314919708496,
+            "lng": -75.56098403029151
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "Sunset Tesoro Boulevard",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 4032,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/110637242278864201783\">Andrea Pineiro</a>"
+          ],
+          "photo_reference": "ATCDNfW4_8FMhlN54fBhb5SyHJLrasPAcdFZqQ90Ip8HS7JqM9xkr5qeI8tRYh7H0MVyXs_K1qFVZ8kEnPr899nEktiOyyS6FnSpt5JHGztqyjd4Fd_uVKOE5PKcKEbPZKbT-dXX_tWdYlPOB-_Q4i2-uyUwj6_aZB9py8UFA7yLV3Y2De2LmrkvjlT4Ae9ugEUHb8KU6o-wZ4fADtb51BNNrdk8xCE4AlmYWKve3XnjATTy7RrkalPFslQWneeiVk9wuIB3u3M8HgFqi7E5V2SoDznhCjav15C1iCDHh4gl2pXa9NLJWSzKi9uOoObRY2bt-_gHtQNt-NSlF0VFbcNFw5pesl0NmEOg1rq240ifa0SFcBcHwhNKy7ZUV-XMfzcR36HqSsUNEVSNQkuVqB3HbtvvihQ_hVNOOTq-Jbmu_NvomATCnTFzl2joI47hG4AzZTBET4ozWxBzvOaVhkZ31sawQroRkn0UdPqaIyPFvtaQ_724Ka4SxGfh9wuHaNlDQlJ7r5tAECSzdwHw_ZZGFpQt23NSQMuSXsSdST_2zh1tbQx2gzmzoAh44DNNHBn-BD44a8XsNmF2KzlWGjw1FYSR4ZC71Wloz0wCXnK5bUSS7aLZDFTEnOQt71OrAqrVyKG7qRZx8Ef2RNH_dTH2ONgMHM4",
+          "width": 3024
+        }
+      ],
+      "place_id": "ChIJ_-dufwCDRo4R374QQdtOuLE",
+      "plus_code": {
+        "compound_code": "5CXR+25 Medellin, Antioquia, Colombia",
+        "global_code": "67R65CXR+25"
+      },
+      "rating": 3.3,
+      "reference": "ChIJ_-dufwCDRo4R374QQdtOuLE",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 3,
+      "vicinity": "Carrera 25a #1a Sur 45"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.1974567,
+          "lng": -75.558218
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.198900080291503,
+            "lng": -75.55677376970849
+          },
+          "southwest": {
+            "lat": 6.196202119708499,
+            "lng": -75.5594717302915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+      "international_phone_number": "+57 302 2237643",
+      "name": "Mistura El Tesoro",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 5712,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/115907309528890044748\">Estefanía Alfaro De Castro</a>"
+          ],
+          "photo_reference": "ATCDNfVut_LxaV-iMpkVJl3KUZKVTWgO7BxsznG65Lp43fKoFayVKOQMQ_z46QT1NP1JbXT5Hpnxcvcv4cH-QRWoxKh0s6R1nT3cupxXfBE5D2Y3C8RBNqgYZjWAXRIPJnT1SDenJceWL6Q139HFOw4h8tq15U8C0Ax_Et0bZ5J8KKYxTFYvvqLze_k96-qwz2cm-d2m0QhtNU3aNHIASV15aPirE8fmL3q_zVDqNVc0mm905YyQ7H5LmGQiUnBOv_BiEEJk7IARfnnvgApdhbeIHnXmrOxz9lg09373VTzctzgiEaWwgjCNtVJc_1ZH36Q5m1sxZVyZl7Ff638W13q5Tgvo5ri59MZuRF4VbN7kmeyWz0qxpR-Yk8LwTsz2GYl0b4z4cK1q_khUUQH6rin94F7P6PADrVil-zvPKPmAfNJhA4SMcQyKMNqarUwdnUIxsVRhou3TU8Z9Kquq9WH4YBwkA-iy8JuJJYfenQ4MncTIekigqjn8YYSUZOco9AhbTehgXZSwdqpd3kFgXusPWjstU7KbvdetCfy4_pDhMHH1YW_R_HMnfomo8pynrrbuIZu1WNyvv15nAcz_ZauTJeU_4dew0Wx6r9dvLvI2EHDJ9fFY3DBQTRCwMMMhRAtzBrcEwmYl",
+          "width": 3213
+        }
+      ],
+      "place_id": "ChIJ3yuV1GKDRo4Rk0CTM5jl06g",
+      "plus_code": {
+        "compound_code": "5CWR+XP Medellin, Antioquia, Colombia",
+        "global_code": "67R65CWR+XP"
+      },
+      "rating": 4.7,
+      "reference": "ChIJ3yuV1GKDRo4Rk0CTM5jl06g",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "user_ratings_total": 143,
+      "vicinity": "Carrera 25a #1a Sur 45"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.198345799999999,
+          "lng": -75.5570627
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.199701130291501,
+            "lng": -75.55572316970849
+          },
+          "southwest": {
+            "lat": 6.197003169708497,
+            "lng": -75.55842113029149
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "Fuegolento",
+      "place_id": "ChIJfaKvAEyDRo4R8djzi0U5HVE",
+      "plus_code": {
+        "compound_code": "5CXV+85 Medellin, Antioquia, Colombia",
+        "global_code": "67R65CXV+85"
+      },
+      "rating": 3,
+      "reference": "ChIJfaKvAEyDRo4R8djzi0U5HVE",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 2,
+      "vicinity": "Calle 3 #3-45 local 115"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.198575399999999,
+          "lng": -75.5567906
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.199945180291501,
+            "lng": -75.55547221970849
+          },
+          "southwest": {
+            "lat": 6.197247219708497,
+            "lng": -75.5581701802915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "Suburbio bar",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 1080,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/115895065295745476501\">Juan M Gomez</a>"
+          ],
+          "photo_reference": "ATCDNfXu-TQ0pZOafFdf-JsTfYAmRNPwvl7gaUWK2A35IxGSskcH7dKqgZHUcAJaN8hSgiFoUNskaqC_mlET6dAa_AOKZs1SBSQft3zEKmofb1rL_8SfUTtMr1j8zCgOC2fRkJeWOhgmr4YYZ0vC4wh4p8OFTQI48DC24d92PasEilu42ji7oNMdsqyWBNMKhaI77hhrBLd51yT9sbb23j2eKro4ERE2PBT2VYffkNVyBboJZ1mOZdQyg9W7UvHgNfZfcY1zUwYjD4sYIKAhQGReXhhGecosXxTrhiFZV8nOcEUAY40vQw81bmlKMs3aD1WDWWdJle8llaIVn4Pt_ye0r-Ori97z-Ab_Mt0AR5fcVDAOlv1Fq3qTyKOqh4ArYSD8ubMa3u3raJSMvlpcscdwsoMQbKwZ3Bpp_YM0YzljL4nX5hhbZYDPplks3uAJCArS_0IgIR0V6Fi3GCBJ1XlvDve2rJ_4RqCfeaaxHh-g6wDRgOIf46eUAkq5uVTVr0xWKeDKjkND09fUf9WPfPpWd0jBsz37xhlhjF1pzPQ6fj5PuuJHknxN-vWmFd7zBisaZv0g8myCeuKAqDpnnLt5akIpyGQ48BPFae6D6sgN_lDT4KTaiDHbgajmtt5iHTzvCZbNMg",
+          "width": 1920
+        }
+      ],
+      "place_id": "ChIJKe5c6HaDRo4R3Hx88SKZz3M",
+      "plus_code": {
+        "compound_code": "5CXV+C7 Medellin, Antioquia, Colombia",
+        "global_code": "67R65CXV+C7"
+      },
+      "rating": 5,
+      "reference": "ChIJKe5c6HaDRo4R3Hx88SKZz3M",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 1,
+      "vicinity": "Carrera 25 #3-45"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.198575399999999,
+          "lng": -75.5567906
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.199945180291501,
+            "lng": -75.55547221970849
+          },
+          "southwest": {
+            "lat": 6.197247219708497,
+            "lng": -75.5581701802915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "international_phone_number": "+57 45815580",
+      "name": "La Cahapelle food & drinks",
+      "opening_hours": {
+        "open_now": true
+      },
+      "place_id": "ChIJaTabhpmCRo4RLnvQ5bo2ES8",
+      "plus_code": {
+        "compound_code": "5CXV+C7 Medellin, Antioquia, Colombia",
+        "global_code": "67R65CXV+C7"
+      },
+      "rating": 5,
+      "reference": "ChIJaTabhpmCRo4RLnvQ5bo2ES8",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "user_ratings_total": 1,
+      "vicinity": "Local 129 , CC Del Este, Carrera 25 #3-45"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.1965478,
+          "lng": -75.558908
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.197865730291503,
+            "lng": -75.5575539697085
+          },
+          "southwest": {
+            "lat": 6.195167769708498,
+            "lng": -75.5602519302915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "Tesoro",
+      "place_id": "ChIJ6wKtagCDRo4RNzhOCgYrMlk",
+      "plus_code": {
+        "compound_code": "5CWR+JC Medellin, Antioquia, Colombia",
+        "global_code": "67R65CWR+JC"
+      },
+      "reference": "ChIJ6wKtagCDRo4RNzhOCgYrMlk",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "vicinity": "Centro Comercial El Tesoro #9284"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.201561400000001,
+          "lng": -75.5566089
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.202909330291503,
+            "lng": -75.55509561970848
+          },
+          "southwest": {
+            "lat": 6.200211369708498,
+            "lng": -75.5577935802915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "VOLÁ Gastrobar",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 4000,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/117884870997555532104\">Red Textil</a>"
+          ],
+          "photo_reference": "ATCDNfXXuMKRv-KgoO3Xqr232nctYhx7T8SaRqNQXP8uu94nTE3m4rL982m8OABWGB0_F5nxomKOv3DGh5lyWXGhzgS4N4YzLG7XFTSxuolBLRFvAs4zoRPrl-1ujFPw9beISpO3-DKXAFf1Lgdiq3skAS_d8dfnQJVSAVQFaWHuvTOcgFCV2UPfWdCdiQEwPKnwrOxn-pnEFFfHWgrBCTGbrSvmWq30CKJU_ykcGx6V8p2tILMkpFJzBCkK6g6bmWjRMnHKngKL8gn2iholFmEzp4y6EOqWjvvu6iS2NJGACICdh4stVAXhoOtCsn_HithxloIG797bhN9Ndg2gI9bjINDThaLkM5p3zzlEUy-E95Q3n66BifOnbzq7-0tSxWK1yuiyyXbxA_i6PBSndL-bVgAtiIFShQ0sc4ZqWlCngOLKdlwwr0fN4GxKLWvOwDhOzpMVTsDN9TSLYJsOnZSbB82jKGXPMYhdmW8zTDds2MhyjsG3_W3yO2n68z0jvzZky9ej9rxhfhzqFPb5y0onckn94mg7m4B3i0YQTJUFm_4YwpJQzN_Llpo6ltvk9xMksF3yXrMwKagaF4Mz7zGI4W1NTtdHhO6B_efJq7YGZQCf4hpSUBEXvMSnPUQ_YFImWFhZRQ",
+          "width": 1800
+        }
+      ],
+      "place_id": "ChIJqQcmY8uDRo4R3QDU60BYGuY",
+      "plus_code": {
+        "compound_code": "6C2V+J9 Medellin, Antioquia, Colombia",
+        "global_code": "67R66C2V+J9"
+      },
+      "rating": 4.7,
+      "reference": "ChIJqQcmY8uDRo4R3QDU60BYGuY",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 14,
+      "vicinity": "Carrera 25 #4-165"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.20169,
+          "lng": -75.55666219999999
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.203032430291502,
+            "lng": -75.5551210197085
+          },
+          "southwest": {
+            "lat": 6.200334469708498,
+            "lng": -75.5578189802915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "BBC Cervecería Amsterdam Plaza",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 3000,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/111253047765932963308\">carlos criollo</a>"
+          ],
+          "photo_reference": "ATCDNfW5uxMui3-MxWNinpkn0C4ivpXG7d489hbS1b4HFgA4FtmIYo3Tta9Alh2NrzhMLU4JY9Jyow73BAGbIzSE85s7zCmD2KLi8DtUmJlS794mwrsBrFdp0qRFD2R-q_wYwmt-5H5vHDnBDL-bGqMzBcBcLwiooyBwOaySwEMnFgPosUBS2-UofFJBSuMFTLwzbjZoiPE4Mv5mw2btPcgJmWbYznaiTWG9EMb27T6OpqHyLlPGGlrW1yc7Qwmz1CMoe5SJRa1Wt4c3HtcUL7J5lPK0EJpJNuGjCkSLNLtfI98YHIGnoyN1-tR5Cb-x_XxHeJDm4zh3cQc9zBLKSOAE3TbRWRn3UuaMSxcRstpR7InjkU0X81rR6FDtknc7jXs-2xCiT0ClbZ_1Z0YCNbz9ld2d9KuE1ox-7nX8LZXsl8eDxJYeuv591QguAw7Dr8OW3Apf159H8gcA3r0CsZdZERqP7Kdy7VOKRzy4dOavq5BoUnqqdl6k-po09M-L9yHHFyDBJVnj4ZoFtnES-qX2TKZGzAOLeDtgvovhzZCqpfkwiOD-sC_m2mH6fIGxNwX1ImqYZHQbq2Dx1GaRzOfKzH-TIAo45sA2vIagG6nyx21fDb6MVfeya3ck9HwZm2dzmaVxtKX6",
+          "width": 4000
+        }
+      ],
+      "place_id": "ChIJr_1HmnSDRo4RYrlAhtsXkPc",
+      "plus_code": {
+        "compound_code": "6C2V+M8 Medellin, Antioquia, Colombia",
+        "global_code": "67R66C2V+M8"
+      },
+      "rating": 4.6,
+      "reference": "ChIJr_1HmnSDRo4RYrlAhtsXkPc",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 43,
+      "vicinity": "Amsterdam Plaza, Carrera 25, Transversal Superior #4-165 Local: 112"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.2015552,
+          "lng": -75.5565931
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.202820180291502,
+            "lng": -75.5550745697085
+          },
+          "southwest": {
+            "lat": 6.200122219708497,
+            "lng": -75.5577725302915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+      "international_phone_number": "+57 310 4480888",
+      "name": "Chef Burger Mall Amsterdam Plaza - Artesanal",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 3840,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/102282564504937433981\">Diego Valencia Paz</a>"
+          ],
+          "photo_reference": "ATCDNfWfjlRmastVxqUDIYPBys6t-hyuswr-rDPPC8DOF7MfIT4PCaEUctnpClwAI6-gnsT0ufDOxLQepg5FZILAZmPh7I0nrxXlySRWJZh-zaROCTbbsbjSfrPur8YS_bm1JDtHpVDgYLB3uFCrP4ptIhCV7gAKJH0HF7jWIBdGQ9AmrOOdqkyzNleVgFsuu5042O4TIDUQ_QxybTHSNdiKP9okmMxy-RJ3nLrwv_7CBGhl_wrf57BsVY6it1Ac4jJnBn8dtua7opJe056sb0bdNOGg1N6nquSY6jirO43LMjMaDedbLCsSmXBrxnSK9f23rzox9pSaVG66IZ3VQUvCQeXATzte4NH9sB6x-FwO-83wSZHK2ntrGUjbjRr8pEY1XkkAb5pI00vM6N3HOfBVwDLWXj3uK-O56HdAtJ3t_1-QCWfyzlZ_6F5PuSoNPJ6ykguQ3IGnhJ-o-fCTEvS_TtnIi17B0XAAiAtby5XwCDwMadv-d_8qZtjqHe2sWG3B9S6JMAATYhwQPXq_W00e6rBzaywom0Zn6KDr0eKZP2upERQwhJYrYzME9wBeSxrXMu1-7ulACDhJND7YT3t-KlItlj0_qMxpLEDvJdKEgw3JBzkYYlUPWIVvrkt6_yFh1k8FtV7ZEidVV8jt0-NISQ",
+          "width": 2160
+        }
+      ],
+      "place_id": "ChIJH_0PtqeDRo4R6xyGeSfH40M",
+      "plus_code": {
+        "compound_code": "6C2V+J9 Medellin, Antioquia, Colombia",
+        "global_code": "67R66C2V+J9"
+      },
+      "rating": 4.8,
+      "reference": "ChIJH_0PtqeDRo4R6xyGeSfH40M",
+      "scope": "GOOGLE",
+      "types": [
+        "meal_takeaway",
+        "bar",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "user_ratings_total": 1164,
+      "vicinity": "Carrera 25 # 4 - 165"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.2003972,
+          "lng": -75.5637595
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.201742580291502,
+            "lng": -75.5623355697085
+          },
+          "southwest": {
+            "lat": 6.199044619708498,
+            "lng": -75.5650335302915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "Mala copa bar",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 1600,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/107948527458433424504\">Mala copa bar</a>"
+          ],
+          "photo_reference": "ATCDNfVNdcCGd9USWG7S25RFs8FSNmC8lDlrsEXPjOjFrFh0Hme-45OWaCvntDoZaaOk3HCFG8z8DDy5hvBakr4JyNatx78Uvc8M1NLTYVF-UN54P1Gbb4xhrMD3xq9k7B2rCn2tCpExJSRWYRaz3y4CJQZpIc6yZx_KB6IGeaONs9vzjzx0CD5w6TI67Acz3cfkseYOmPGs2m4ZGfsw-t4Oa6U_aeW8rcqrcmP5nOr7G_0d9Uebc50XKRNtKfZUf4YikDJ7jZc2Mt9FMReQqCy79airi4cso8TXp9euJaf6yg4LbudWQdvWa9mRyoPGDyA8xK-yTIU7jHM",
+          "width": 900
+        }
+      ],
+      "place_id": "ChIJHbgCPSGDRo4RALoclE8nlJk",
+      "plus_code": {
+        "compound_code": "6C2P+5F Medellin, Antioquia, Colombia",
+        "global_code": "67R66C2P+5F"
+      },
+      "rating": 5,
+      "reference": "ChIJHbgCPSGDRo4RALoclE8nlJk",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 20,
+      "vicinity": "Carrera 32 #1"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.200497700000001,
+          "lng": -75.56386590000001
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.201922030291502,
+            "lng": -75.5625457697085
+          },
+          "southwest": {
+            "lat": 6.199224069708498,
+            "lng": -75.56524373029151
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "La Esquina del Plaza",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 1056,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/117002961178679228915\">Martin Hill</a>"
+          ],
+          "photo_reference": "ATCDNfUETaCoOY8OrZ7FHGojdgRH6vtUFb0HOzE3ceYkdbMbNhg4Dfd5xt8ztZFFNbvrENipY2o7wFEdo-SWLvOIkAUKa27iVB1Gtyf6rg0p-_KqO3R-wvUlGZbwWSGy-v6waIOl9_y9i4DKlnEYlpfjok47sTvcMK1NrzLPiRKK_mvoRg6TiMSw6BFNr8XA9xdc5kS-ZWBkTTubNJ6QLLCdjhpb2aztvROMfbkQp1dFQ8-F289LKYEEbsa5N4cnG2dpiEH1aQlQsnz9mutVSxN8LaxFw5b7SYl8HjnDQfMRIRwg_GSTmbNRABAM-o154w8oeKc39rtldLtDhQz6XEXWLDDon8oDEH0q1FwuGjQnoY8_x2-e9Ubt1w80pzJRsgnXq-rGZ_Fzxpibs-duqheGfgxBoh8fb8QBmG7KRaE8-uASw6tKlvOQcyxW7o0KDQnoAOjNo2YaenyjbQa9kidOYTaZal9WJpOaCZgzzPVD5Hl6Eim0FIoSdNTb63okReJrtOxmxxU5bBphgn-fa9YKTA0T1Dfri_F9rulV4A9bZxinTnrhnN77-mh_CDD51BHzGWTSVTqUAweYEfVSEQjcA-oqau5IaaRXmxos8w4_u4XhXwEw7M4c26vcAFuhQWdXm5upNQ",
+          "width": 1080
+        }
+      ],
+      "place_id": "ChIJ9_KY8b6DRo4RDy-ZsLclKV4",
+      "plus_code": {
+        "compound_code": "6C2P+5F Medellin, Antioquia, Colombia",
+        "global_code": "67R66C2P+5F"
+      },
+      "rating": 4.4,
+      "reference": "ChIJ9_KY8b6DRo4RDy-ZsLclKV4",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 50,
+      "vicinity": "050022"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.201831,
+          "lng": -75.5565361
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.203171630291503,
+            "lng": -75.55505431970849
+          },
+          "southwest": {
+            "lat": 6.200473669708498,
+            "lng": -75.5577522802915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "Public house",
+      "photos": [
+        {
+          "height": 4032,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/112926481950614002362\">Trev’s Table</a>"
+          ],
+          "photo_reference": "ATCDNfXsHPGtAch6vP40okzN3wcMqAKmGZYuXyYemTshRq2u3QC7wdRlx2kMoOfwDNN_FZImU4-74amfYPwjIYqrABfSno7SjGkc40IDRbPqcm6rlHyCajRYeCwhJl1WaJ063zfgZqx7gV5n86cOIhsoYGUdsyX6afBkNTSrHih3X1GM5-l-K96JifEAE9GNC5KvtZ-TSy5GyJDa6QhVYk5SrnWHwosW45RA0NJLasYISbObL4HJW6buO5yMm9qda1j3E-OUIOv2lrckYM_l2iYNfomsQKkRYW2NDWSWZO_q3F0mECiNt68miaMWwBifVcOsYzq6Ik1eKy_gwLp4w_JF3cbp7EB-YkuryyNH98sKjFHG-bDez4D94O2LrUvrO5_kisRuSwKBQiG9kcbM-xbg3Tp385gAQvQSRJCJqXl27GL_-aiNCLMd1D-TiEor8uL5c2Giedpm4uFr7WUBY1-ax-e-a2tNeCH-UbMq9mewT9hd0IVgp5vICleQXVsXahU--Qq-TVBYie5wja21NmwC4jQdGwJEyBy_ytVJ1t8WKiFTmxFW_CkTmWUd471eGnreju5uUq3Wunr5RXooI8VWSsgSj7Bi9tord37H_pVnOJJYwBku1CQS1gbvAx0koqcT",
+          "width": 3024
+        }
+      ],
+      "place_id": "ChIJ6xhC7RiDRo4R5qaZDdk-iwc",
+      "plus_code": {
+        "compound_code": "6C2V+P9 Medellin, Antioquia, Colombia",
+        "global_code": "67R66C2V+P9"
+      },
+      "rating": 5,
+      "reference": "ChIJ6xhC7RiDRo4R5qaZDdk-iwc",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 6,
+      "vicinity": "Carrera 25 #4 - 165"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.200524799999999,
+          "lng": -75.5640182
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.201909480291501,
+            "lng": -75.5626859697085
+          },
+          "southwest": {
+            "lat": 6.199211519708497,
+            "lng": -75.5653839302915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "international_phone_number": "+57 321 6749132",
+      "name": "Temerario Mall Plaza",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 3024,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/105546900819945189843\">Miguel Roa</a>"
+          ],
+          "photo_reference": "ATCDNfW2gJaYcB_1UHg_87frvxYIvuUzyPzSLqX11tciInLZF6sIW-BHj5atYUtv_bXkbIIlz9dNbwOn8-jwm2gI49FEXAKvxgMs_DSLHEk5vIsAkNkmM-gXfojbCutxGLr2LAJbr6Un1WXYBTWfYyxjt5NsR4x6-c_Z5d2J2rV37Q-QNd-tEf5ijtcyqtaNmsKpBwb3kj5bOsAlOTUi92r1BA4GG3HCEp9ipfh9aGlGanecWw2fLYllkjUJR2sA97tEOZ191xFDMVtVTmsf96ruxi2B8-MIDFN8FuOX25HqneM8EBD-BAkmSMCNzCMR5j5M6iKzIklxyGa535x0MTIHPd5nCizxQo60ko0sDnUaPpFDymeey7Wq7LkczsngUjYrs358ehDttgzSTUuRraVzzU1t7W8uHQevobAr1izkJxcInXOfNdFmKYxWvPzLRCi--GG696Xc5vTldQQGNRCjMmNQRKj0Q9gIFSPpw0X_6XDXR4J978ObYiv5-mdPIm4xD9r-MZfE7mUfCBWjrc2tfRugmtHe12kl379ZW5CqIO6lF285GrZ7SU5Wmtsst0XWiwthQ5-vzsTu7fez4doPrLqZ-4WhsZBSMfxuxI2R5YEyTtgj1TXHB3ZR6qyMI1m5Z3MmYQ",
+          "width": 4032
+        }
+      ],
+      "place_id": "ChIJq71gC0yDRo4RD0jMjvm4z8I",
+      "plus_code": {
+        "compound_code": "6C2P+69 Medellin, Antioquia, Colombia",
+        "global_code": "67R66C2P+69"
+      },
+      "rating": 4.5,
+      "reference": "ChIJq71gC0yDRo4RD0jMjvm4z8I",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 31,
+      "vicinity": "Carrera 32 #1-24"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.200499199999999,
+          "lng": -75.5640447
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.201889380291502,
+            "lng": -75.5627150197085
+          },
+          "southwest": {
+            "lat": 6.199191419708497,
+            "lng": -75.56541298029151
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "Doce Mall Plaza",
+      "place_id": "ChIJvXruz4WDRo4R_1hpkB49GlU",
+      "plus_code": {
+        "compound_code": "6C2P+59 Medellin, Antioquia, Colombia",
+        "global_code": "67R66C2P+59"
+      },
+      "rating": 5,
+      "reference": "ChIJvXruz4WDRo4R_1hpkB49GlU",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 1,
+      "vicinity": "Mall Plaza, Carrera 32 #1-24"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.2020124,
+          "lng": -75.5564273
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.203334230291502,
+            "lng": -75.5549898197085
+          },
+          "southwest": {
+            "lat": 6.200636269708498,
+            "lng": -75.5576877802915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "international_phone_number": "+57 305 2466777",
+      "name": "Bodega Wine Bar",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 4032,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/102277924250227067133\">Brahyan González</a>"
+          ],
+          "photo_reference": "ATCDNfWTqrv082TvNJUYnfqTirvIkskUsA_HPtppNrhbF2s8nITahOgr91UZ1rB01bF-n5Lzp73Ba6kxddVx7r7uSTidi94_22Kn_slbYHW3ZpwXW1HcdDN0P_7gA6-y_wTmYDVYCaBvDeT-t0FUCJ3-NqYjZEPFqpNK3W43IkqPi4WKqDNH__0YJfcQjAxC-s_QRMEsobznFHV3eGM962hlrQrS-w1e5RRtCqkcOe2Ifs0nh35r0dSavoFxwhETwJ9GQH8RNoayhkzIXjYRXKAdEY0YZlLi0a947YqS57l_gqSs-U3CwQMxDGWvSrn2wWUlcWlJUcj-igqMIfj5ODdBq4Uxnb5o06PLkl3BINDfpy9sX3mDvOJZGbDinx_0F9tvDKx318wpMbFxS6-E2Yzl_Oy214jvYbJutXFIPgoLbHpR8tVhDUlthL6iM7OePhdDjCHSwC_BFrA3D6sJJ6m7DuJTFUcGVuOI9kZFNEY08Y8ivjXAUE26AuOZUUuldUqKC0doHfhDpVCeuqnMOPbxSB0SsqcEa80QpcqhVvdLa6DMrUgUZRX9G0w8c_K1usbVCo5NGJvvB5UZg0l8Nj61xHKlpRLsgylpDqKrrWIgKC3wh-fr8dhGiHON2kKGjIVX_HGGKHlIV9UM9Qfu_JkBSYCSbZM",
+          "width": 3024
+        }
+      ],
+      "place_id": "ChIJGc06JQCDRo4Rh1GjbpQXxrg",
+      "plus_code": {
+        "compound_code": "6C2V+RC Medellin, Antioquia, Colombia",
+        "global_code": "67R66C2V+RC"
+      },
+      "rating": 4.8,
+      "reference": "ChIJGc06JQCDRo4Rh1GjbpQXxrg",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 17,
+      "vicinity": "Carrera 25 #4 - 165"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.1980411,
+          "lng": -75.55635219999999
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.199389430291502,
+            "lng": -75.5550035697085
+          },
+          "southwest": {
+            "lat": 6.196691469708497,
+            "lng": -75.55770153029151
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "Mama Negarx bar restaurant",
+      "place_id": "ChIJFZzkeQCDRo4ROLLgV0olHDM",
+      "plus_code": {
+        "compound_code": "5CXV+6F Medellin, Antioquia, Colombia",
+        "global_code": "67R65CXV+6F"
+      },
+      "rating": 5,
+      "reference": "ChIJFZzkeQCDRo4ROLLgV0olHDM",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 3,
+      "vicinity": "Cra. 25, Centro Comercial El Tesoro #1 A sur - 45 Local 3084"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.1961834,
+          "lng": -75.5615351
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.197402780291502,
+            "lng": -75.5599807197085
+          },
+          "southwest": {
+            "lat": 6.194704819708498,
+            "lng": -75.56267868029151
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "international_phone_number": "+57 300 2997297",
+      "name": "El poeta",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 622,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/101684901009123977648\">El poeta</a>"
+          ],
+          "photo_reference": "ATCDNfXqBCtW49bqhBG1pE0gGEMo52p0Dn1gGCMHILoTKGnPmKyVvmrb2raGbWjIn7daXCgCDVJ7KuTS5kQyp6CCcHmHxipFOfXxkuI46wNF6XEQjlRyRszjp0LKEkZLmF4j5eo_5pUZDb6rjI4t7agnL7ReDyapLvDRQ3oEGFzY9zgPXrHsYuuRTlLHiaClLqGD6fZMDruCWOTvlp_KNian8_A_yMFvS92vkbVHAaAMR1bm11zwKdPVGK2Hnnc9RmezRCZK3qrVSKvmfWsLDREVykxZnL2B9aA0RP0Vojrw1sJw6mpQ2-FYaP-lmdtFvI_l5SOnOyHZ0Zg",
+          "width": 1280
+        }
+      ],
+      "place_id": "ChIJq9iYrSGDRo4Re_QFHb28j60",
+      "plus_code": {
+        "compound_code": "5CWQ+F9 Medellin, Antioquia, Colombia",
+        "global_code": "67R65CWQ+F9"
+      },
+      "rating": 4.7,
+      "reference": "ChIJq9iYrSGDRo4Re_QFHb28j60",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 20,
+      "vicinity": "Uva ilusión verde, Carrera 29 #70"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.196026700000001,
+          "lng": -75.5612893
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.197324430291503,
+            "lng": -75.5598578197085
+          },
+          "southwest": {
+            "lat": 6.194626469708498,
+            "lng": -75.5625557802915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "Tienda Mike / Bar Donde Mike",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 3000,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/112997430841245762040\">mateo tobon</a>"
+          ],
+          "photo_reference": "ATCDNfVDBl2ko0f8k7XXAfgwBQaknmu8pxQu6dvtzNxNO1gmfHmtypR7u075R-31pOLIO--852-EjvbGtF60t3tJeNou4Y4DCYIrasz_1GF0ZTIRfHUoR7cYL64FA5oSzS112xnMSc0IqID285hiGwY6qQxsSBt1tBaPLQAZhAoQvXMhbtVs24l83oWLInyGjxYYgGGxknrpjDlHqpugd4rZZzdmjXn7SECSEUjT6oeP9j7rG6G9JcsuOQwDIm6lTirun0pY4fAXNSCRMtoqQlLZgsDzIkm5um8FJpFpLGbEaopoGy6Ri22G7UYPAxIE2imJBcVzMKtg8XiGP2BRDVgkOnhA6R4xJjc9bj94ipZAXstaMjat4gyb7-JBD9qfgN0BmhoV9gZ-44eVnkcPDVtFUpGYC5ZGJXzAhr7hho2OyXqV6-BNS1_tntsh0LEWdnD8G--AXatosDAsTmqS63bTmU6_lJbnywDPfsUCT-7vajJ-ma6N-hQyABfDI3aLjibDzIxQp95aEs_V2xLo7jrTwzZ0t24khwnLR73Ddymc9Arnr0GG70wEnE5CCo1O8S_U0jRYlTAUyvD-TtUdCe_S23twwBD0vdaJpHnTk8ak6xdQMoays5ozkRIcI4RZvTW4acmoaA",
+          "width": 4000
+        }
+      ],
+      "place_id": "ChIJYTFySB2DRo4RYaI5aC-D_r0",
+      "plus_code": {
+        "compound_code": "5CWQ+CF Medellin, Antioquia, Colombia",
+        "global_code": "67R65CWQ+CF"
+      },
+      "rating": 4.8,
+      "reference": "ChIJYTFySB2DRo4RYaI5aC-D_r0",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 10,
+      "vicinity": "carrera 29a, Calle 3b Sur #10"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.197610699999998,
+          "lng": -75.5565079
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.198929780291501,
+            "lng": -75.5551114697085
+          },
+          "southwest": {
+            "lat": 6.196231819708497,
+            "lng": -75.55780943029151
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "international_phone_number": "+57 324 3628878",
+      "name": "¡Hasta la pizza, baby!",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 1333,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/108152495061107817069\">¡Hasta la pizza, baby!</a>"
+          ],
+          "photo_reference": "ATCDNfU-fgs4rvlUZOtWoINUoT5nLZao0LYfoSu86fKpndzqBnagJMZY5vjClVNuyrFR2k-eODL8A2FfO-_T8909IJVHH772kE2uu_EKaBdDN2Ht0blWh3UPIVmO777V-3mTyAsleR5muxejwhGRyE1v9ggVivtX3QovJ--7juILYEs29BMdOyB-4J4tD-cFd1nNjlHUHK4LcBKbSWjRC4SRvoSWI7VqWET4S9D-pyyDs_5uSDAnzu5fll9_LleRagEMXPb1Atsyy5BhU6P4l9FuVgV8D46SLO2s1fMJkOgQk1M30lGKEpRSlc4ettR-bOy4oVh5nO_3sDQ",
+          "width": 2000
+        }
+      ],
+      "place_id": "ChIJO-bEzLIpRI4Rt7aoeA21b3c",
+      "plus_code": {
+        "compound_code": "5CXV+29 Medellin, Antioquia, Colombia",
+        "global_code": "67R65CXV+29"
+      },
+      "rating": 4.4,
+      "reference": "ChIJO-bEzLIpRI4Rt7aoeA21b3c",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 110,
+      "vicinity": "Cl. 2 #20-50 Edificio q office"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.199154999999999,
+          "lng": -75.565375
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.200477230291502,
+            "lng": -75.56394351970849
+          },
+          "southwest": {
+            "lat": 6.197779269708497,
+            "lng": -75.5666414802915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "Provenza",
+      "place_id": "ChIJu9v4JACDRo4RVLmoY9P6NfY",
+      "plus_code": {
+        "compound_code": "5CXM+MR Medellin, Antioquia, Colombia",
+        "global_code": "67R65CXM+MR"
+      },
+      "reference": "ChIJu9v4JACDRo4RVLmoY9P6NfY",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "vicinity": "Carrera 32 #1b Sur - 61"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.1982231,
+          "lng": -75.5656556
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.199605730291502,
+            "lng": -75.56427966970848
+          },
+          "southwest": {
+            "lat": 6.196907769708497,
+            "lng": -75.5669776302915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+      "international_phone_number": "+57 311 3052347",
+      "name": "Perú Wok - Medellín - Zona 2 - Restaurante peruano",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 3024,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/111521549681923618185\">Perú Wok - Medellín - Zona 2 - Restaurante peruano</a>"
+          ],
+          "photo_reference": "ATCDNfVXkY31Z8FIoI522W5ZzUuvFveE8ks9r8aiS0VIq5ZmIDgM1j7Xb-XgOmM3W0Ny5wq4Uwg2Flap7Aj69oJn5B6r4mP9MdzKz5Ph8bhIy4yOJXuqEm3K9GEBrEKnc2LoGGBGT7s86Z_pIs2s8pf3sUFEzocGwzVuUO5NsedUV6_YOz3zMWFUmLoaKgocxRD3pMCe5PXxPRZa4-dWBEzXSgw3KIvhIroIaEkJhggLULj_zNMGMIaG28abwN16QQQhE9-uHBuoA0VzEuJNNEaoG5B732AS8Ei-QjKQO-Mw7saMH8NZDb4UQjaEXCidZU-u2zsALimi1Ho",
+          "width": 4032
+        }
+      ],
+      "place_id": "ChIJzyWMoIWCRo4RJ3l6V_iypIs",
+      "plus_code": {
+        "compound_code": "5CXM+7P Medellin, Antioquia, Colombia",
+        "global_code": "67R65CXM+7P"
+      },
+      "rating": 4.7,
+      "reference": "ChIJzyWMoIWCRo4RJ3l6V_iypIs",
+      "scope": "GOOGLE",
+      "types": [
+        "meal_delivery",
+        "bar",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 663,
+      "vicinity": "Cra. 32, Mall Zona 2 Sur #2 Sur 47 Local 117"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.206517499999999,
+          "lng": -75.5601065
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.207800880291501,
+            "lng": -75.5586981197085
+          },
+          "southwest": {
+            "lat": 6.205102919708497,
+            "lng": -75.5613960802915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "international_phone_number": "+57 311 6907749",
+      "name": "La inferior",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 1487,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/117884870997555532104\">Red Textil</a>"
+          ],
+          "photo_reference": "ATCDNfX0hCUXk32MFIbU2aoCs1s-2Q8oJulqQq6rhjzUC9Hxkb_DZc6aRmZ0OcoDW6cqmOnuMoakr3JXPj7scpc9fFweKDyLlt9RaRK_LCa9BNWLY3lQGBzxBCvI5PK3Ij6nW_OpMmu74VciuTOBzcROsZODy9LUwEcXq5hqPdAawqrUvvn-sNuudWDaqa2_fE2SzBpYpyg6_Ll5NuKuPrGa5Z7AwbF2D3p-PY3dUOF4KRxYLj-X2xoCyDg122WPSeg6vvSQuftS8_iDh9_MNnkP8MAOk1LamKRyb2OxSGYOJ2Z2a0lyEGtyqgb4RHmnSYvlUmxiSfayPV7yvSPoiHYyW_LC4GQUl9Jhalmn46bXG3nUR8hPmmFxjY0AkGYZobrZ4PY5UWZhiVThdIbwPON5NxvinJEt7IRbaDVbYjoIASSCY3qGefYh2Tw5IO7sCiFhCZcK8CxJrPHzD2-i6AYbAL8-vh7_U2_5-hk9hOxBjkOENwfmcCP7Zr0xSYTjsInEVdfJQovZlMRH2a5KWGbUtVFFXbAsvQv8l5ceFXbIya32rGKdWZfom95z_2qD8PCSyj-1CMhZ1QDITGvuHCUAlUAkNR65Jm13DfOfTNlJE-XiNopJ6VraizqlHFR6mpdD",
+          "width": 2345
+        }
+      ],
+      "place_id": "ChIJ36aQaS2DRo4RAuU_Ji_csOY",
+      "plus_code": {
+        "compound_code": "6C4Q+JX Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4Q+JX"
+      },
+      "rating": 4.7,
+      "reference": "ChIJ36aQaS2DRo4RAuU_Ji_csOY",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 21,
+      "vicinity": "Carrera 30 #7A 300"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.2065297,
+          "lng": -75.5600316
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.207808230291501,
+            "lng": -75.55865931970848
+          },
+          "southwest": {
+            "lat": 6.205110269708497,
+            "lng": -75.5613572802915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "international_phone_number": "+57 324 3618539",
+      "name": "La Esquina del Verona",
+      "opening_hours": {
+        "open_now": true
+      },
+      "place_id": "ChIJXwPcejaDRo4RWrU5wkjgJo8",
+      "plus_code": {
+        "compound_code": "6C4Q+JX Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4Q+JX"
+      },
+      "rating": 5,
+      "reference": "ChIJXwPcejaDRo4RWrU5wkjgJo8",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 1,
+      "vicinity": "Mall Verona, Carrera 30 #7a-381 Local 101"
+    },
+    {
+      "business_status": "CLOSED_TEMPORARILY",
+      "geometry": {
+        "location": {
+          "lat": 6.206578299999999,
+          "lng": -75.5600418
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.207832130291503,
+            "lng": -75.5586566197085
+          },
+          "southwest": {
+            "lat": 6.205134169708498,
+            "lng": -75.5613545802915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+      "international_phone_number": "+57 320 2929213",
+      "name": "Don Louis",
+      "permanently_closed": true,
+      "photos": [
+        {
+          "height": 3024,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/111340689239888502881\">René Alejandro Acosta ECheverri</a>"
+          ],
+          "photo_reference": "ATCDNfU-a31nRomOQP6gk55BU92TJihJ_lUXANOSzkPUEKJa_yyUGFlFrYjOWLvu0K49UWAZxkp6BXYcQmKhQcMOVE1t6nNIdufSGYjKuISXwhco5VRWt5GIetWhzh1SOjlePpM4CslRlP0Lay7vviZAryVewC2ipsBECdS6AykNT0-12B9pMg1vcJY8sdZEbziS9WG37UTiiraES2bCUYz4u7jOVSUyijihBFyWr5DjJBhJS6YCCe5btdSO7OIcTqjfONK8RxfbMCX62kU_UdxZQL7zFFPzHLmM0UFvCCZRQg1pguxZ7vdg8yzCtisKvL8sIuIFr-lex4Og1PCbvydFB6Hc7mqDopPLUUwZNH43R17yAbhCIyYY8BP9W7msFMSjT3nAXfkoKqATcW5Hg7NeAE0Jq--3aXEscRj4C6T7usOieqglNDhEqmts5jQisu9nyyR_KmnUxMmP9W4addi3vkVaoHNszrDYV9cjr7P8wZsla3i6KDAr27IvOYoTKib0h55b1BfWnSVBw9rBJUWq1-WUVIQAVUG7ixSFVJvdiYCLwo3riWrRxWinEwsrHFXJhk3HxoUlmWkJIlqpjU2qpSYZ8NmoTU6QL__aXS3gj7hQiLQe3om6txlxnFDh9pc8DDlnx9Zd",
+          "width": 4032
+        }
+      ],
+      "place_id": "ChIJL2D2OPSDRo4RB1Elx3TpDho",
+      "plus_code": {
+        "compound_code": "6C4Q+JX Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4Q+JX"
+      },
+      "price_level": 2,
+      "rating": 4.3,
+      "reference": "ChIJL2D2OPSDRo4RB1Elx3TpDho",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "store",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 326,
+      "vicinity": "Carrera 30 #7a - 381"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.2066329,
+          "lng": -75.55988070000001
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.207945130291503,
+            "lng": -75.5584296697085
+          },
+          "southwest": {
+            "lat": 6.205247169708498,
+            "lng": -75.56112763029151
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "international_phone_number": "+57 322 2242619",
+      "name": "La Barra Del Verona",
+      "opening_hours": {
+        "open_now": false
+      },
+      "photos": [
+        {
+          "height": 1080,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/117722180901635685362\">dennis giraldo</a>"
+          ],
+          "photo_reference": "ATCDNfUbx8XlgYv2yCF0TWcd5XSDOYl8bjeGJD4Z6XM6Jmq1ye6sAN27sfFASSg8aIvLEQ97Xw-wAP16XBryYE4ttMOSBfHbKKWnz3tFRx9-Se9j0ePSr9j--dEQjptO4DwLqbinJ2PvLlumvRBwM1sDgW_qIRT5yNNuxn3cwRdYQ97LMNaDemDyeY4plBtrya9LWOLQBa9B87KQ_JpdeoxDIQRhMiXBe4Wqvap2YViCzGRh-Xvj7qKxqAJTycTFR9TqNawraoEBYMzJ0DCM3CNhjHJXyxkTdv3xFxiD5MMgGFdoH3-39YJC298VedxOgZ_TklWiIRETqWmA-N21_1iHAXqzZtJ_Zzmny7Svv1-NX9ypGDL8nZaDXtCwKjcrr6FywVQEK9vOzuvuDdN0YEpIj8SEP5eC0Ul-Xmxm05O3y30MgVEi3R6OQpKEa85z8VFMArG2wJV2Py2hbGCnZx-gtackGLIQRJHRurVTe5i60YsmYVMhyFfVaJnb8RJQw2jworDIZECsj4_UNX-2NQuIq2r5fLGm7XQGPublRdgbrr4H6Dqzrco9jCF0hSWH7tLVVee6YrTrkv41sRz36V5DqPIuZ2wZmMUBfYqTlt1MQTMJenHZvjj4jiI4DD7GFYyrlden5Q",
+          "width": 1920
+        }
+      ],
+      "place_id": "ChIJKyjx6l6DRo4RhotCe_zTBE8",
+      "plus_code": {
+        "compound_code": "6C4R+M2 Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4R+M2"
+      },
+      "rating": 4.6,
+      "reference": "ChIJKyjx6l6DRo4RhotCe_zTBE8",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 19,
+      "vicinity": "Transversal Inferior #7A-381 L 105-106"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.205179599999999,
+          "lng": -75.5644892
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.206544530291501,
+            "lng": -75.5632480697085
+          },
+          "southwest": {
+            "lat": 6.203846569708498,
+            "lng": -75.56594603029151
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+      "international_phone_number": "+57 304 6555889",
+      "name": "Cala Roca",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 1799,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/102737441202162583641\">Cala Roca</a>"
+          ],
+          "photo_reference": "ATCDNfW3GyjDlfPz2zgQZ-6C6ckRtEGw7wBoA18uQLRN9-pEXSTkT0cmrTljaIIb7_hzHeX6q4TO2d-PB4JKzmaFulYbwW2YhCglOUJX_ADzsVDZfYy1KWXntifKh1O1no94leoyD0P28xPzoJsjmjdl7yt17WBmVaDGcDwTOzeJzpBKVgH1lUmthTo32VCg7n2uCHz6RqgIIMM-VfRVDJh9qTOj0vfitsiyocFgnvRwYsnIoAQinXyJOZimanl_ydo_KXccCz_6zjHGWgWOSUoymWGFBXFLrGTDazbNnYhH7t4O1Il2m_dmKHAz6MbMv1tj8IDSuy7SRuE",
+          "width": 1440
+        }
+      ],
+      "place_id": "ChIJU9oAJTaDRo4RIyKHzZUN_sk",
+      "plus_code": {
+        "compound_code": "6C4P+36 Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4P+36"
+      },
+      "rating": 4.4,
+      "reference": "ChIJU9oAJTaDRo4RIyKHzZUN_sk",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 236,
+      "vicinity": "Carrera 34 #5g-62"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.2052345,
+          "lng": -75.5645241
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.206596330291503,
+            "lng": -75.56326186970851
+          },
+          "southwest": {
+            "lat": 6.203898369708498,
+            "lng": -75.56595983029152
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "international_phone_number": "+57 304 6555889",
+      "name": "Rooftop Del Sol - 23 Hotel",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 4406,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/115625337056338131214\">Rooftop Del Sol</a>"
+          ],
+          "photo_reference": "ATCDNfVeR0LhhoBu-hOEcxG53snwQ_u9rwtjPmAMkZOuB6xosW8RnTmOVsIR0HryfdR3WEkMuKiGuO9dSefksRXq9KLEojIKsUwhVeZPDTD91TyuxAUHTpuKxp6DfBhDsijXu7VyOoOSvB-odM0cOOlcQmUAlRNGP0RWH-bFwKJ_AkW-f4BVhQCyJKz0Wu5OELjjqzZzaWQhPqMX_WPMlgo7nJrYaPCnlCgtho1yddRbubTwqZhiKNUHSR4kbv5XYWDzt7ENRCE_y2ssUQ_wg2i4butDZIQtjAa9IIg529Je9CzCSmmPLodboZ2zwrkGjgqJLETp2Aa5mwY",
+          "width": 6609
+        }
+      ],
+      "place_id": "ChIJscefoPiDRo4RJ79Id6MXb08",
+      "plus_code": {
+        "compound_code": "6C4P+35 Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4P+35"
+      },
+      "rating": 4.8,
+      "reference": "ChIJscefoPiDRo4RJ79Id6MXb08",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 6,
+      "vicinity": "Carrera 34 #5g 62"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.2064549,
+          "lng": -75.5644459
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.207863730291503,
+            "lng": -75.56301411970848
+          },
+          "southwest": {
+            "lat": 6.205165769708498,
+            "lng": -75.5657120802915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+      "international_phone_number": "+57 301 5702879",
+      "name": "Mistura - Provenza",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 1492,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/103503844347914719252\">Restaurante Mistura Provenza</a>"
+          ],
+          "photo_reference": "ATCDNfV6FoxX1Aa3ustP6zzpBAx2kU_XKFdnwiq6dwDkZdhpB_0np3YnOeOVHE_m6N8aNlVC-mgfH8lnaBAwKszo9uyQHnwZ1S40WrkQpLKQ0zyVXapDhZXthKOWBmAEu336oNaN2Vj7pSs2S1rQv_UDqDIXjGQKVxZjmIYDnVNzWPa3L2nasqNvMHgTIlQEdBJOJ5hZHWvTQJRaD-pOK7HvWjL08y5450AerKp6-oHI44zutTK5eRPkT3_5CpvW2LeEqVcBxI3uYeeB1HiRHRFdUEa2sVHP6pfDfTP6_iad8ygvNZO_etuOGshYSYpAIQOS21SV-RBgAQ0",
+          "width": 2238
+        }
+      ],
+      "place_id": "ChIJ77nAmYKCRo4RhJzA9msoFnU",
+      "plus_code": {
+        "compound_code": "6C4P+H6 Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4P+H6"
+      },
+      "price_level": 3,
+      "rating": 4.6,
+      "reference": "ChIJ77nAmYKCRo4RhJzA9msoFnU",
+      "scope": "GOOGLE",
+      "types": [
+        "restaurant",
+        "bar",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 1601,
+      "vicinity": "Carrera 33 #7-55"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.2073222,
+          "lng": -75.5594182
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.208652280291502,
+            "lng": -75.55803156970849
+          },
+          "southwest": {
+            "lat": 6.205954319708497,
+            "lng": -75.56072953029151
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "J&G distribuidora",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 4000,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/117884870997555532104\">Red Textil</a>"
+          ],
+          "photo_reference": "ATCDNfXdAhdzzHXCcuu4nFlPKXE32ulvk82Rghi3cfQzz9BkljzqJAvROK9wK9qHyejJj2itgxYG7JhJ1vMPpAJLjIfCClC8dPqjjt1hwum7F3-njFbIWE67D3iGKPtBws8DZygISsWD4mF0mx1ydhm4hrC9Qk0REv3ICfKs6qXqAEaS3Q4en35Bd4oXab7J5YCNfI8kflBaLFjLRJ_XNMtwmC7QExYQpc4O-Ug-d6BJDv4IM6598Fgc4y0F6yrf_WJL_azJ7pVM1qsNgT0kOsFUPP3lHD79XsqbcWr1VS6K4S-R3QagVnBmcRp3K3Bx-OFaRfNB5ZQF7dWoAGTeMXnVZ5olvtl_cTRRAFB7HJTdr83gibJQGuqO1LieAgza6zmqBeXMVyQ65WgII-2ak7hdBWS8Hoai2SU7gJgcG5jSjTA7tPzcg0ILUQFOmyyZbFGCEX1AnhyMpXanuiROzviz1zInVVKgZznpRv-oAbvPVoCWTpz-G5Gdf7yaZ9whOrPvoFaWG0O2IuroN2a041sk8mRp1TL5e_bExSuxZJBpP1rNXgOo2ZB1tj6AXI5LYcXkDf6QPvMdotDbEfPsc2Qv-iVZ7Yj1eZFKqOXRkHP4Yp1gO2gX89FlhMRRrTrqQOy0ODeUCQ",
+          "width": 3000
+        }
+      ],
+      "place_id": "ChIJua5HSPkpRI4Rp9Y9hFLFIKg",
+      "plus_code": {
+        "compound_code": "6C4R+W6 Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4R+W6"
+      },
+      "reference": "ChIJua5HSPkpRI4Rp9Y9hFLFIKg",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "vicinity": "Transversal Inferior #7a-329"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.2060678,
+          "lng": -75.5642879
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.207444330291501,
+            "lng": -75.5628538197085
+          },
+          "southwest": {
+            "lat": 6.204746369708497,
+            "lng": -75.56555178029151
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "international_phone_number": "+57 311 3438733",
+      "name": "Ruta Vaga",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 2080,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/101560679391862449278\">Ruta Vaga</a>"
+          ],
+          "photo_reference": "ATCDNfVrDcQ6ZCktn1lXRA-9EBGZP2jaHFb_pcuVOSjGAMavy5cu5akUfbGiRQaVSVD7DYUz_DsoJF1dCNGLfTmUHkp-05xwpNIYmAVawaDiAG4fpe86cSZE4W_Ob3on15hlqVfL8d1X5-An8zgqVGr4pqjDYmKzrAl0R_jtUlHZv8Z1LfEYSfJ2DMEW5YCMt9RKpjUUUnLO2m5g7yfBt0ZA0u4wdKzLIqQah8UKaBjJ_rwlNx6ZUJ04bF2Q9avYmR39XTa5S8dQalCPAq9h6-R0JV9CDtt-shoJ4kI1RfkGSZ9cgp1E_4kXxVHT1q22jpCucYmK3xZFKeA",
+          "width": 1387
+        }
+      ],
+      "place_id": "ChIJ50AjT0KDRo4RTi8VHocarqk",
+      "plus_code": {
+        "compound_code": "6C4P+C7 Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4P+C7"
+      },
+      "rating": 5,
+      "reference": "ChIJ50AjT0KDRo4RTi8VHocarqk",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 37,
+      "vicinity": "Carrera 33 #7 - 21"
+    },
+    {
+      "business_status": "CLOSED_TEMPORARILY",
+      "geometry": {
+        "location": {
+          "lat": 6.203825800000001,
+          "lng": -75.5535194
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.205205330291502,
+            "lng": -75.55216326970849
+          },
+          "southwest": {
+            "lat": 6.202507369708497,
+            "lng": -75.55486123029151
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "Cafe Imperio",
+      "permanently_closed": true,
+      "photos": [
+        {
+          "height": 2250,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/116970483326903796476\">Cafe Imperio</a>"
+          ],
+          "photo_reference": "ATCDNfXO1_tLElhVYShxEGzzKUKMk6iqgeuELVMC5eBzCEP4DHD3M9GoQPP6r3GOPK6UKRcNNDTJBFB7jWvnt-pQV-BZFJVLdGUx6Nb2rEUE3dy3feBHXh8AdjFN7AJ6BcgI2DJcaPlkt3ZeMwae1MPROqhRl9hL1vF7MxBzL4lkvYP7iaQ1-FRRER-w9IjQiPaCtVVoE_EX0H2OZy-tMW5an4TEOAHwZ8VgmnOneunlu7fIfyLXFMARMjKJv6jVT3YAS2QdgWXUBiQxcCG0caBwkvCIPZ7BnwJalDyUJGcW6UdVj6uZQYqRtg9yOkAArQhfsifSjr2J",
+          "width": 4000
+        }
+      ],
+      "place_id": "ChIJ8XwtFDiDRo4RtFYunbW2oSs",
+      "plus_code": {
+        "compound_code": "6C3W+GH Medellin, Antioquia, Colombia",
+        "global_code": "67R66C3W+GH"
+      },
+      "reference": "ChIJ8XwtFDiDRo4RtFYunbW2oSs",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "vicinity": "Calle 7 #6-32"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.206065,
+          "lng": -75.5647152
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.207421180291502,
+            "lng": -75.5633354697085
+          },
+          "southwest": {
+            "lat": 6.204723219708498,
+            "lng": -75.56603343029151
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "international_phone_number": "+57 321 4931231",
+      "name": "FEEL NI",
+      "place_id": "ChIJt0exrPqDRo4RiwznrPtvacI",
+      "plus_code": {
+        "compound_code": "6C4P+C4 Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4P+C4"
+      },
+      "rating": 5,
+      "reference": "ChIJt0exrPqDRo4RiwznrPtvacI",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 1,
+      "vicinity": "Carrera 34"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.206276899999998,
+          "lng": -75.5646094
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.2076007302915,
+            "lng": -75.56333536970848
+          },
+          "southwest": {
+            "lat": 6.204902769708497,
+            "lng": -75.56603333029149
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "Punto 1",
+      "place_id": "ChIJT7FmUACDRo4RfbPsqZRIFsM",
+      "plus_code": {
+        "compound_code": "6C4P+G5 Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4P+G5"
+      },
+      "reference": "ChIJT7FmUACDRo4RfbPsqZRIFsM",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "vicinity": "Carrera 34 #730"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.2063966,
+          "lng": -75.5646676
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.207723080291502,
+            "lng": -75.5633856697085
+          },
+          "southwest": {
+            "lat": 6.205025119708497,
+            "lng": -75.5660836302915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/cafe-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/cafe_pinlet",
+      "international_phone_number": "+57 302 1011271",
+      "name": "Tres Helenas Coffee Bar",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 2448,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/101735018398295333691\">Kevin Vanegas</a>"
+          ],
+          "photo_reference": "ATCDNfWfqqYAEcNeZsgXumrzCT8BW9vqSWBs6LKIvOO25vEWbTMi4vZb2DXleQD9sIFg5zhApqu9lu1JENynCqDNNISyFxpaiKqTB7LCCj9SVzVg9NMkblGaCgUYTfCV0aNg5YBAFFqxsX9INYuycTbINlHVqW0737CwuFq5QKJeZwOqr0myrrAjqY-b9Yq5V3wqj7pJJ66t9enxUHTUXc0NHt-ebiDZqP9DSED6yz_TOHTblHZtiG34gP3LD95F6nr7ar-RJ5m46n-2VV7FA_r47FhjAS9gS0sUNSu9M_yYY7qPBvgmTLJkctUzqOIpHDxAIEONYqRx-l6RH6-17p0Oz9DKuPrWR_orpNKxenAFKPtdjpjt-nQY21vuGtPtoPSPXXP1-s657rW3LzOGYBjlhUNw2Sg-Hqgh4KBSvBae7g4-ilSmn0bNYM8cyJYcb0Ch7Vzs35KGCoy98HPTaKm9te0HGCrMYZNtnzzTcpO-5YIqUiMUpLjom18SG-vtA6wiUxvzUegBE6G9G_y28G17jhJQZ_AoRx6sb5mIsqZn5dVLp4Unlo2qdyk7e91hEMktaa1M2FWWQpWmPYQq5mqH9ooA2qY1zG06NUot7Mlm-rX4EJZ9BsTyXjlQsx_AIQ2jkF_chkMuiCDQmd9OAiVVts0LTps",
+          "width": 3264
+        }
+      ],
+      "place_id": "ChIJ-xc_QV-DRo4RGr2uwKxAKSM",
+      "plus_code": {
+        "compound_code": "6C4P+H4 Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4P+H4"
+      },
+      "rating": 4.6,
+      "reference": "ChIJ-xc_QV-DRo4RGr2uwKxAKSM",
+      "scope": "GOOGLE",
+      "types": [
+        "cafe",
+        "bar",
+        "store",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 48,
+      "vicinity": "Carrera 34 #7-36"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.206582,
+          "lng": -75.56502499999999
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.207968430291502,
+            "lng": -75.56361611970848
+          },
+          "southwest": {
+            "lat": 6.205270469708498,
+            "lng": -75.5663140802915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "international_phone_number": "+57 323 2862790",
+      "name": "Los Compadres",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 1600,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/105731697952149309571\">Los Compadres</a>"
+          ],
+          "photo_reference": "ATCDNfVo6RaQ888skBN8oZ2yEIQy7R5NiI9gi6yTjvfudVSVYZts60blk96U9jdi_pjDPiBGjTqKVwZoNqm481T49utWLD-t1oo6Y7QJ3JWmC_KiNb_9QggWNvEt1ktqqPLBgfskiTy0Watx0WKeF4b0D62VGKhvkUmZFqvImyf9Yjunlj9-9TdErtKyJ76ZYEgYafbgwewb5HleoWwMH9VCSAoXgG5kR_ux82optLA-PWURuFsyyH35elXqznmx5xphMi0KiMXkwL_eLSzOQ7mZZWVLOygwq3YKoNdgEgzR3k0zBihDbnJZ72R0esnmaZG2r4BX5_e45hw",
+          "width": 1200
+        }
+      ],
+      "place_id": "ChIJVbFQXd6DRo4RTu4Sn5iW29c",
+      "plus_code": {
+        "compound_code": "6C4M+JX Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4M+JX"
+      },
+      "rating": 5,
+      "reference": "ChIJVbFQXd6DRo4RTu4Sn5iW29c",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 12,
+      "vicinity": "Provenza, 57"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.206582000000001,
+          "lng": -75.5650285
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.207953330291502,
+            "lng": -75.5636127697085
+          },
+          "southwest": {
+            "lat": 6.205255369708498,
+            "lng": -75.5663107302915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "Icónico Bar",
+      "opening_hours": {
+        "open_now": false
+      },
+      "place_id": "ChIJi5xjLcGDRo4RUzn0VW9bE0o",
+      "plus_code": {
+        "compound_code": "6C4M+JX Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4M+JX"
+      },
+      "rating": 5,
+      "reference": "ChIJi5xjLcGDRo4RUzn0VW9bE0o",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 1,
+      "vicinity": "Carrera 34 #7-63"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.206582000000001,
+          "lng": -75.5650285
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.207960880291503,
+            "lng": -75.56361531970849
+          },
+          "southwest": {
+            "lat": 6.205262919708498,
+            "lng": -75.56631328029151
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "A LA FIJA",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 1600,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/115435745093907047647\">juan diego buritica</a>"
+          ],
+          "photo_reference": "ATCDNfWM1k32l9XnZOKiW6UFSjTrjTEyS7n-JYZQL_MGK8SP6UHN5ejAGILfd-uoNtHzMo8HqD8VaJHpn4NiHTqOMeIUAT--pXpjlMUKkzYKocyKXE_-yK7fHSjiUNwCQqv64w-GQc_tsqE6nL3Y-twUtGdPkEL1MmbFzeeDERV1wMO5LWcIhCLMQgnbP1X8AhhSh4EC_K87PIRRhvPIXhapDPBd34CMUi_9inm6SU8wrFpjOdsYGm7ERYFDaCeqhl8eis0ku6WCdQTR4yKwxxOwrXesT49zql-ju9_eNlMjWWR5XdJWH-J54XpOabua2eZrTJLnJyN8dQk6XBkIKaLkeqBJIjauPnw2SHDuL9d4kMW__1ateV7HeMBaAg8YULa49J8OA-gg1nvOXTGeJKOJaOgx9TwbM7EHxRTWqGFvrwT7TqRDW5EQaFYR6oU9udGgeGkdm3vENNALcHfZF_cOwj2mxPOboS6JajTjQmKQecHMMQEPmZNGqtO9Mr6oqVxnWBU0_92MB9VmeJGbrG-UO-jzYcj90SfAQVXF76foRd2N1UeuYWC3TrJW3EWrPbnnkuVGQXFWo7sy8PTAMvJlhu3sK-J9jvGtMgDjoKED460dgCD38Z4sWJmv0hztQbUC7jaHU0WZ",
+          "width": 1200
+        }
+      ],
+      "place_id": "ChIJQw3-rC-DRo4RDpri0PjfJtA",
+      "plus_code": {
+        "compound_code": "6C4M+JX Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4M+JX"
+      },
+      "rating": 5,
+      "reference": "ChIJQw3-rC-DRo4RDpri0PjfJtA",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 5,
+      "vicinity": "Carrera 34 #7-63"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.207724699999999,
+          "lng": -75.5633262
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.209076630291501,
+            "lng": -75.5618816197085
+          },
+          "southwest": {
+            "lat": 6.206378669708497,
+            "lng": -75.56457958029151
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "international_phone_number": "+57 311 3265901",
+      "name": "Despecho Medellin",
+      "opening_hours": {
+        "open_now": false
+      },
+      "photos": [
+        {
+          "height": 876,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/101745370379249033219\">Igor Misas</a>"
+          ],
+          "photo_reference": "ATCDNfXpzaGVRo4xYUlFQaG4UmXXHlP_jssutnf073K8xulplez-yH9gjQSDeJ3TDt2vfiX_YWyo0nz2CP36PrdRgIjWKqgm-9_dtsshmp7xHebXoBI5E_4bnM_W287f0MEIGww8iBgYrLjRRTaOcaG9QjDAkt3NB-lGd1-vT186_Pb8GeMqaH7C571XfnxcxOZpkKbJ2fWLojCq6oOEouSbKj0OYZXXnd8YShm6o6SD78D9Vp1ds_ThfuxzmGwmLocpp3yg3GSuslSUzKuu7T-sae738tZyInNfodCE7tmvL_GZqyiaRgaifdTIqOBs53R1JTAAQ3JY0fCnzK0OhKAfudlMvJhXD-H1v9ZmDrGV6DkL34sByUXQZD4aUn3EaBD_LzsioHQGzdoI1ZlR9ja9fvQOkmvPE0dWeDfFPv64Ml8o3BWyQZksxdXyuLCkFykTmh3icSdIim7EDQBO0gQ5vmKj4xpFYEymLLhdXAQo66qDQAaha2XFCaVOp0gBBKPNL46iUCZwza_8IRVqNYTX-xONdN_RitNS2HEyqNfPpDq_TpOw_G7NQAuPrPyjN41vNlSsDAzsAJ9gAU8a9P0JfuYonMBCzOxZfKy4vFcD_SERhsAOKB7RomUABGTBTu2242K410dgbKaj4D-QCk1MSw",
+          "width": 1600
+        }
+      ],
+      "place_id": "ChIJnUfnagApRI4RJIa2xWpe85Q",
+      "plus_code": {
+        "compound_code": "6C5P+3M Medellin, Antioquia, Colombia",
+        "global_code": "67R66C5P+3M"
+      },
+      "rating": 4.3,
+      "reference": "ChIJnUfnagApRI4RJIa2xWpe85Q",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 87,
+      "vicinity": "CC Vizcaya Local 9928, Calle 10 #32-115 Piso S1"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.206772,
+          "lng": -75.5650441
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.208135980291502,
+            "lng": -75.5636503197085
+          },
+          "southwest": {
+            "lat": 6.205438019708498,
+            "lng": -75.56634828029152
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+      "international_phone_number": "+57 302 4062857",
+      "name": "Lezzet Cocina Turca",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 2400,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/117904927378498485539\">Lezzet Cocina Turca</a>"
+          ],
+          "photo_reference": "ATCDNfWKXq23qG0QcWBFxvMrlEbGKxHLevrJXilAiDmD0iDCo3Oi3Bk14qVtbmS1vK20SbCGuowCn80_U7GyBwsSJ3LDLy--5PJGxqrvvLDyK3gaSwmfKyCJvSIyAklySSeomk9zWo8Efipqje4Da-s50Gb-Kipn_aqAgrXWbfXaS8JbDLkFAB8k9HdAiFbkhOcFXS3cPNgDLysvzknxkCKk2hcEQwqMCn1sr8paitvpoH1Fbeb64Kvby7VnVjBJuWvldDXe44cUB5gylnelACB_L1C4Citgj6iCAbqzDRqpCYhggPMJ_DUgngE5ObDQJ8OnZoq88W-49qg",
+          "width": 3600
+        }
+      ],
+      "place_id": "ChIJK2DDLCgoRI4R_aN3lFV4NnM",
+      "plus_code": {
+        "compound_code": "6C4M+PX Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4M+PX"
+      },
+      "price_level": 2,
+      "rating": 4.6,
+      "reference": "ChIJK2DDLCgoRI4R_aN3lFV4NnM",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "user_ratings_total": 1059,
+      "vicinity": "Carrera 34 #7-87"
+    },
+    {
+      "business_status": "CLOSED_TEMPORARILY",
+      "geometry": {
+        "location": {
+          "lat": 6.207141499999999,
+          "lng": -75.5646031
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.208506730291502,
+            "lng": -75.5632018197085
+          },
+          "southwest": {
+            "lat": 6.205808769708497,
+            "lng": -75.56589978029152
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "international_phone_number": "+57 315 9308865",
+      "name": "Canta Corazón Medellín",
+      "permanently_closed": true,
+      "photos": [
+        {
+          "height": 4480,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/104715003218680421492\">Canta Corazón Medellín</a>"
+          ],
+          "photo_reference": "ATCDNfUG5NfRPXotaWGVRUla-uIS9DhoYf8-ETfcvK86yNjAOJwx8tgwElwZA4GDbTLzwRqssw2O_hVKTZ01P5qg3AK295UCXsh_U-qofPq_kJTrmOaK19SKJ3k_TgE5ZWuhQGdcuSK_tLLH5ANk6v8tUiNhjvDE9WWPnQA_5eEHGeWVle49c0w-TQjcmvw2ncfG8d3k0-_PKdxhrTjbvRDkgR9WQIsXNWyd7KvXyQIt-A2nr_f4fj2uRnk0IWKOi-hCAURpKIN2mIy1ciJ5rZVsn0Kc3V2-T_tAnYnKKK1m0PDzkMLJsgxGf8wByNJ45JcGPAzbzKgW38g",
+          "width": 6720
+        }
+      ],
+      "place_id": "ChIJdSo6uwqDRo4RwIZDLyTIFIg",
+      "plus_code": {
+        "compound_code": "6C4P+V5 Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4P+V5"
+      },
+      "rating": 4.4,
+      "reference": "ChIJdSo6uwqDRo4RwIZDLyTIFIg",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 28,
+      "vicinity": "Carrera 33 #7-127"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.206577999999999,
+          "lng": -75.56540629999999
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.207724880291501,
+            "lng": -75.5640850197085
+          },
+          "southwest": {
+            "lat": 6.205026919708497,
+            "lng": -75.5667829802915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "Reliquia social club",
+      "photos": [
+        {
+          "height": 4000,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/102943629053569815594\">Alejandro Gómez</a>"
+          ],
+          "photo_reference": "ATCDNfU3Jcuul2Bm7l0xxNdMHKYAj1ltcJPG8weXYxcSYDi3baLIVPUtYLhozdufjjWxZJA4r0_7gEjQDDVu0PMwkJJ782jQj7y1_zOXPMCiF0N3eXLK7nldKsSfaZAgN9eu1C1w4K4qVnay3C9X7x5LhcDLarpR4a2OlegO9X9atmTvVCErG4p76KHf3edwcO6iXXZ5BabQiGUx2Y08doXrrDfDL7HxPgFsk7OcIjUcUMg3eYz4K8CAo8075ZWzfCmwKPqqMraNdOGl5UKeDduc0OXPuI0v5AG8KH__39x7osoK_oH0j8Bj97QR2hDWIw802x5e_TEJ7RZXfikLOh7c_rMsSTBPFBoRXI_CdgR1aSaZfiTtvYR8QmzeGtDpD-u14erj3uIn-oU2HhQ7BcOcM_X6E9MyIBn2DGT4kF_UQM8Rs6qhcAeMYx343SLgKZd1zqSjQCL_EmU0fbwniEk0dMPuSAZ9wJ0Wl2PCBBgptKozdZ_Pqt_okqd56c4v5ynAD-iiAGHDU64BMbvsRSTxoz5N_rNProYeR25MEwyTCccS663dCJw1XinfZ97wFMvxkMAMoCP6wafnI3Nbe0s0JJuumQLtMwkO9WarUYXmEHBkmE2KFAXhsmgo46YzHJaSwEclwQ",
+          "width": 3000
+        }
+      ],
+      "place_id": "ChIJz3v8yD2DRo4ROergONpMxuI",
+      "plus_code": {
+        "compound_code": "6C4M+JR Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4M+JR"
+      },
+      "reference": "ChIJz3v8yD2DRo4ROergONpMxuI",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "vicinity": "Carrera 35 #7-54"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.2069916,
+          "lng": -75.5649007
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.208322830291502,
+            "lng": -75.5636047197085
+          },
+          "southwest": {
+            "lat": 6.205624869708497,
+            "lng": -75.5663026802915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "international_phone_number": "+57 321 3949761",
+      "name": "TOPICO BAR",
+      "opening_hours": {
+        "open_now": false
+      },
+      "photos": [
+        {
+          "height": 4624,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/103756176925995523301\">Wilder Henao</a>"
+          ],
+          "photo_reference": "ATCDNfXPgp4ZmuKt0qNCFGJoIA5QqIJlN2Ul4KnoEqPVbBiFrTxgdynTDW7yv927WRXx4twknzkXrzAHGA7B8KA9iTh_5l8Fvm9kOUSMmoHMkARe9WQ8frTlsa7QucxqiVBdxFKbft-G8z8UvhJ5EiMrZHmyaRkXglD-R3Jjf3_s6ZrGixyEks7ys9_2uviQQKPUipFiiQEL3m__B4MhuEnEQ60vX9u9mnIoiKA6mRs5658PL4hrYAc7WxLCfM90oS6nc5MWzvBKl_B581lwtnVHsA0ZDUgJFpscGIBrXu7mnME3OChFNVDIhY5nCtpAfc8RLPQD5DjAxbW6zw731QABFNQ-5NajJiUcA09cUN_i-VlJdJuOBnueWXlajNltATNZVmaPhUCCPPVvrj5fnzrs1hpEmR53EBEwGlONE0SH0KtOWz210fJeIOmDtIIqGZrwIN03bqtJ9XeBe7_TflVbvnCw_qs6RXwBTeS_1N0pZ9oQuI-87DXNhzrhiCaQIe1BzGXdcHiyxUM2T-4-Mn3mc0UNtuuOT9W0o1Xp75xgmz_aMZur2JwsCzHzjH6BbFu30MdFIllBgF1WOkDRgE5VDEXTkB0MNi5SwOldkdBOeI8NCwXaVyOKKmHLhEiK8-BOJm7VsQ",
+          "width": 3472
+        }
+      ],
+      "place_id": "ChIJcwpSuhuDRo4RaWn1Lz_4bxM",
+      "plus_code": {
+        "compound_code": "6C4P+Q2 Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4P+Q2"
+      },
+      "rating": 4.5,
+      "reference": "ChIJcwpSuhuDRo4RaWn1Lz_4bxM",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 30,
+      "vicinity": "Carrera 34 #7-100"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.2081472,
+          "lng": -75.55736
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.209692080291503,
+            "lng": -75.5559984697085
+          },
+          "southwest": {
+            "lat": 6.206994119708498,
+            "lng": -75.5586964302915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "international_phone_number": "+57 300 7496003",
+      "name": "Festival El Armadillo",
+      "photos": [
+        {
+          "height": 2560,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/108333463588832963026\">bill murray</a>"
+          ],
+          "photo_reference": "ATCDNfVVcn5asjzgKxI2JBvlejKfwbs_fLS6IBEqWfvFPjiMp_tA0JnpyVSLPpgTSLii9T2fhrLu_RiuBstEQpiYDgZinacNCD8bY7RvvZ0vqwuH1A4rx-5zQapozEkTfZ5FUaH2BEhIo_1iayt4-iH1Wk7Hyx7Smh6WIH3Hl5cuNi-TSI--ki4SfBUKEGfV98AiSmb2cqAHA559xYdpUor411blnMNuD5Zo2Yyhip7Y3e3X2p9y4uBnfz_1raXP2mx68mo-iXHovOVgUJ49c8mrHVqqfY1VXlsYGdPM6502OMbSTD8YPRKCp7Rvx_nTm8J70MPhWHBks9gNuR4z-y-1k13_OyOuawdvF-9qqLO9DJLYwh1rZyDIVARAtzXMevN-VsxpEON0QZC623XIH7meh6wGXDVugy7g4lA9qaHkViA3g7dK_Yy2wZ9k-SxjLUq4BzBWKIvJ8ONyBrH0ESi0Fom_Rli00UceAQ353_j2kP0sQ9l_9c8RMKiNBxuEaBAwK8FNWcMK3d2xJSBfPcrTTRMEeQu8S6qsUnMjA6xJin4IDQkrNm1blDwUeeL40SmWxcq_mt961BUZd0OMWZDsIuTlGe_6Zu44oO_8wJXRwVErGqAqRGuYAMhNjlYidHUclbMHLQ",
+          "width": 1536
+        }
+      ],
+      "place_id": "ChIJx-WtjdYpRI4ROy-g9lMSwU8",
+      "plus_code": {
+        "compound_code": "6C5V+73 Medellin, Antioquia, Colombia",
+        "global_code": "67R66C5V+73"
+      },
+      "rating": 5,
+      "reference": "ChIJx-WtjdYpRI4ROy-g9lMSwU8",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 1,
+      "vicinity": "Calle 10 #27-63"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.206311800000001,
+          "lng": -75.56579959999999
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.207661330291502,
+            "lng": -75.56445041970848
+          },
+          "southwest": {
+            "lat": 6.204963369708498,
+            "lng": -75.5671483802915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "international_phone_number": "+57 315 2646148",
+      "name": "Lico Royal",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 4032,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/118165336105201367310\">Royal blue bar</a>"
+          ],
+          "photo_reference": "ATCDNfWSiNhzcCoae3GJIaTSVjlXNMyHBPFfZxXYStw9b7kW_ds_6d5rhb_X2EeoFftnl9k3VEy_uTV9W9O_gbeH8iAxNIMux4qJH-GTvUtJk4yA8EavzUjg5FDqbqTxlQMnoxqIr3KtVjtHJ1oUVydJ9Myyo7vcGKpXSy874OHL2AbAiH6PQN9-3cO5Rh9QkiITPGFAaF5AC2bJsGlCCokjd2X326uV5CKyd6MosbLLCtcuaimYstQ2RGGwlo_m_bYKDfMB1dRWGsyR_FtV4Axp8EJUFo3GxYIdgixQND0j3nXlO-YNucQCdEs4vCIcpOU05U8zwr75JUE",
+          "width": 3024
+        }
+      ],
+      "place_id": "ChIJh-vnVcuDRo4R9mSyFNAgQSg",
+      "plus_code": {
+        "compound_code": "6C4M+GM Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4M+GM"
+      },
+      "rating": 4.5,
+      "reference": "ChIJh-vnVcuDRo4R9mSyFNAgQSg",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 32,
+      "vicinity": "Calle 7 #35-36"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.206725700000001,
+          "lng": -75.5654112
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.207798730291503,
+            "lng": -75.5641078697085
+          },
+          "southwest": {
+            "lat": 6.205100769708499,
+            "lng": -75.5668058302915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/shopping-71.png",
+      "icon_background_color": "#4B96F3",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/shopping_pinlet",
+      "international_phone_number": "+57 312 2694749",
+      "name": "Fortuna Cigar Bar",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 1280,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/117108855634894119511\">Fortuna Cigar Bar</a>"
+          ],
+          "photo_reference": "ATCDNfXe2yiDTqcUyLL5OSy-mvFrHFasqW4PKDOFzE-350LwH0B74m1ujRZWnENBULIQYaFVti9O6_ybKGTNvhOJfvyZKST1zb4_yiRUgHIWRntxR5JTJm1u8nvBI6Aq_daKQ52gZqs7qd_jKipP28Hrz_eqVYj_guZ2qonsnsQ4_ThsYGc9RY8-qTdBF0OxfXUb2204uEA90Tei4AtRg6Q7YRH-6O1jot_iG-151VYHdyuzSYOCDYGSeHOwG-kCbRDtxeMsvd3sPoc7UHFx2THHaBr3w1-lNPsBOwqTrrO341A61pqHVTj7dAB3WRzAkWJ4d41S6PiIOMU",
+          "width": 720
+        }
+      ],
+      "place_id": "ChIJFYHGNSyDRo4RcVJMwY6YwYU",
+      "plus_code": {
+        "compound_code": "6C4M+MR Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4M+MR"
+      },
+      "rating": 4.7,
+      "reference": "ChIJFYHGNSyDRo4RcVJMwY6YwYU",
+      "scope": "GOOGLE",
+      "types": [
+        "liquor_store",
+        "bar",
+        "point_of_interest",
+        "store",
+        "food",
+        "establishment"
+      ],
+      "user_ratings_total": 41,
+      "vicinity": "Carrera 35 #7-52"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.206675799999999,
+          "lng": -75.56547379999999
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.207773780291501,
+            "lng": -75.56410346970848
+          },
+          "southwest": {
+            "lat": 6.205075819708497,
+            "lng": -75.56680143029149
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "international_phone_number": "+57 304 1169096",
+      "name": "Terra Bar",
+      "opening_hours": {
+        "open_now": true
+      },
+      "place_id": "ChIJ_9zS9kuDRo4R3tkQKCdbYxo",
+      "plus_code": {
+        "compound_code": "6C4M+MR Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4M+MR"
+      },
+      "reference": "ChIJ_9zS9kuDRo4R3tkQKCdbYxo",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "vicinity": "TERRA BAR (Hotel Natura, CR 35 # 7 - 58"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.2067336,
+          "lng": -75.565418
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.207802680291502,
+            "lng": -75.56410941970849
+          },
+          "southwest": {
+            "lat": 6.205104719708498,
+            "lng": -75.5668073802915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "international_phone_number": "+57 313 5983063",
+      "name": "Licoexpress BLACK provenza",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 958,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/117285088496545091405\">Licoexpress BLACK provenza</a>"
+          ],
+          "photo_reference": "ATCDNfW39olAjVyIKJwquIA6Wyu0qfE4YkANgKiIlz_bPOk5-o1uk3rX-KafH4W_za4IYIaMsPf-W4-4JKu5z2vpbe3mvMrZG-lGWLkf7aMKFr6h4go0WSB6d3TdfjR5lSSdCadHyFYVwGyNNjjm6o8y9RFdBp-0bPkEqU4oLcz_X8KhbUWfmOPZ-_zLfyWCyrSmxPEmNfjOpka7zsHq0LsrdeWkBv0DmlUj1SF3BygM9gko1fZg1Vwq57N9NdaCtnFh6Chl66rJVf7jc5laRjBwgJBsJTdBUFy8UyXtsnh0eNieedDoj7EyzrtMzf4AvxNW5kbvAvXM",
+          "width": 1280
+        }
+      ],
+      "place_id": "ChIJ09Dbjw6DRo4RloBxPycO-Y4",
+      "plus_code": {
+        "compound_code": "6C4M+MR Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4M+MR"
+      },
+      "rating": 3.7,
+      "reference": "ChIJ09Dbjw6DRo4RloBxPycO-Y4",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 34,
+      "vicinity": "Carrera 35 #7-80"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.206718599999999,
+          "lng": -75.565462
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.207795180291502,
+            "lng": -75.56410941970849
+          },
+          "southwest": {
+            "lat": 6.205097219708497,
+            "lng": -75.5668073802915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "Once bar",
+      "photos": [
+        {
+          "height": 4000,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/102943629053569815594\">Alejandro Gómez</a>"
+          ],
+          "photo_reference": "ATCDNfWAdrfxZoAHG9kMrVcDeyfOOM648LyxzuXSQympl-AkZeB0pNo-G8DVb9jubd3jX2jusnPJC1kMUSkzdOVceeyopaQq_k90gt6KoVR3Ezk-JFkARjwFyRsdXt_0LbufSrGLXmKAPd5tMVjwwu6rFwfZUPX01GLbn2xTwuoZZzq7PraW_tJF-8fEbxPK_w4hmmZ92P5CRMQ6NHexwVV23aMWYRran-RvmhkfXWTBX12uKhCBkd7ZSAfYhj0YQSUep0jF6YLZiAnLncFAdif7PIt4peOVuUZvLAWbMM9_UUQ-trAwqTxYFpD7N0eXBiOAEHOfYB2OjjqPwWrs3geLLGBeo_vl2-HWa2qKk3EjUPCX9_WS4Z8pksXvM2t6Pw0CCpdMB3VDfBJRub29SYFfyFaWjI6SqlSgIV5-XUOjG09aqh8Rb1ZPzD0V9cc01LbK1VORCReAGc7QrGoYfavEaN3dzKwu6WSpyQS4KCI3ruWmfE3tzq9nBOhKCQimS97ibua_ejLM20l_Qa2icjoxi7BW-O80U-laQFlf0m08GF4uCxPUBrBdKvUhaXXyCtoyYbdcA6Qm0UjmrsiypwmwVEcx2QEMGyNxk5HJuUiDjOkHkggU3ROHKCXsJciX911Ed9FQlTzb",
+          "width": 3000
+        }
+      ],
+      "place_id": "ChIJLxIhq6-DRo4RZuLv7sg7BhY",
+      "plus_code": {
+        "compound_code": "6C4M+MR Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4M+MR"
+      },
+      "rating": 5,
+      "reference": "ChIJLxIhq6-DRo4RZuLv7sg7BhY",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 4,
+      "vicinity": "Carrera 35 #7-72"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.206703999999999,
+          "lng": -75.5655065
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.207790180291502,
+            "lng": -75.56410946970848
+          },
+          "southwest": {
+            "lat": 6.205092219708497,
+            "lng": -75.56680743029149
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "international_phone_number": "+57 317 5733129",
+      "name": "Discoteca Bangkok RMX",
+      "opening_hours": {
+        "open_now": false
+      },
+      "photos": [
+        {
+          "height": 2748,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/117959837283375875225\">Discoteca Bangkok RMX</a>"
+          ],
+          "photo_reference": "ATCDNfUDNKUklUaMVosvkJMeI_nDVSn2PbNSHRFG5nwIl2doOKOlDhInRhR36N1kD6LO1JMJWKkKUwtFHu6X5My1RD_1KiP7iUPwBgzh7W-QVJPVJ-I-DP8xCrdRTp_L_p3tmkcXBQt5EbhIFCPHtUi5tqOnHFVrZGLR63Bv69T6rZFcZP6Lo-ZAlL9xgeI1RFSou3cfJGW4HsQjOxpDCxaknCPG_iQ05sdYMzEBd-NTeI3RRkjjQkX3UR81NtErQx5KzH_tl6Ifzx6D72OKXBV9VK0KU8Kh7BHWxpe2LRkwU4TXDvnPBbd5xkN44EtH5FsudZ05TMpexHk",
+          "width": 2639
+        }
+      ],
+      "place_id": "ChIJp7Ir3AKDRo4RGeh703KCTGQ",
+      "plus_code": {
+        "compound_code": "6C4M+MQ Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4M+MQ"
+      },
+      "rating": 3.9,
+      "reference": "ChIJp7Ir3AKDRo4RGeh703KCTGQ",
+      "scope": "GOOGLE",
+      "types": [
+        "night_club",
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 40,
+      "vicinity": "Carrera 35 #7 - 58"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.206577299999998,
+          "lng": -75.5656784
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.207749280291502,
+            "lng": -75.56417231970848
+          },
+          "southwest": {
+            "lat": 6.205051319708497,
+            "lng": -75.5668702802915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "EL REQUINTE",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 640,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/117039685538208230413\">EL REQUINTE</a>"
+          ],
+          "photo_reference": "ATCDNfWS4xPhQZZRUtr_xe-yD9ygBt2xmimTY6WAZ9UiCnp4_mZ-CM4x1kinhEumRaUw3Wof0J4vP-CQG5x3XCMoewVwNBAA1d3Ij59-oYZI1atcgr_20V7XUtFTBnJn7aFaS-XHK323GNLRt1wNSNCaxUro5a_OTA4kggeG62JRVm0EzzFHZT2p5vyauQME9_ylm6W4AeJ5UaDsGbheD2bAlYwkaCSGkiQKMnCvk21m_qkEKY9WwEnCuJnBtRZyUR3fXSnPaMtFEIu5XjVESBrNfVmHVzAmM24hju_LN5IKYUyQy__5PhfNMgmaowyxh38UKRdarJwhlXE",
+          "width": 427
+        }
+      ],
+      "place_id": "ChIJG-kzG6GDRo4RoCHviUzJqy4",
+      "plus_code": {
+        "compound_code": "6C4M+JP Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4M+JP"
+      },
+      "rating": 5,
+      "reference": "ChIJG-kzG6GDRo4RoCHviUzJqy4",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 4,
+      "vicinity": "Carrera 35 #7 Primer piso"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.207717699999999,
+          "lng": -75.5641103
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.209089080291501,
+            "lng": -75.5627116197085
+          },
+          "southwest": {
+            "lat": 6.206391119708496,
+            "lng": -75.56540958029152
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "The Garden Bar and Restaurant",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 4000,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/117156930137445529289\">Kenyi Larios</a>"
+          ],
+          "photo_reference": "ATCDNfVpRE5QTl5d8cBCnIu9dcpRaN-zlyZPPmt7qwpHP7o0kplH4ewx5YmHNDWdBGLp0LuBCYJnjMNj6PBtlBZTkjfH3NE1bfvFzy1c1ddjuoxKMoYpws0I4U6uJXoflRZafgbXhvMJG5RWKNw_Zxl6BiFSzHFcVrPUQBN33V3VsKn370T-SGDVIm6RRQmRSYDX0-D9gHF6dQNDYR7ff3-7_RFicDbW7Av7YIBQjNpnrPbKlgDCa0lcXWtr1C8E14MPGvYDV_LQRD0K_Ny4Fm4XjgD4CMaZjKlVhJg1qPlu7y5JmoZ3uqlN00cEq_dyarOfAFmTPNDVW_IbhWk01Fi7SnxUchkUxLalTvyRI0Cs0vAUc1-EdRt1gIeb45OeC1noZx1eA9JSvBxY2FzWEkU4aQVxA0wd8rqGxJCdo9GAUjKLun7XxUxhnZUuek3_EV4wqvWbJUeprJk3JXhmIXjxFFEVWpcUBy0nwwuNueHonFUXX8VmOu4Ysq2t_PpELMXrIRUQtwsR3VwK2tK3bdXsMMCcLWYMYGwVvb2GqjEtgVxy55A3UwsYJmir9LOwEerxyYG775jCJLiGHHX-FNeceABUn4Ope91z9hV7ZLd-XXrDqokwPZ_1Mi_6bOWf7JAxvF9-8TK-",
+          "width": 3000
+        }
+      ],
+      "place_id": "ChIJiwtYJk8pRI4ROL1Tls24Vz4",
+      "plus_code": {
+        "compound_code": "6C5P+39 Medellin, Antioquia, Colombia",
+        "global_code": "67R66C5P+39"
+      },
+      "rating": 4.4,
+      "reference": "ChIJiwtYJk8pRI4ROL1Tls24Vz4",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 27,
+      "vicinity": "Carrera 32d #9-17"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.207040699999999,
+          "lng": -75.5652191
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.208413230291501,
+            "lng": -75.5637844697085
+          },
+          "southwest": {
+            "lat": 6.205715269708497,
+            "lng": -75.5664824302915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "international_phone_number": "+57 317 5733129",
+      "name": "Distrito 34 Restaurante Bar",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 4032,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/110696031093232177192\">mauricio sánchez calderón</a>"
+          ],
+          "photo_reference": "ATCDNfV_-5FCDVqKkgdgsVlgQogv3JHEbDztAjZqeqW3Xr8cpfN0RMXwWGIHvrNR5ezXDcOXWndxcAS7qVzyfUC5PAS6gkSJ3efLyr4ZKrS96bHUK_l6qQIw-e6VM6X83kxFfQuKDqjMv8gTGaeoBWjkHx0_rHahgZrRzRna7ILwETiHlG1xD7LExMSiTtLLPB7H4Kn9nhH_e457eTo0ty32sy_bb7rCtO0RdB8DHZ3Po1FdUg-2wINyGcpFGUltGLNc4RUIojC5NVEWYyqHMdXyZI2ONW0H_zMTlm5A0Bo3_0PDHoS3vWUO5b7bbOoOoQlyckVAsCD3ZUMNP6vJviEPteKuP6iuwMy2VKdOF_-frLLoRL-vPdpeWF-awaH-ESh8AdgQLaaL43wskCyl4KlAwo0GOZu-yzAABleOdh_cdqg6YnxyqPi0bUJmFwJN2lLV6U5xPoRLpfxufSzo0JyACS5-gMh4f2ZjTvWSBtbHbs-g3SO-YwIa0YVim_ErWxyksPI5Kol7E1_brhavjM5prG0dZ75urzEKWROgjgQP22hyt4AL0OmdPKI0nFT_rSk39GXGbu0i77O8WKSSVhxhHm_Pf__LQyfjW6pNzkbIYjHBUb921tsyuYfFJYO70FAh9SyLaW3F",
+          "width": 3024
+        }
+      ],
+      "place_id": "ChIJWd_pP_yDRo4RotZJtbbf_cM",
+      "plus_code": {
+        "compound_code": "6C4M+RW Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4M+RW"
+      },
+      "rating": 5,
+      "reference": "ChIJWd_pP_yDRo4RotZJtbbf_cM",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 9,
+      "vicinity": "Carrera 34 #7 109"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.2071276,
+          "lng": -75.5651944
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.208493880291502,
+            "lng": -75.56378246970849
+          },
+          "southwest": {
+            "lat": 6.205795919708498,
+            "lng": -75.5664804302915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "Medallo Drinks",
+      "opening_hours": {
+        "open_now": true
+      },
+      "photos": [
+        {
+          "height": 4032,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/108508965405659923060\">Carolina Mora Barrera</a>"
+          ],
+          "photo_reference": "ATCDNfViR7hqES982lWHZ6sEv-rO7OddqXo0q7w2R6Ov92o_7RkwJaAR9UbABSv3lTTBdH-9ZxniKBaIisXUItqqYeybLszZoF3XD4MoNf-tXkUJAl8mvppAGzZM4fILpVVLsYEuZXV_2UjIZtSl_Gje740Jrqz5o64Kk9wmVj90M0pAL6jQ-WEnrVTxO345TcboKNnBXmlAaXUjVaS3KxsKlKtme7HxGLpOzrp-zPKEC-F35nZdRCLhxAAh23kXmwEAP7Jp8GEKxEoMlkh_K3-kGTJt2NpCDcICRcCEGo7SebdYsw8TIfmP0m05edKkZzLP9QHLLoKFM4Wxa6fkk18ENVw2qcRXAIR26kMvOjJNWbTSYsRqYn8yo0W3Pa-xGmL9oXhxWKnTeWUf2ZGOTkp_UPWw53l7IZHAtFQ7vwp1jcknYlOJ4vPOXeW7kHP1ZJPZRgt1I3Em8C9uU5f1oenNXnnqlQqXwIOB51ZoC3YKmoQsPI77A0_g2HH04SmJyfdQQlC2qPYhYWQPE83d9HyVIPjDQ9ZtL3ERDGmeKAJjXIaTmdabOMR6lxwo8odjd7LeXpW_O2E94KJ0j0blsaGoux5M8k0YhPN_BbbH64n5OGyldmhwAGv4GzCL7JbNgXaPBPXavA",
+          "width": 3024
+        }
+      ],
+      "place_id": "ChIJO20C1xUpRI4RaRgIB28pSEw",
+      "plus_code": {
+        "compound_code": "6C4M+VW Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4M+VW"
+      },
+      "rating": 5,
+      "reference": "ChIJO20C1xUpRI4RaRgIB28pSEw",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 4,
+      "vicinity": "Carrera 34 #7-129"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.207776799999999,
+          "lng": -75.5642077
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.209251130291502,
+            "lng": -75.5628125697085
+          },
+          "southwest": {
+            "lat": 6.206553169708497,
+            "lng": -75.5655105302915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png",
+      "icon_background_color": "#7B9EB0",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+      "international_phone_number": "+57 333 2207172",
+      "name": "Hash House Club",
+      "opening_hours": {
+        "open_now": false
+      },
+      "photos": [
+        {
+          "height": 3024,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/109230834435714986802\">Omar David Teran R.</a>"
+          ],
+          "photo_reference": "ATCDNfULmnGAtEcClm-4pjunoG6u7fKySELM7ZS06vUmOq9hsVl64oSPqrhCWJcmNDbmW0262Q0Px_N2kG2rhxZa0HpbGTbaNyUOfqtecz1MyddscANlCBZBHq5kau8Wr6tCnEcfRTh9DZjxysIBXepYqge2OYUWHcsrcGAg2FrggnGqvVHWKxdX8cRFGfDpUMLHPDxdTWWxLAMOFlyLdZBPOsxKl3jIhQHIy9cglG8RV_VwLTz5NDk1nZE2f9YWGMxdjOlxRQ_PpgHriVzWbDHn-MGfjg8kJ238VJlMKkV-emN5WBFZTI2T1rkWKZpJyT3_vdvc6Jeg3WbqE8M1FpM99RUdDLT-mxX38nfO3neLFKkeaISD4eMRkppRwZZ2bUKZFOdXceS7sXwXghor6NVwKIH1E-xIAwELy6vMUbtHxy3kd_N46vAGjG9nVBDQnNoWNXWKw1fsrfJN32xJFf_GEdvvA1_aVVd2REYhmx4MkUHq1kccGrDc4A5X0PJ2hgOrAf6Ps_L-hSevP14rm1qrGnDF7DRDVsSAuykrWrJz5Df56gd968-8c9mqgKjjFLvM4QdFTUJXdAIlWnjyLHUvBZIZtEgxwgx1V9Fc801KYPpkeXGGSViqoPYFE1TlH3oM2PSyqw",
+          "width": 4032
+        }
+      ],
+      "place_id": "ChIJT3L2LSgoRI4RD5Sz6IBS9Jg",
+      "plus_code": {
+        "compound_code": "6C5P+48 Medellin, Antioquia, Colombia",
+        "global_code": "67R66C5P+48"
+      },
+      "rating": 4.6,
+      "reference": "ChIJT3L2LSgoRI4RD5Sz6IBS9Jg",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "night_club",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 132,
+      "vicinity": "Carrera 32d #9-35"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.206479,
+          "lng": -75.5539388
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.207869530291502,
+            "lng": -75.55257521970849
+          },
+          "southwest": {
+            "lat": 6.205171569708497,
+            "lng": -75.55527318029151
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "Billares DJ",
+      "place_id": "ChIJhR2SUEGDRo4Rt-aEPp4jWi8",
+      "plus_code": {
+        "compound_code": "6C4W+HC Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4W+HC"
+      },
+      "rating": 4,
+      "reference": "ChIJhR2SUEGDRo4Rt-aEPp4jWi8",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 1,
+      "vicinity": "Calle 9A #15-271 a 15-1"
+    },
+    {
+      "business_status": "OPERATIONAL",
+      "geometry": {
+        "location": {
+          "lat": 6.206932900000001,
+          "lng": -75.56551569999999
+        },
+        "viewport": {
+          "northeast": {
+            "lat": 6.208478680291502,
+            "lng": -75.56430891970848
+          },
+          "southwest": {
+            "lat": 6.205780719708497,
+            "lng": -75.5670068802915
+          }
+        }
+      },
+      "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/bar-71.png",
+      "icon_background_color": "#FF9E67",
+      "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
+      "name": "La 34 bar",
+      "opening_hours": {
+        "open_now": false
+      },
+      "photos": [
+        {
+          "height": 696,
+          "html_attributions": [
+            "<a href=\"https://maps.google.com/maps/contrib/107054925597108203983\">Alvaro Gomez</a>"
+          ],
+          "photo_reference": "ATCDNfWhOfhg6ud2ZSq44nDhE2fh7on3Q7dkhgjm7pyGbRyLPLKOJRvy1k_UNl5-BL2FWPTpTE6JnaF231ypVLSWh5I9bAjint_ohaWeL7XlumcOTP8faShbuOdK_0TXpbwtbPMswd7UaUqWi1ZweCvaZLuB8guOK_zAITNjpDkN02x-taqIAZHTB5PTsyGaHRkBuX5ULCS9QEhqYgf-6b8FOmTYMWdvvRPdTNqTi-mheh9AcGbOVNH5Gz2XmSS80o_dUY9CgqVpUeuzG53rVXYhmT-09qJNg1P4xEwOsgW43zxH6_AIpUBxDi83Yl1wYf3IIgGiOqo6kEzeQuDp0OuGvfT-4DEwNoip-p5m2thKkRSNiZrVKeLctbDnPOX9Qqgj3O8Wrv5jc-QZG1VEdoja_bQBBazjOqAx-ij3bljXJOXnZ1iWVuIFtVvDkaXaNXY2Hz_mjxvguNwAvv4nEOSCzSVpLLhjY6_90jxGzoiQsrxQKo17Hd5kVCs_MibZWTNERiX3tAG9m0bHBwbalSI5UfnE0L4qByrRDGUvIPBVcVnHNffGRhNi7scdTExMHrx01vCWOZd2VVEN_F2iVEmbIb92oRLORyyL0tOvHyFB8IcDJQwdGiO3MSVaPEsuOvurDZTQk1_S",
+          "width": 1060
+        }
+      ],
+      "place_id": "ChIJw3S4M2KDRo4R-BxnSZh2OYU",
+      "plus_code": {
+        "compound_code": "6C4M+QQ Medellin, Antioquia, Colombia",
+        "global_code": "67R66C4M+QQ"
+      },
+      "rating": 2.3,
+      "reference": "ChIJw3S4M2KDRo4R-BxnSZh2OYU",
+      "scope": "GOOGLE",
+      "types": [
+        "bar",
+        "point_of_interest",
+        "establishment"
+      ],
+      "user_ratings_total": 6,
+      "vicinity": "Carrera 35 #7-100"
+    }
+  ]
+}
