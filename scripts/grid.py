@@ -60,7 +60,7 @@ def generate_grid():
 log.debug("Grid points: %s", len(generate_grid()))
 
 
-API_KEY = "AIzaSyBmdpOhdJgaed6Wjua4uYc0vFTzWcF50DQ"
+API_KEY = "YOUR_GOOGLE_API_KEY_HERE"  # <-- Replace with your actual API key
 
 def search_nearby(lat, lng, place_type, radius=1000):
     """Returns a flat list of place stubs for one grid point."""
