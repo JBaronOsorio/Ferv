@@ -1,28 +1,36 @@
 from django.db import models
 
-# Create your models here.
 class Place(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField()
+    place_id = models.CharField(max_length=128, unique=True, db_index=True)
+    name = models.CharField(max_length=150)
+    address = models.CharField(max_length=500)
+    neighborhood = models.CharField(max_length=120, blank=True)
     latitude = models.FloatField()
     longitude = models.FloatField()
-    address = models.CharField(max_length=255)
-    images = models.ManyToManyField('PlaceImage', related_name='places')
-    tags = models.ManyToManyField('PlaceTag', related_name='places')
+    rating = models.FloatField(null=True, blank=True)
+    price_level = models.PositiveSmallIntegerField(null=True, blank=True)
+    hours = models.JSONField(default=list, blank=True)
+    review_count = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.place_id})"
 
 class PlaceImage(models.Model):
     place = models.ForeignKey(Place, related_name='images', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='place_images/')
+    url = models.URLField(max_length=500)
+    source_reference = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
         return f"Image for {self.place.name}"
     
 class PlaceTag(models.Model):
     place = models.ForeignKey(Place, related_name='tags', on_delete=models.CASCADE)
-    tag = models.CharField(max_length=50)
+    tag = models.CharField(max_length=60)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["place", "tag"], name="unique_place_tag")
+        ]
 
     def __str__(self):
         return f"Tag '{self.tag}' for {self.place.name}"
