@@ -47,7 +47,7 @@ def list_cached_keys(sub_dir: str = RAW_DIR) -> set:
     return {f.stem for f in dir_path.iterdir() if f.suffix == ".json"}
 
 
-def load_entry(key: str, sub_dir: str = RAW_DIR) -> dict | list:
+def load_entry(key: str, sub_dir: str = RAW_DIR) -> dict:
     """
     Load and return a single cached entry.
     Returns an empty dict if the key doesn't exist.

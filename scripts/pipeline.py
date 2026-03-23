@@ -7,6 +7,7 @@ Ferv data collection pipeline — orchestrates the three stations:
   1. collect_all()     Grid sweep → raw cache
   2. deduplicate()     Raw cache → unique place stubs
   3. collect_details() Place stubs → full place details
+  4. build_transformed()  Place stubs + Place details → Transformed data for modeling and embeddings
 
 Each station is independently re-runnable. Cached entries are never re-fetched.
 
@@ -26,6 +27,7 @@ import time
 
 import cache
 import google_api
+import transform
 from config import (
     ACTIVE_BOUNDS,
     DETAILS_DIR,
@@ -34,6 +36,10 @@ from config import (
     RAW_DIR,
     REQUEST_DELAY,
     STEP,
+    STRUCTURED_DIR,
+    DOCUMENTS_DIR,
+    QUALIFIED_DIR,
+    REJECTED_DIR,
 )
 
 log = logging.getLogger(__name__)
@@ -155,6 +161,64 @@ def collect_details() -> None:
 
     log.info("collect_details complete — new: %s, skipped: %s, total: %s", new, skipped, new + skipped)
 
+# ── Station 4: Build transformed data ─────────────────────────────────────────
+def filter_details() -> None:
+    """
+    Reads all details, applies quality threshold, writes qualified 
+    place_ids to qualified/ and logs rejections to rejected/.
+    """
+    all_ids = cache.list_cached_keys(DETAILS_DIR)
+    log.info("filter_details — evaluating %s places", len(all_ids))
+
+    qualified = 0
+    rejected = 0
+
+    for place_id in all_ids:
+        # Skip if already evaluated
+        already_qualified = cache.key_is_cached(place_id, QUALIFIED_DIR)
+        already_rejected = cache.key_is_cached(place_id, REJECTED_DIR)
+        if already_qualified or already_rejected:
+            continue
+
+        detail = cache.load_entry(place_id, DETAILS_DIR)
+        passed, reason = transform.is_qualified(detail)
+
+        if passed:
+            # Save minimal marker — just confirms this place_id is qualified
+            cache.save_entry(place_id, {"status": "qualified"}, QUALIFIED_DIR)
+            qualified += 1
+        else:
+            # Save reason — inspectable later
+            cache.save_entry(place_id, {"status": "rejected", "reason": reason}, REJECTED_DIR)
+            log.debug("Rejected %s — %s", place_id, reason)
+            rejected += 1
+
+    log.info(
+        "filter_details complete — qualified: %s, rejected: %s, total: %s",
+        qualified, rejected, qualified + rejected
+    )
+
+def build_transformed():
+    qualified_ids = cache.list_cached_keys(QUALIFIED_DIR)
+    log.info("build_transformed — processing %s qualified places", len(qualified_ids))
+    new = 0
+    skipped = 0
+
+    for place_id in qualified_ids:
+        if cache.key_is_cached(place_id, STRUCTURED_DIR):
+            skipped += 1
+            continue
+
+        detail = cache.load_entry(place_id, DETAILS_DIR)
+        structured = transform.to_structured(detail)
+        document = transform.to_document(structured, detail.get("reviews", []))
+
+        cache.save_entry(place_id, structured, STRUCTURED_DIR)
+        cache.save_entry(place_id, {"text": document}, DOCUMENTS_DIR)
+        new += 1
+
+    log.info("Transform complete — new: %s, skipped: %s", new, skipped)
+
 
 # ── CLI ───────────────────────────────────────────────────────────────────────
 
@@ -164,8 +228,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument(
         "--steps",
         nargs="+",
-        choices=["collect", "deduplicate", "details"],
-        default=["collect", "deduplicate", "details"],
+        choices=["collect", "deduplicate", "details", "filter", "transform"],
+        default=["collect", "deduplicate", "details", "filter", "transform"],
         help="Which pipeline steps to run (default: all)"
     )
     return p.parse_args()
@@ -189,6 +253,14 @@ def main() -> None:
     if "details" in args.steps:
         log.info("── Station 3: Detail fetching ──")
         collect_details()
+
+    if "filter" in args.steps:
+        log.info("── Station 4: Filter ──")
+        filter_details()
+
+    if "transform" in args.steps:
+        log.info("── Station 5: Transform ──")
+        build_transformed()
 
     log.info("Pipeline complete.")
 

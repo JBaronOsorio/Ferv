@@ -59,6 +59,10 @@ CACHE_DIR   = Path("data/cache")
 RAW_DIR     = "raw"
 PLACES_DIR  = "places"
 DETAILS_DIR = "details"
+STRUCTURED_DIR = "structured"
+DOCUMENTS_DIR = "documents"
+QUALIFIED_DIR = "qualified"
+REJECTED_DIR = "rejected"
 
 # ── HTTP ──────────────────────────────────────────────────────────────────────
 
