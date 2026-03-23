@@ -80,6 +80,7 @@ def to_document(structured: dict, reviews: list) -> str:
 
     hours = structured["hours"]
     hours_str = hours[0] if hours else "horario no disponible"
+    
     # Check if all days share the same schedule — common case
     if len(set(h.split(": ")[1] for h in hours)) == 1:
         hours_str = f"todos los días {hours[0].split(': ')[1]}"

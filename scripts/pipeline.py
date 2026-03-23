@@ -7,7 +7,8 @@ Ferv data collection pipeline — orchestrates the three stations:
   1. collect_all()     Grid sweep → raw cache
   2. deduplicate()     Raw cache → unique place stubs
   3. collect_details() Place stubs → full place details
-  4. build_transformed()  Place stubs + Place details → Transformed data for modeling and embeddings
+  4. filter_details()  Place details → qualified place_ids for modeling
+  5. build_transformed()  Place stubs + Place details → Transformed data for modeling and embeddings
 
 Each station is independently re-runnable. Cached entries are never re-fetched.
 
@@ -28,6 +29,7 @@ import time
 import cache
 import google_api
 import transform
+
 from config import (
     ACTIVE_BOUNDS,
     DETAILS_DIR,
