@@ -35,3 +35,19 @@ class PlaceTag(models.Model):
 
     def __str__(self):
         return f"Tag '{self.tag}' for {self.place.name}"
+    
+class PlaceDocument(models.Model):
+    """
+    The natural language text used to generate embeddings for a place.
+    One document per place — the text is built by transform.py from
+    the place's details and reviews.
+ 
+    PlaceEmbedding (to be added when pgvector is ready) will point
+    back to this model and store the vector alongside it.
+    """
+    place = models.OneToOneField(Place, related_name='document', on_delete=models.CASCADE)
+    text = models.TextField()
+    updated_at = models.DateTimeField(auto_now=True)
+ 
+    def __str__(self):
+        return f"Document for {self.place.name}"
