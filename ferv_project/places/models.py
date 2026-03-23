@@ -11,6 +11,7 @@ class Place(models.Model):
     price_level = models.PositiveSmallIntegerField(null=True, blank=True)
     hours = models.JSONField(default=list, blank=True)
     review_count = models.PositiveIntegerField(default=0)
+    editorial_summary = models.TextField(blank=True, default='')
 
     def __str__(self):
         return f"{self.name} ({self.place_id})"

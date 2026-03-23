@@ -3,3 +3,12 @@
 *.env
 scripts/data/cache/*
 *__pycache__*
+
+# Virtual environment
+.venv/
+
+# SQLite database
+*.sqlite3
+
+# Environment variables
+.env
