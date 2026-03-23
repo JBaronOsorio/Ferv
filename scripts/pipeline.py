@@ -29,6 +29,7 @@ import time
 import cache
 import google_api
 import transform
+import ingest
 
 from config import (
     ACTIVE_BOUNDS,
@@ -230,8 +231,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument(
         "--steps",
         nargs="+",
-        choices=["collect", "deduplicate", "details", "filter", "transform"],
-        default=["collect", "deduplicate", "details", "filter", "transform"],
+        choices=["collect", "deduplicate", "details", "filter", "transform", "ingest"],
+        default=["collect", "deduplicate", "details", "filter", "transform", "ingest"],
         help="Which pipeline steps to run (default: all)"
     )
     return p.parse_args()
@@ -263,6 +264,10 @@ def main() -> None:
     if "transform" in args.steps:
         log.info("── Station 5: Transform ──")
         build_transformed()
+
+    if "ingest" in args.steps:
+        log.info("── Station 6: Ingest ──")
+        ingest.ingest_all()
 
     log.info("Pipeline complete.")
 
