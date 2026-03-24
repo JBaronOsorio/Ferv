@@ -21,4 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('graph/', include('graph.urls')),
     path('places/', include('places.urls')),
+    # path('user/', include('user.urls')),
+    path('', include('user.urls')),  # Set the user app's URLs as the default path
 ]

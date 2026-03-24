@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'graph',
     'places',
+    'user',
 ]
 
 MIDDLEWARE = [
@@ -118,6 +119,14 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+# Custom user model
+AUTH_USER_MODEL = 'user.FervUser'
+
+# Redirects
+LOGIN_URL = '/user/login/'
+LOGIN_REDIRECT_URL = '/graph/welcome/'
+LOGOUT_REDIRECT_URL = '/user/login/'
 
 
 # Static files (CSS, JavaScript, Images)
