@@ -124,9 +124,9 @@ USE_TZ = True
 AUTH_USER_MODEL = 'user.FervUser'
 
 # Redirects
-LOGIN_URL = '/user/login/'
+LOGIN_URL = '/'
 LOGIN_REDIRECT_URL = '/graph/welcome/'
-LOGOUT_REDIRECT_URL = '/user/login/'
+LOGOUT_REDIRECT_URL = '/'
 
 
 # Static files (CSS, JavaScript, Images)

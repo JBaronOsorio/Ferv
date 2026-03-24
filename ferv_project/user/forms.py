@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.utils.safestring import mark_safe
 
 from .models import (
     ACTIVITY_CHOICES,
@@ -26,6 +27,12 @@ class RegistrationForm(UserCreationForm):
         self.fields['username'].widget.attrs['placeholder'] = 'Nombre de usuario'
         self.fields['password1'].widget.attrs['placeholder'] = 'Contraseña'
         self.fields['password2'].widget.attrs['placeholder'] = 'Confirmar contraseña'
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if FervUser.objects.filter(email=email).exists():
+            raise forms.ValidationError(mark_safe('Este correo ya está registrado.' '<a href="/" class="login-link">¿Quieres iniciar sesión?</a>'))
+        return email
 
 
 # Formulario de configuración de perfil que se muestra después del registro.
