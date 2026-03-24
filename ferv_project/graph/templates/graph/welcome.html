@@ -348,41 +348,41 @@
         <p class="empty__text">Aún no hay lugares cargados en la base de datos.</p>
       </div>
     {% endif %} -->
-    {if places_place}
+    {% if featured_places %}
 
         {% for place in featured_places %}
-            <div class="place-card">
+          <div class="place-card">
 
-                <!-- Imagen o placeholder con inicial del lugar -->
-                <div class="place-card__image">
-                {{ place.name|first|upper }}
-                </div>
-
-                <div class="place-card__body">
-                <div class="place-card__name">{{ place.name }}</div>
-                <div class="place-card__address">
-                    {% if place.neighborhood %}
-                    {{ place.neighborhood }} · 
-                    {% endif %}
-                    {{ place.address }}
-                </div>
-                <div class="place-card__footer">
-                    {% if place.rating %}
-                    <span class="place-card__rating">{{ place.rating }}</span>
-                    {% endif %}
-                    {% if place.price_level %}
-                    <span class="tag">
-                        {% if place.price_level == 1 %}$
-                        {% elif place.price_level == 2 %}$$
-                        {% elif place.price_level == 3 %}$$$
-                        {% else %}$$$$
-                        {% endif %}
-                    </span>
-                    {% endif %}
-                </div>
-                </div>
-
+            <!-- Imagen o placeholder con inicial del lugar -->
+            <div class="place-card__image">
+              {{ place.name|first|upper }}
             </div>
+
+            <div class="place-card__body">
+              <div class="place-card__name">{{ place.name }}</div>
+              <div class="place-card__address">
+                {% if place.neighborhood %}
+                  {{ place.neighborhood }} · 
+                {% endif %}
+                {{ place.address }}
+              </div>
+              <div class="place-card__footer">
+                {% if place.rating %}
+                  <span class="place-card__rating">{{ place.rating }}</span>
+                {% endif %}
+                {% if place.price_level %}
+                  <span class="tag">
+                    {% if place.price_level == 1 %}$
+                    {% elif place.price_level == 2 %}$$
+                    {% elif place.price_level == 3 %}$$$
+                    {% else %}$$$$
+                    {% endif %}
+                  </span>
+                {% endif %}
+              </div>
+            </div>
+
+          </div>
         {% endfor %}
 
     {% else %}
