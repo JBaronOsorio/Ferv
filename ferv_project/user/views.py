@@ -30,14 +30,14 @@ def register_view(request):
 def profile_setup_view(request):
 
     if request.user.profile_completed:
-        return redirect('graph:index')
+        return redirect('graph:welcome')
 
     if request.method == 'POST':
         form = ProfileSetupForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, '¡Perfil listo! Ya podemos empezar a descubrir la ciudad.')
-            return redirect('graph:index')
+            return redirect('graph:welcome')
     else:
         form = ProfileSetupForm(instance=request.user)
 
@@ -47,7 +47,7 @@ def profile_setup_view(request):
 # Vista de login que autentica al usuario y lo redirige al grafo.
 def login_view(request):
     if request.user.is_authenticated:
-        return redirect('graph:index')
+        return redirect('graph:welcome')
 
     if request.method == 'POST':
         form = LoginForm(request, data=request.POST)
@@ -60,7 +60,7 @@ def login_view(request):
             if not user.profile_completed:
                 return redirect('user:profile_setup')
 
-            return redirect('graph:index')
+            return redirect('graph:welcome')
         else:
             messages.error(request, 'Usuario o contraseña incorrectos.')
     else:
