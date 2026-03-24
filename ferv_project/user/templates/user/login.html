@@ -1,24 +1,38 @@
-<html>
-    <head>
-        <title>Login</title>
-    </head>
-    <body>
-        <h1>Login</h1>
+{% extends "user/base.html" %}
 
-        {% if messages %}
-            <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+{% block title %}Iniciar sesión — Ferv{% endblock %}
+{% block subtitle %}Bienvenido de nuevo{% endblock %}
 
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Login</button>
-        </form>
+{% block content %}
+<form method="post" novalidate>
+  {% csrf_token %}
 
-        <p>Do not have an account? <a href="{% url 'user:register' %}">Register</a></p>
-    </body>
-</html>
+  <div class="form__group">
+    <label class="form__label" for="{{ form.username.id_for_label }}">Usuario</label>
+    {{ form.username }}
+    {% if form.username.errors %}
+      <div class="form__error">{{ form.username.errors.0 }}</div>
+    {% endif %}
+  </div>
+
+  <div class="form__group">
+    <label class="form__label" for="{{ form.password.id_for_label }}">Contraseña</label>
+    {{ form.password }}
+    {% if form.password.errors %}
+      <div class="form__error">{{ form.password.errors.0 }}</div>
+    {% endif %}
+  </div>
+
+  {% if form.non_field_errors %}
+    <div class="form__error" style="margin-bottom:1rem">
+      {{ form.non_field_errors.0 }}
+    </div>
+  {% endif %}
+
+  <button type="submit" class="btn btn--primary">Entrar</button>
+</form>
+
+<div class="card__footer">
+  ¿No tienes cuenta? <a href="{% url 'user:register' %}">Regístrate</a>
+</div>
+{% endblock %}
