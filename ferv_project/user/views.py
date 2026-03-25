@@ -73,6 +73,8 @@ def login_view(request):
 def logout_view(request):
 
     if request.method == 'POST':
+        storage = messages.get_messages(request)
+        storage.used = True  # Clear messages on logout
         logout(request)
         messages.info(request, 'Sesión cerrada. ¡Hasta pronto!')
     return redirect('user:login')
