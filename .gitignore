@@ -5,8 +5,10 @@ scripts/data/cache/*
 *__pycache__*
 
 # Virtual environment
+.venv
 .venv/
-
+.fervenv
+.fervenv/
 # SQLite database
 *.sqlite3
 
