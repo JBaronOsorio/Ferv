@@ -17,6 +17,10 @@ from recommendation.graph_builder import GraphBuilder
 
 log = logging.getLogger(__name__)
 
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+from places.models import Place
 
 def index(request):
     return render(request, 'graph/index.html')
@@ -61,3 +65,10 @@ class GraphAPIView(APIView):
                 {"error": "Internal server error."},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+@login_required
+def welcome(request):
+    featured_places = Place.objects.prefetch_related('images', 'tags').order_by('-rating')[:8]
+    return render(request, 'graph/welcome.html', {
+        'featured_places': featured_places,
+    })

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ferv — Descubre tu ciudad</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background-color: #0f0f0f;
+      font-family: 'Segoe UI', sans-serif;
+      color: #f0f0f0;
+    }
+
+    /* NAV */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 2rem;
+      border-bottom: 1px solid #1f1f1f;
+      position: sticky;
+      top: 0;
+      background: #0f0f0f;
+      z-index: 10;
+    }
+
+    .nav__logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #45dee9;
+      letter-spacing: -1px;
+    }
+
+    .nav__actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .nav__user {
+      font-size: 0.875rem;
+      color: #888;
+    }
+
+    .nav__user span { color: #f0f0f0; font-weight: 600; }
+
+    .btn-logout {
+      background: none;
+      border: 1px solid #2a2a2a;
+      color: #888;
+      padding: 0.4rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-logout:hover {
+      border-color: #45dee9;
+      color: #45dee9;
+    }
+
+    /* HERO */
+    .hero {
+      padding: 3rem 2rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .hero__greeting {
+      font-size: 0.9rem;
+      color: #888;
+      margin-bottom: 0.4rem;
+    }
+
+    .hero__title {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero__title span { color: #45dee9; }
+
+    .hero__subtitle {
+      font-size: 0.95rem;
+      color: #666;
+    }
+
+    /* SECTION */
+    .section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 2rem;
+    }
+
+    .section__header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    .section__title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #f0f0f0;
+    }
+
+    .section__meta {
+      font-size: 0.8rem;
+      color: #555;
+    }
+
+    /* GRID DE PLACES */
+    .places-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+
+    .place-card {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 14px;
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+
+    .place-card:hover {
+      border-color: #45dee9;
+      transform: translateY(-2px);
+    }
+
+    .place-card__image {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+      font-size: 2rem;
+    }
+
+    .place-card__body {
+      padding: 1rem;
+    }
+
+    .place-card__name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .place-card__address {
+      font-size: 0.78rem;
+      color: #666;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 0.75rem;
+    }
+
+    .place-card__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .place-card__rating {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.8rem;
+      color: #f0f0f0;
+    }
+
+    .place-card__rating::before {
+      content: '★';
+      color: #45dee9;
+    }
+
+    .place-card__tags {
+      display: flex;
+      gap: 0.3rem;
+      flex-wrap: wrap;
+    }
+
+    .place-card__image {
+        width: 100%;
+        height: 140px;
+        background: linear-gradient(135deg, #1a0a0e, #1a1a2e);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #45dee9;
+        letter-spacing: -1px;
+    }
+
+    .tag {
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 20px;
+      padding: 0.2rem 0.55rem;
+      font-size: 0.7rem;
+      color: #888;
+    }
+
+    /* EMPTY STATE */
+    .empty {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: #444;
+    }
+
+    .empty__icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .empty__text { font-size: 0.9rem; }
+
+    /* PROFILE BANNER */
+    .banner {
+      max-width: 1100px;
+      margin: 0 auto 0;
+      padding: 0 2rem;
+    }
+
+    .banner__inner {
+      background: linear-gradient(135deg, #1a0a0e 0%, #1a1a2e 100%);
+      border: 1px solid #2a1520;
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .banner__text { font-size: 0.875rem; color: #aaa; }
+    .banner__text strong { color: #f0f0f0; }
+
+    .btn-primary {
+      background: #45dee9;
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: opacity 0.2s;
+    }
+
+    .btn-primary:hover { opacity: 0.88; }
+
+    /* Toasts */
+    .toast--success { background: #1a3a2a; color: #4ade80; border: 1px solid #166534; }
+    .toast--error   { background: #3a1a1a; color: #f87171; border: 1px solid #991b1b; }
+    .toast--info    { background: #1a2a3a; color: #60a5fa; border: 1px solid #1e3a5f; }
+  </style>
+</head>
+
+<body>
+
+  <!-- Toast notifications -->
+  <div id="toast-container" style="
+    position: fixed;
+    top: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  ">
+    {% for message in messages %}
+      <div class="toast toast--{{ message.tags }}" style="
+        padding: 0.875rem 1.5rem;
+        border-radius: 10px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        max-width: 380px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        animation: slideIn 0.3s ease, fadeOut 0.5s ease 3.5s forwards;
+      ">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+
+  <style>
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(40px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to   { opacity: 0; pointer-events: none; }
+    }
+  </style>
+
+  <script>
+    // Elimina el toast del DOM cuando termina la animación
+    document.querySelectorAll('.toast').forEach(toast => {
+      setTimeout(() => toast.remove(), 4000);
+    });
+  </script>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav__logo">ferv</div>
+    <div class="nav__actions">
+      <span class="nav__user">Hola, <span>{{ request.user.username }}</span></span>
+      <form method="post" action="{% url 'user:logout' %}" style="display:inline">
+        {% csrf_token %}
+        <button type="submit" class="btn-logout">Cerrar sesión</button>
+      </form>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <p class="hero__greeting">Lunes en Medellín · ¿A dónde vas hoy?</p>
+    <h1 class="hero__title">
+      Descubre lugares <span>que se sienten como tú</span>
+    </h1>
+    <p class="hero__subtitle">Basado en lo que nos contaste, esto es lo que te puede gustar.</p>
+  </div>
+
+  <!-- BANNER si no completó perfil -->
+  {% if not request.user.profile_completed %}
+  <div class="banner">
+    <div class="banner__inner">
+      <p class="banner__text">
+        <strong>Completa tu perfil</strong> — Cuéntanos tus gustos para que las recomendaciones sean tuyas de verdad.
+      </p>
+      <a href="{% url 'user:profile_setup' %}" class="btn-primary">Completar perfil</a>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- LUGARES DESTACADOS -->
+  <div class="section">
+    <div class="section__header">
+      <h2 class="section__title">Lugares destacados</h2>
+      <span class="section__meta">{{ featured_places|length }} lugares</span>
+    </div>
+
+    <!-- Si hay lugares destacados, mostrar grid; si no, mostrar estado vacío -->
+    <!-- 
+    {% if featured_places %}
+      <div class="places-grid">
+        {% for place in featured_places %}
+          <div class="place-card">
+
+            {% with place.images.first as img %}
+              {% if img %}
+                <img class="place-card__image" src="{{ img.url }}" alt="{{ place.name }}" />
+              {% else %}
+                <div class="place-card__image">📍</div>
+              {% endif %}
+            {% endwith %}
+
+            <div class="place-card__body">
+              <div class="place-card__name">{{ place.name }}</div>
+              <div class="place-card__address">{{ place.address }}</div>
+              <div class="place-card__footer">
+                {% if place.rating %}
+                  <span class="place-card__rating">{{ place.rating }}</span>
+                {% endif %}
+                <div class="place-card__tags">
+                  {% for tag in place.tags.all|slice:":2" %}
+                    <span class="tag">{{ tag.tag }}</span>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+
+          </div>
+        {% endfor %}
+      </div>
+
+    {% else %}
+      <div class="empty">
+        <div class="empty__icon">🗺️</div>
+        <p class="empty__text">Aún no hay lugares cargados en la base de datos.</p>
+      </div>
+    {% endif %} -->
+    {% if featured_places %}
+
+        {% for place in featured_places %}
+          <div class="place-card">
+
+            <!-- Imagen o placeholder con inicial del lugar -->
+            <div class="place-card__image">
+              {{ place.name|first|upper }}
+            </div>
+
+            <div class="place-card__body">
+              <div class="place-card__name">{{ place.name }}</div>
+              <div class="place-card__address">
+                {% if place.neighborhood %}
+                  {{ place.neighborhood }} · 
+                {% endif %}
+                {{ place.address }}
+              </div>
+              <div class="place-card__footer">
+                {% if place.rating %}
+                  <span class="place-card__rating">{{ place.rating }}</span>
+                {% endif %}
+                {% if place.price_level %}
+                  <span class="tag">
+                    {% if place.price_level == 1 %}$
+                    {% elif place.price_level == 2 %}$$
+                    {% elif place.price_level == 3 %}$$$
+                    {% else %}$$$$
+                    {% endif %}
+                  </span>
+                {% endif %}
+              </div>
+            </div>
+
+          </div>
+        {% endfor %}
+
+    {% else %}
+        <div class="empty">
+        <div class="empty__icon">🗺️</div>
+        <p class="empty__text">Aún no hay lugares destacados disponibles.</p>
+        </div>
+    {% endif %}
+  </div>
+
+</body>
+</html>

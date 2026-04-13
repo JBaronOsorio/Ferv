@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'graph',
     'places',
     'recommendation',
+    'user',
 ]
 
 MIDDLEWARE = [
@@ -120,6 +121,14 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+# Custom user model
+AUTH_USER_MODEL = 'user.FervUser'
+
+# Redirects
+LOGIN_URL = '/'
+LOGIN_REDIRECT_URL = '/graph/welcome/'
+LOGOUT_REDIRECT_URL = '/'
 
 
 # Static files (CSS, JavaScript, Images)
