@@ -7,7 +7,7 @@ calls the LLM once to generate all edges, and saves the graph to the DB.
 Flow:
     1. Create GraphNodes for each recommended place
     2. Build a single prompt with all places + user profile
-    3. Call OpenAI to generate edges as JSON
+    3. Call Gemini to generate edges as JSON
     4. Save GraphEdges to the DB
 """
 
@@ -15,7 +15,7 @@ import json
 import logging
 import os
 
-from openai import OpenAI
+import google.generativeai as genai
 from graph.models import GraphNode, GraphEdge
 from places.models import Place
 
@@ -38,10 +38,11 @@ class GraphBuilder:
     """
 
     def __init__(self):
-        api_key = os.getenv("OPENAI_API_KEY")
+        api_key = os.getenv("GEMINI_API_KEY")
         if not api_key:
-            raise ValueError("OPENAI_API_KEY is not set in your .env file.")
-        self.client = OpenAI(api_key=api_key)
+            raise ValueError("GEMINI_API_KEY is not set in your .env file.")
+        genai.configure(api_key=api_key)
+        self.model = genai.GenerativeModel("gemini-1.5-flash")
 
     def build(self, place_ids: list[str], user_profile: dict = None) -> dict:
         """
@@ -121,7 +122,6 @@ class GraphBuilder:
         Returns a list of edge dicts with from_place_id, to_place_id,
         weight, reason, and reason_type.
         """
-        # Build place summaries for the prompt
         place_summaries = []
         for place in places:
             tags = [t.tag for t in place.tags.all()]
@@ -170,13 +170,8 @@ Rules:
 """
 
         try:
-            response = self.client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.3,
-            )
-            raw = response.choices[0].message.content.strip()
-            # Strip markdown code fences if present
+            response = self.model.generate_content(prompt)
+            raw = response.text.strip()
             raw = raw.replace("```json", "").replace("```", "").strip()
             edges = json.loads(raw)
             log.info("LLM generated %d edges.", len(edges))
