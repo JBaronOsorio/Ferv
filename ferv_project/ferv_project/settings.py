@@ -14,7 +14,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 load_dotenv(Path(__file__).resolve().parent.parent.parent / '.env')
-print("API KEY:", os.getenv("OPENAI_API_KEY"))
+print("GEMINI API KEY:", os.getenv("GEMINI_API_KEY"))
+# For OpenAI: print("OPENAI API KEY:", os.getenv("OPENAI_API_KEY"))
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -85,11 +86,11 @@ WSGI_APPLICATION = 'ferv_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', 'ferv_db'),
-        'USER': os.getenv('DB_USER', 'ferv_user'),
-        'PASSWORD': os.getenv('DB_PASSWORD', ''),
-        'HOST': os.getenv('DB_HOST', 'localhost'),
-        'PORT': os.getenv('DB_PORT', '5432'),
+        'NAME': 'ferv_db',
+        'USER': 'postgres',
+        'PASSWORD': '1234',
+        'HOST': 'localhost',
+        'PORT': '5433',
     }
 }
 

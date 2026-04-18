@@ -15,8 +15,9 @@ import json
 import logging
 import os
 
-#import google.generativeai as genai
-from openai import OpenAI
+import google.generativeai as genai
+from rest_framework import response
+# from openai import OpenAI  # Uncomment if using OpenAI instead
 from graph.models import GraphNode, GraphEdge
 from places.models import Place
 
@@ -39,10 +40,15 @@ class GraphBuilder:
     """
 
     def __init__(self):
-        api_key = os.getenv("OPENAI_API_KEY")
+        api_key = os.getenv("GEMINI_API_KEY")
         if not api_key:
-            raise ValueError("OPENAI_API_KEY is not set in your .env file.")
-        self.client = OpenAI(api_key=api_key)
+            raise ValueError("GEMINI_API_KEY is not set in your .env file.")
+        genai.configure(api_key=api_key)
+        self.model = genai.GenerativeModel('gemini-pro')
+        
+        # Uncomment below if using OpenAI instead:
+        # from openai import OpenAI
+        # self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
     def build(self, place_ids: list[str], user_profile: dict = None) -> dict:
         """
@@ -170,14 +176,17 @@ Rules:
 """
 
         try:
-            # response = self.model.generate_content(prompt)
-            # raw = response.text.strip()
-            response = self.client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.3,
-            )
-            raw = response.choices[0].message.content.strip()
+            response = self.model.generate_content(prompt)
+            raw = response.text.strip()
+            
+            # Uncomment below if using OpenAI instead:
+            # response = self.client.chat.completions.create(
+            #     model="gpt-4o-mini",
+            #     messages=[{"role": "user", "content": prompt}],
+            #     temperature=0.3,
+            # )
+            # raw = response.choices[0].message.content.strip()
+            
             raw = raw.replace("```json", "").replace("```", "").strip()
             edges = json.loads(raw)
             log.info("LLM generated %d edges.", len(edges))

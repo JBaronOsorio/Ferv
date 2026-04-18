@@ -1,46 +1,65 @@
 """
 services.py
 -----------
-EmbeddingService  — converts text to a vector using OpenAI.
+EmbeddingService  — converts text to a vector using Gemini.
 RecommendationService — finds similar places given a query string.
 """
 
 import logging
 import os
 
-from openai import OpenAI
+import google.generativeai as genai
+# from openai import OpenAI  # Uncomment if using OpenAI instead
 from pgvector.django import L2Distance
 from places.models import Place
 from recommendation.models import PlaceEmbedding
 
 log = logging.getLogger(__name__)
 
-EMBEDDING_MODEL = "text-embedding-3-small"
-EMBEDDING_DIMENSIONS = 1536
+# For Gemini embeddings - using the correct model name
+EMBEDDING_MODEL = "models/gemini-embedding-001" # Gemini embedding model name
+EMBEDDING_DIMENSIONS = 768 # Gemini embedding dimension
+
+# For OpenAI embeddings (if using OpenAI instead):
+# EMBEDDING_MODEL = "text-embedding-3-small"
+# EMBEDDING_DIMENSIONS = 1536
 
 
 class EmbeddingService:
     """
-    Thin wrapper around the OpenAI embeddings API.
-    Converts any text string into a vector of 1536 floats.
+    Wrapper around the Gemini embeddings API.
+    Converts any text string into a vector of 768 floats.
     """
 
     def __init__(self):
-        api_key = os.getenv("OPENAI_API_KEY")
+        api_key = os.getenv("GEMINI_API_KEY")
         if not api_key:
-            raise ValueError("OPENAI_API_KEY is not set in your .env file.")
-        self.client = OpenAI(api_key=api_key)
+            raise ValueError("GEMINI_API_KEY is not set in your .env file.")
+        genai.configure(api_key=api_key)
+        
+        # For OpenAI (if using instead):
+        # api_key = os.getenv("OPENAI_API_KEY")
+        # if not api_key:
+        #     raise ValueError("OPENAI_API_KEY is not set in your .env file.")
+        # self.client = OpenAI(api_key=api_key)
 
     def embed(self, text: str) -> list[float]:
         """
-        Takes a text string and returns a vector [1536 floats].
+        Takes a text string and returns a vector [768 floats using Gemini].
         """
         text = text.replace("\n", " ").strip()
-        response = self.client.embeddings.create(
-            input=text,
+        response = genai.embed_content(
             model=EMBEDDING_MODEL,
+            content=text,
         )
-        return response.data[0].embedding
+        return response['embedding']
+        
+        # For OpenAI (if using instead):
+        # response = self.client.embeddings.create(
+        #     input=text,
+        #     model=EMBEDDING_MODEL,
+        # )
+        # return response.data[0].embedding
 
 
 class RecommendationService:
