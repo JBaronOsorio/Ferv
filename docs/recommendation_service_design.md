@@ -185,26 +185,26 @@ Single policy across both pipelines: **validation failures raise, the user-facin
 ### Pipeline A — one-shot recommendation
 
 ```
-User        API           RecService     EmbedSvc    Retriever    User(model)   PromptBuilder    LlmClient       DB
- |           |                 |              |           |             |              |               |          |
- |--prompt-->|                 |              |           |             |              |               |          |
- |           |---recommend---->|              |           |             |              |               |          |
- |           |                 |--embed------>|           |             |              |               |          |
- |           |                 |<---vector----|           |             |              |               |          |
- |           |                 |---top-K w/ exclusion---->|             |              |               |          |
- |           |                 |<------candidates---------|             |              |               |          |
- |           |                 |--profile_text()----------------------->|              |               |          |
- |           |                 |<-----string----------------------------|              |               |          |
- |           |                 |---build(prompt, profile, candidates)----------------->|               |          |
- |           |                 |<---formatted prompt-----------------------------------|               |          |
- |           |                 |---send(prompt, schema)------------------------------->|               |          |
- |           |                 |                                                       |--LLM API----->|          |
- |           |                 |                                                       |<--response----|          |
- |           |                 |<---parsed & validated output--------------------------|               |          |
- |           |                 |---create GraphNodes (status=recommendation)------------------------------------->|
- |           |                 |---log interaction--------------------------------------------------------------->|
- |           |<---nodes ID's---|              |           |             |              |               |          |
- |<--results-|                 |              |           |             |              |               |          |
+User        API               RecService     EmbedSvc    Retriever    User(model)   PromptBuilder    LlmClient       DB
+ |           |                     |              |           |             |              |               |          |
+ |--prompt-->|                     |              |           |             |              |               |          |
+ |           |-recommend_one_shot->|              |           |             |              |               |          |
+ |           |                     |--embed------>|           |             |              |               |          |
+ |           |                     |<---vector----|           |             |              |               |          |
+ |           |                     |---top-K w/ exclusion---->|             |              |               |          |
+ |           |                     |<------candidates---------|             |              |               |          |
+ |           |                     |--profile_text()----------------------->|              |               |          |
+ |           |                     |<-----string----------------------------|              |               |          |
+ |           |                     |---build(prompt, profile, candidates)----------------->|               |          |
+ |           |                     |<---formatted prompt-----------------------------------|               |          |
+ |           |                     |---send(prompt, schema)------------------------------->|               |          |
+ |           |                     |                                                       |--LLM API----->|          |
+ |           |                     |                                                       |<--response----|          |
+ |           |                     |<---parsed & validated output--------------------------|               |          |
+ |           |                     |---create GraphNodes (status=recommendation)------------------------------------->|
+ |           |                     |---log interaction--------------------------------------------------------------->|
+ |           |<---nodes ID's-------|              |           |             |              |               |          |
+ |<--results-|                     |              |           |             |              |               |          |
 ```
 
 ### Pipeline B — add to graph
