@@ -70,9 +70,8 @@ class RecommendationService:
             return []
 
         # Step 3 — build profile text
-        #profile_text = user.get_profile_as_prompt_text()
-        profile_text = "John likes italian food, is vegan, is bothered by loud places"
-
+        profile_text = user.get_profile_as_prompt_text()
+        
         # Step 4 — assemble prompt
         candidates_block = _candidates_block(candidates)
         n = min(RECOMMENDATION_N, len(candidates))
