@@ -73,11 +73,11 @@ Seven modules, each with a single responsibility:
 ### Proposed additions
 
 - **`GraphNode.rationale`** (optional, `TextField(blank=True)`) — stores the LLM's per-place rationale from the recommendation step. Useful for UI ("why was this recommended?") and for future feedback extraction.
+- **`reason_type`** Prompt will instruct the LLM to pick from a small enum (e.g., `food | ambiance | activity | neighborhood | social`), validate on write step.
 - **Log table or structured log stream** — prompt version, user ID, input payload, raw LLM response, parsed output, outcome. Append-only. Exact shape is a team decision; simplest MVP is a dedicated `LlmInteractionLog` model.
 
 ### Open model questions
 
-- `reason_type` is free-form at the DB level. Prompt will instruct the LLM to pick from a small enum (e.g., `food | ambiance | activity | neighborhood | social`), but we are not enforcing at the DB level yet. Expect some drift; revisit if it becomes a problem.
 - `weight` is a float produced by the LLM. Values will be poorly calibrated. Do not rely on fine-grained weight differences for any downstream logic in MVP.
 
 ---
@@ -236,13 +236,13 @@ User        API           GraphBuilder                  Retriever    User(model)
 ## 9. Build order for the sprint
 
 Suggested order of implementation, each step gated by the previous:
-
-1. **`EmbeddingService` + `Retriever`** — shared infrastructure. Verify with smoke tests against the existing place corpus (query → candidates that look plausible).
-2. **`PromptBuilder` + `LlmClient` + template loading** — also shared. Build with a stub template, verify the round-trip (prompt → LLM → validated JSON) works end-to-end on a dummy schema.
-3. **`User.get_profile_as_prompt_text()`** — plus hand-author 3–5 test user profiles at "realistic auto-generated quality."
-4. **Pipeline A — RecommendationService** — end-to-end one-shot recommendation. Start with synthetic prompts against real test users.
-5. **Pipeline B — GraphBuilder** — edge building. Depends on A because you need `in_graph` nodes to test against; either add them manually or run Pipeline A first to produce recommendations, then promote.
-6. **Logging** — ideally layered in from step 2, not bolted on at the end.
+1. **Validate assumed infrastructure**
+2. **`EmbeddingService` + `Retriever`** — shared infrastructure. Verify with smoke tests against the existing place corpus (query → candidates that look plausible).
+3. **`PromptBuilder` + `LlmClient` + template loading** — also shared. Build with a stub template, verify the round-trip (prompt → LLM → validated JSON) works end-to-end on a dummy schema.
+4. **`User.get_profile_as_prompt_text()`** — plus hand-author 3–5 test user profiles at "realistic auto-generated quality."
+5. **Pipeline A — RecommendationService** — end-to-end one-shot recommendation. Start with synthetic prompts against real test users.
+6. **Pipeline B — GraphBuilder** — edge building. Depends on A because you need `in_graph` nodes to test against; either add them manually or run Pipeline A first to produce recommendations, then promote.
+7. **Logging** — ideally layered in from step 2, not bolted on at the end.
 
 ---
 
