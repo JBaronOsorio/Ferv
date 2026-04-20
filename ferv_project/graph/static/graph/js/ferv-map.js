@@ -112,7 +112,7 @@ let selectedD  = null;     // nodo seleccionado en el panel
 //  y addNodeToBackend() llama a /graph/add-node/
 //  En el futuro, agrega removeNodeFromBackend() igual.
 
-const MOCK_MODE = true; // ← Cambiar a false cuando el back esté listo
+const MOCK_MODE = false; // ← Cambiar a false cuando el back esté listo
 
 async function fetchGraph(query, topK = 5) {
   if (MOCK_MODE) {
