@@ -55,13 +55,11 @@ class EmbeddingService:
         api_key = os.getenv(cfg["api_key_env_var"])
 
         if "gemini" in self.model_key.lower():
-            
-            import google.generativeai as genai
+            from google import genai
             if not api_key:
                 raise ValueError(f"{cfg['api_key_env_var']} is not set.")
-            
-            genai.configure(api_key=api_key) # type: ignore
-            self._genai = genai
+
+            self._client = genai.Client(api_key=api_key)
             self._provider = "gemini"
         elif "openai" in self.model_key.lower():
             
@@ -80,10 +78,13 @@ class EmbeddingService:
         text = text.replace("\n", " ").strip()
         
         if self._provider == "gemini":
-            response = self._genai.embed_content(model=self.model_name, content=text) # type: ignore
-            return response["embedding"]
+            response = self._client.models.embed_content(model=self.model_name, contents=text)  # type: ignore[attr-defined]
+            values = response.embeddings[0].values  # type: ignore[index]
+            if values is None:
+                raise ValueError("Gemini returned an empty embedding.")
+            return values
         else:
-            response = self._client.embeddings.create(input=text, model=self.model_name)
+            response = self._client.embeddings.create(input=text, model=self.model_name)  # type: ignore[attr-defined]
             return response.data[0].embedding
 
     def embed_and_persist(self, place: Place, text: str) -> PlaceEmbedding:
