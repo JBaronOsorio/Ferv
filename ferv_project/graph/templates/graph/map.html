@@ -1,310 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ferv — Mapa</title>
 
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+  <!-- Fuentes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  <!-- D3 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 
-  .ferv-root {
-    font-family: 'DM Sans', sans-serif;
-    background: #0a0a0a;
-    color: #f0f0f0;
-    height: 560px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    border-radius: 14px;
-    position: relative;
-  }
+  
 
-  .topbar {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 18px;
-    background: rgba(18,18,18,0.95);
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    backdrop-filter: blur(8px);
-    z-index: 10;
-    flex-shrink: 0;
-  }
-
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    flex-shrink: 0;
-  }
-
-  .logo-icon {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #3dd6c8, #9b6bfa);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .logo-text {
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: -0.3px;
-    background: linear-gradient(90deg, #3dd6c8, #9b6bfa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .search-wrap {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex: 1;
-    max-width: 440px;
-    margin-left: auto;
-  }
-
-  .search-input {
-    flex: 1;
-    padding: 8px 13px;
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.1);
-    background: rgba(255,255,255,0.05);
-    color: #f0f0f0;
-    font-size: 13px;
-    font-family: 'DM Sans', sans-serif;
-    outline: none;
-    transition: border-color 0.2s, background 0.2s;
-  }
-  .search-input:focus { border-color: #9b6bfa; background: rgba(155,107,250,0.07); }
-  .search-input::placeholder { color: #555; }
-
-  .btn-search {
-    padding: 8px 16px;
-    border-radius: 8px;
-    border: none;
-    font-size: 12px;
-    font-weight: 600;
-    font-family: 'DM Sans', sans-serif;
-    cursor: pointer;
-    background: linear-gradient(135deg, #3dd6c8, #9b6bfa);
-    color: #fff;
-    letter-spacing: 0.2px;
-    transition: opacity 0.15s, transform 0.1s;
-    flex-shrink: 0;
-  }
-  .btn-search:hover { opacity: 0.88; transform: translateY(-1px); }
-  .btn-search:active { transform: translateY(0); }
-  .btn-search:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-
-  .spinner {
-    width: 14px; height: 14px;
-    border: 2px solid rgba(255,255,255,0.1);
-    border-top-color: #9b6bfa;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    display: none;
-    flex-shrink: 0;
-  }
-  .spinner.show { display: block; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .canvas-wrap {
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-  }
-
-  #ferv-svg { width: 100%; height: 100%; }
-
-  .empty-state {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    pointer-events: none;
-  }
-
-  .empty-icon {
-    width: 52px; height: 52px;
-    border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.06);
-    background: rgba(255,255,255,0.03);
-    display: flex; align-items: center; justify-content: center;
-  }
-
-  .empty-state p { font-size: 13px; color: #444; }
-  .empty-state .hint { font-size: 11px; color: #333; font-family: 'DM Mono', monospace; }
-
-  .panel {
-    position: absolute;
-    top: 12px; right: 12px;
-    width: 256px;
-    background: rgba(20,20,24,0.96);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
-    padding: 16px;
-    display: none;
-    z-index: 20;
-    backdrop-filter: blur(12px);
-    animation: panelIn 0.2s ease;
-  }
-  @keyframes panelIn { from { opacity:0; transform: translateX(8px); } to { opacity:1; transform: translateX(0); } }
-  .panel.open { display: block; }
-
-  .panel-close {
-    position: absolute; top: 10px; right: 12px;
-    background: none; border: none;
-    color: #555; font-size: 16px; cursor: pointer;
-    line-height: 1; padding: 2px 4px;
-    transition: color 0.15s;
-  }
-  .panel-close:hover { color: #ccc; }
-
-  .panel-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 10px;
-    font-family: 'DM Mono', monospace;
-    color: #3dd6c8;
-    background: rgba(61,214,200,0.08);
-    border: 1px solid rgba(61,214,200,0.2);
-    border-radius: 4px;
-    padding: 2px 7px;
-    margin-bottom: 8px;
-    letter-spacing: 0.3px;
-  }
-
-  #panel-name {
-    font-size: 14px; font-weight: 600;
-    color: #f0f0f0; margin-bottom: 3px;
-  }
-
-  #panel-neighborhood { font-size: 11px; color: #666; margin-bottom: 8px; }
-
-  #panel-tags {
-    display: flex; flex-wrap: wrap; gap: 4px;
-    margin-bottom: 10px;
-  }
-
-  .tag {
-    font-size: 10px; font-family: 'DM Mono', monospace;
-    color: #888; background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 4px; padding: 2px 6px;
-  }
-
-  .panel-rating {
-    display: flex; align-items: center; gap: 5px;
-    font-size: 12px; color: #f0c040; margin-bottom: 14px;
-    font-family: 'DM Mono', monospace;
-  }
-
-  .edge-connections { margin-bottom: 12px; }
-  .edge-connections h4 { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-  .edge-item { font-size: 11px; color: #777; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
-  .edge-item span { color: #3dd6c8; }
-
-  .btn-add {
-    width: 100%;
-    padding: 9px;
-    border-radius: 8px;
-    border: none;
-    font-size: 12px;
-    font-weight: 600;
-    font-family: 'DM Sans', sans-serif;
-    cursor: pointer;
-    background: linear-gradient(135deg, #3dd6c8, #9b6bfa);
-    color: #fff;
-    transition: opacity 0.15s;
-  }
-  .btn-add:hover { opacity: 0.85; }
-  .btn-add:disabled { opacity: 0.4; cursor: not-allowed; }
-  .btn-add.saved {
-    background: rgba(255,255,255,0.06);
-    color: #777;
-    cursor: not-allowed;
-  }
-
-  .toast {
-    position: absolute;
-    bottom: 16px; left: 50%;
-    transform: translateX(-50%) translateY(50px);
-    background: rgba(30,30,36,0.97);
-    border: 1px solid rgba(61,214,200,0.25);
-    color: #3dd6c8;
-    padding: 8px 18px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-family: 'DM Mono', monospace;
-    transition: transform 0.25s ease, opacity 0.25s;
-    z-index: 100;
-    pointer-events: none;
-    opacity: 0;
-    white-space: nowrap;
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
-  .legend {
-    position: absolute;
-    bottom: 12px; left: 12px;
-    display: flex; flex-direction: column; gap: 5px;
-    z-index: 5; pointer-events: none;
-  }
-  .legend-item {
-    display: flex; align-items: center; gap: 6px;
-    font-size: 10px; color: #555;
-    font-family: 'DM Mono', monospace;
-  }
-  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
-
-  .query-chip {
-    display: none;
-    position: absolute;
-    top: 12px; left: 12px;
-    background: rgba(155,107,250,0.1);
-    border: 1px solid rgba(155,107,250,0.25);
-    border-radius: 6px;
-    padding: 4px 10px;
-    font-size: 11px;
-    font-family: 'DM Mono', monospace;
-    color: #9b6bfa;
-    z-index: 5;
-    pointer-events: none;
-  }
-  .query-chip.show { display: block; }
-
-  .stats-bar {
-    display: none;
-    position: absolute;
-    top: 12px; left: 12px;
-    align-items: center;
-    gap: 10px;
-    z-index: 5;
-    pointer-events: none;
-  }
-  .stats-bar.show { display: flex; }
-  .stat-pill {
-    background: rgba(18,18,22,0.9);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 6px;
-    padding: 3px 9px;
-    font-size: 10px;
-    font-family: 'DM Mono', monospace;
-    color: #666;
-  }
-  .stat-pill b { color: #9b6bfa; font-weight: 500; }
-</style>
+  <!-- Estilos del mapa -->
+  <link rel="stylesheet" href="{% static 'graph/css/ferv-map.css' %}">
+</head>
+<body>
 
 <div class="ferv-root">
 
+  <!-- ── Barra superior ── -->
   <div class="topbar">
     <div class="logo">
       <div class="logo-icon">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2">
           <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
           <circle cx="12" cy="9" r="2.5"/>
         </svg>
@@ -314,388 +36,165 @@
 
     <div class="search-wrap">
       <input class="search-input" id="q-input" type="text"
-        placeholder="café tranquilo, bar con música en vivo..."
+        placeholder="café tranquilo, bar con música, sushi..."
         autocomplete="off"/>
       <div class="spinner" id="spinner"></div>
       <button class="btn-search" id="search-btn" onclick="runSearch()">Explorar</button>
     </div>
+
+    <!-- Menú de usuario -->
+    <div class="user-menu" id="userMenu">
+  <div class="user-avatar" id="userAvatarBtn">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+         stroke="rgba(155,107,250,0.8)" stroke-width="2">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+      <circle cx="12" cy="7" r="4"/>
+    </svg>
   </div>
 
+  <div class="user-dropdown" id="userDropdown">
+    <div class="user-info">
+      <div class="user-name">{{ request.user.get_full_name|default:request.user.username }}</div>
+      <div class="user-email">{{ request.user.email }}</div>
+    </div>
+    <a href="#">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      Mi perfil
+    </a>
+    <a href="#">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+      Preferencias
+    </a>
+    
+    <form method="POST" action="{% url 'user:logout' %}" style="margin:0;padding:0;">
+      {% csrf_token %}
+      <button type="submit" class="logout-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Cerrar sesión
+      </button>
+    </form>
+      
+  </div>
+  </div>
+
+
+  </div>
+
+  <!-- ── Canvas del grafo ── -->
   <div class="canvas-wrap">
+
+    <!-- Estado vacío -->
     <div class="empty-state" id="empty-state">
       <div class="empty-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.5">
-          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="1.5">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
         </svg>
       </div>
-      <p>Escribe algo para descubrir lugares</p>
-      <p class="hint">ej: "café tranquilo para trabajar"</p>
+      <p>Tu mapa está vacío</p>
+      <p class="hint">Busca algo para empezar a explorar</p>
     </div>
 
-    <svg id="ferv-svg">
-      <defs>
-        <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-          <path d="M0,0 L0,6 L6,3 z" fill="rgba(155,107,250,0.4)"/>
-        </marker>
-        <filter id="glow">
-          <feGaussianBlur stdDeviation="3" result="blur"/>
-          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-      </defs>
-    </svg>
+    <!-- SVG del grafo D3 -->
+    <svg id="ferv-svg"></svg>
 
-    <div class="stats-bar" id="stats-bar">
-      <div class="stat-pill"><b id="stat-nodes">0</b> lugares</div>
-      <div class="stat-pill"><b id="stat-edges">0</b> conexiones</div>
+    <!-- Tags de búsquedas realizadas -->
+    <div class="query-tags" id="query-tags"></div>
+
+    <!-- HUD — contadores bottom-left -->
+    <div class="hud" id="hud" style="display:none">
+      <div class="hud-pill">
+        <div class="hud-dot" style="background:#9b6bfa"></div>
+        <b id="hud-suggested" style="color:#9b6bfa">0</b> sugeridos
+      </div>
+      <div class="hud-pill">
+        <div class="hud-dot" style="background:#3dd6c8"></div>
+        <b id="hud-saved" style="color:#3dd6c8">0</b> en mi mapa
+      </div>
     </div>
 
+    <!-- Panel lateral de detalle de nodo -->
     <div class="panel" id="detail-panel">
       <button class="panel-close" onclick="closePanel()">×</button>
-      <div class="panel-badge" id="panel-badge">• lugar</div>
-      <div id="panel-name">—</div>
+
+      <div class="panel-badge" id="panel-badge"></div>
+      <div id="panel-name"></div>
       <div id="panel-neighborhood"></div>
       <div id="panel-tags"></div>
       <div class="panel-rating" id="panel-rating"></div>
-      <div class="edge-connections" id="edge-connections" style="display:none">
-        <h4>Conectado con</h4>
-        <div id="edge-list"></div>
+
+      <div class="panel-connections" id="panel-connections" style="display:none">
+        <h4>Conexiones</h4>
+        <div id="conn-list"></div>
       </div>
-      <button class="btn-add" id="panel-add-btn">+ Agregar a mi mapa</button>
+
+      <!-- Botones de acción -->
+      <div class="panel-actions">
+        <button class="btn-add" id="panel-add-btn">+ Agregar a mi mapa</button>
+        <button class="btn-remove" id="panel-remove-btn">− Eliminar del mapa</button>
+      </div>
     </div>
 
-    <div class="legend" id="legend" style="display:none">
-      <div class="legend-item"><div class="legend-dot" style="background:#3dd6c8"></div>El Poblado</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#9b6bfa"></div>Laureles</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#fa6b8a"></div>Envigado</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#6bfac8"></div>Estadio</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#fac86b"></div>Centro</div>
+    <!-- Panel de chat -->
+<div class="chat-panel" id="chatPanel">
+  <div class="panel-head">
+    <div class="panel-avatar">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2">
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+        <circle cx="12" cy="9" r="2.5"/>
+      </svg>
     </div>
+    <div>
+      <div class="panel-chat-title">ferv chat</div>
+      <div class="panel-chat-sub">¿qué estás buscando hoy?</div>
+    </div>
+    <div class="panel-online-dot"></div>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-msg bot">Hola 👋 Cuéntame qué tipo de lugar te apetece y te ayudo a buscarlo.</div>
+  </div>
+  <div class="chat-panel-input-wrap">
+    <input class="chat-panel-input" id="chatInput" placeholder="busco un café tranquilo..." />
+    <button class="btn-chat-send" id="chatSendBtn">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+        <line x1="22" y1="2" x2="11" y2="13"/>
+        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+      </svg>
+    </button>
+  </div>
   </div>
 
+    <!-- Burbuja flotante -->
+    <button class="chat-bubble" id="chatBubble">
+      <div class="notif-dot">1</div>
+      <svg class="bubble-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+      <svg class="bubble-icon-close" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+
+  </div><!-- /canvas-wrap -->
+
+  <!-- Toast de confirmación -->
   <div class="toast" id="toast"></div>
-</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
-<script>
+</div><!-- /ferv-root -->
 
-<!-- Mock data for demonstration purposes  *********************************************************************************** -->
+<!-- Lógica del mapa -->
+  <script src="{% static 'graph/js/ferv-map.js' %}"></script>
 
-const MOCK_DATA = {
-  "cafe tranquilo": {
-    nodes: [
-      { id: 1, place_id: "ChIJ001", name: "Pergamino Café", neighborhood: "El Poblado", rating: 4.8, is_favorite: true, tags: ["café de especialidad","coworking","wifi"] },
-      { id: 2, place_id: "ChIJ002", name: "Café Velvet", neighborhood: "Laureles", rating: 4.6, is_favorite: false, tags: ["tercera ola","tranquilo","libros"] },
-      { id: 3, place_id: "ChIJ003", name: "Amor Perfecto", neighborhood: "El Poblado", rating: 4.7, is_favorite: false, tags: ["café de origen","brunch","jardín"] },
-      { id: 4, place_id: "ChIJ004", name: "Azahar Café", neighborhood: "Envigado", rating: 4.5, is_favorite: false, tags: ["espresso bar","minimal","trabajo"] },
-      { id: 5, place_id: "ChIJ005", name: "Café Zeppelin", neighborhood: "Laureles", rating: 4.4, is_favorite: false, tags: ["música suave","lectura","plantas"] },
-      { id: 6, place_id: "ChIJ006", name: "Urbania Café", neighborhood: "Estadio", rating: 4.3, is_favorite: false, tags: ["coworking","terrraza","wifi rápido"] },
-    ],
-    edges: [
-      { from_node: 1, to_node: 2, weight: 0.88, reason: "Specialty coffee culture", reason_type: "vibe_match" },
-      { from_node: 1, to_node: 3, weight: 0.82, reason: "Single origin focus", reason_type: "category_overlap" },
-      { from_node: 2, to_node: 5, weight: 0.75, reason: "Quiet study atmosphere", reason_type: "atmosphere_match" },
-      { from_node: 3, to_node: 4, weight: 0.71, reason: "El Poblado coffee scene", reason_type: "neighborhood" },
-      { from_node: 4, to_node: 6, weight: 0.68, reason: "Work-friendly spaces", reason_type: "activity_match" },
-      { from_node: 5, to_node: 6, weight: 0.65, reason: "Chill ambient vibes", reason_type: "vibe_match" },
-      { from_node: 2, to_node: 4, weight: 0.60, reason: "Minimalist aesthetic", reason_type: "atmosphere_match" },
-    ]
-  },
-  "bar con musica": {
-    nodes: [
-      { id: 10, place_id: "ChIJ010", name: "El Social", neighborhood: "El Poblado", rating: 4.5, is_favorite: true, tags: ["cócteles","jazz","vivo"] },
-      { id: 11, place_id: "ChIJ011", name: "Son Havana", neighborhood: "Laureles", rating: 4.7, is_favorite: false, tags: ["salsa","cubano","bailar"] },
-      { id: 12, place_id: "ChIJ012", name: "La Octava", neighborhood: "Envigado", rating: 4.3, is_favorite: false, tags: ["rock","cervezas","indie"] },
-      { id: 13, place_id: "ChIJ013", name: "Envy Rooftop", neighborhood: "El Poblado", rating: 4.6, is_favorite: false, tags: ["vistas","electrónica","terraza"] },
-      { id: 14, place_id: "ChIJ014", name: "Vintrash", neighborhood: "Laureles", rating: 4.4, is_favorite: false, tags: ["punk","vinilo","underground"] },
-      { id: 15, place_id: "ChIJ015", name: "Porto Bar", neighborhood: "Estadio", rating: 4.2, is_favorite: false, tags: ["fútbol","cerveza","ambiente"] },
-    ],
-    edges: [
-      { from_node: 10, to_node: 11, weight: 0.85, reason: "Live music scene", reason_type: "activity_match" },
-      { from_node: 10, to_node: 13, weight: 0.79, reason: "Poblado nightlife", reason_type: "neighborhood" },
-      { from_node: 11, to_node: 12, weight: 0.72, reason: "Dance and music energy", reason_type: "atmosphere_match" },
-      { from_node: 12, to_node: 14, weight: 0.88, reason: "Alternative music lovers", reason_type: "vibe_match" },
-      { from_node: 13, to_node: 15, weight: 0.60, reason: "Chill bar atmosphere", reason_type: "atmosphere_match" },
-      { from_node: 14, to_node: 15, weight: 0.55, reason: "Casual drinks crowd", reason_type: "category_overlap" },
-    ]
-  },
-  default: {
-    nodes: [
-      { id: 20, place_id: "ChIJ020", name: "Mercado del Río", neighborhood: "Centro", rating: 4.6, is_favorite: false, tags: ["gastro","mercado","variado"] },
-      { id: 21, place_id: "ChIJ021", name: "Hacienda Junín", neighborhood: "El Poblado", rating: 4.8, is_favorite: true, tags: ["fine dining","colonial","experiencia"] },
-      { id: 22, place_id: "ChIJ022", name: "La Mar", neighborhood: "El Poblado", rating: 4.7, is_favorite: false, tags: ["ceviche","mariscos","gastronomía"] },
-      { id: 23, place_id: "ChIJ023", name: "Oci.Mde", neighborhood: "Laureles", rating: 4.5, is_favorite: false, tags: ["cocina local","artesanal","creativo"] },
-      { id: 24, place_id: "ChIJ024", name: "El Cielo", neighborhood: "El Poblado", rating: 4.9, is_favorite: false, tags: ["molecular","experiencia","fine dining"] },
-      { id: 25, place_id: "ChIJ025", name: "Carmen", neighborhood: "El Poblado", rating: 4.6, is_favorite: false, tags: ["colombiana","contemporánea","vista"] },
-    ],
-    edges: [
-      { from_node: 21, to_node: 24, weight: 0.92, reason: "Fine dining experience", reason_type: "category_overlap" },
-      { from_node: 21, to_node: 25, weight: 0.85, reason: "Upscale Colombian cuisine", reason_type: "vibe_match" },
-      { from_node: 24, to_node: 25, weight: 0.78, reason: "Experimental Colombian", reason_type: "atmosphere_match" },
-      { from_node: 22, to_node: 23, weight: 0.70, reason: "Creative local ingredients", reason_type: "category_overlap" },
-      { from_node: 20, to_node: 22, weight: 0.65, reason: "Seafood and fresh market", reason_type: "vibe_match" },
-      { from_node: 23, to_node: 25, weight: 0.60, reason: "Artisanal Colombian touch", reason_type: "atmosphere_match" },
-    ]
-  }
-};
-
-const NEIGHBORHOOD_COLORS = {
-  "El Poblado": { fill: "rgba(61,214,200,0.12)", stroke: "#3dd6c8", text: "#3dd6c8" },
-  "Laureles":   { fill: "rgba(155,107,250,0.12)", stroke: "#9b6bfa", text: "#9b6bfa" },
-  "Envigado":   { fill: "rgba(250,107,138,0.12)", stroke: "#fa6b8a", text: "#fa6b8a" },
-  "Estadio":    { fill: "rgba(107,250,200,0.12)", stroke: "#6bfac8", text: "#6bfac8" },
-  "Centro":     { fill: "rgba(250,200,107,0.12)", stroke: "#fac86b", text: "#fac86b" },
-};
-const DEFAULT_COLOR = { fill: "rgba(150,150,150,0.1)", stroke: "#666", text: "#aaa" };
-
-function getColor(n) { return NEIGHBORHOOD_COLORS[n] || DEFAULT_COLOR; }
-function truncate(s, n) { return s && s.length > n ? s.slice(0, n) + "…" : (s || ""); }
-
-let simulation = null;
-let currentGraph = null;
-let selectedNodeData = null;
-let savedNodes = new Set();
-
-function getMockData(query) {
-  const q = (query || "").toLowerCase();
-  if (q.includes("café") || q.includes("cafe") || q.includes("tranquilo") || q.includes("trabajo") || q.includes("cowork")) return MOCK_DATA["cafe tranquilo"];
-  if (q.includes("bar") || q.includes("música") || q.includes("musica") || q.includes("bailar") || q.includes("noche") || q.includes("copas")) return MOCK_DATA["bar con musica"];
-  return MOCK_DATA["default"];
-}
-
-async function runSearch() {
-  const q = document.getElementById('q-input').value.trim();
-  if (!q) return;
-
-  document.getElementById('spinner').classList.add('show');
-  document.getElementById('search-btn').disabled = true;
-  document.getElementById('empty-state').style.display = 'none';
-  closePanel();
-
-  await new Promise(r => setTimeout(r, 700));
-
-  const mockGraph = getMockData(q);
-  currentGraph = mockGraph;
-  renderGraph(mockGraph, q);
-
-  document.getElementById('stat-nodes').textContent = mockGraph.nodes.length;
-  document.getElementById('stat-edges').textContent = mockGraph.edges.length;
-  document.getElementById('stats-bar').classList.add('show');
-  document.getElementById('legend').style.display = 'flex';
-
-  document.getElementById('spinner').classList.remove('show');
-  document.getElementById('search-btn').disabled = false;
-}
-
-document.getElementById('q-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter') runSearch();
-});
-
-function renderGraph(graph, query) {
-  const svg = d3.select('#ferv-svg');
-  svg.selectAll('*').remove();
-
-  svg.append('defs').html(`
-    <marker id="arrow" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
-      <path d="M0,0 L0,5 L5,2.5 z" fill="rgba(155,107,250,0.35)"/>
-    </marker>
-    <filter id="node-glow" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="4" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-  `);
-
-  const W = document.querySelector('.canvas-wrap').clientWidth;
-  const H = document.querySelector('.canvas-wrap').clientHeight;
-
-  const g = svg.append('g');
-
-  svg.call(d3.zoom()
-    .scaleExtent([0.25, 3.5])
-    .on('zoom', e => g.attr('transform', e.transform))
-  );
-
-  const nodeMap = {};
-  const nodes = graph.nodes.map(n => { const c = { ...n }; nodeMap[n.id] = c; return c; });
-
-  const edges = graph.edges.map(e => ({
-    source: nodeMap[e.from_node],
-    target: nodeMap[e.to_node],
-    weight: e.weight,
-    reason: e.reason,
-    reason_type: e.reason_type,
-  })).filter(e => e.source && e.target);
-
-  simulation = d3.forceSimulation(nodes)
-    .force('link', d3.forceLink(edges).distance(d => 130 - d.weight * 50).strength(0.5))
-    .force('charge', d3.forceManyBody().strength(-280))
-    .force('center', d3.forceCenter(W / 2, H / 2))
-    .force('collision', d3.forceCollide(56));
-
-  const linkG = g.append('g');
-  const link = linkG.selectAll('line')
-    .data(edges).join('line')
-    .attr('stroke', d => `rgba(155,107,250,${0.15 + d.weight * 0.35})`)
-    .attr('stroke-width', d => 0.8 + d.weight * 1.8)
-    .attr('stroke-dasharray', d => d.weight > 0.75 ? 'none' : '4,4')
-    .attr('marker-end', 'url(#arrow)');
-
-  const edgeLabelG = g.append('g');
-  const edgeLabel = edgeLabelG.selectAll('text')
-    .data(edges.filter(e => e.weight > 0.72)).join('text')
-    .attr('fill', 'rgba(155,107,250,0.45)')
-    .attr('font-size', '9')
-    .attr('font-family', "'DM Mono', monospace")
-    .attr('text-anchor', 'middle')
-    .attr('pointer-events', 'none')
-    .text(d => truncate(d.reason, 22));
-
-  const nodeG = g.append('g');
-  const node = nodeG.selectAll('g')
-    .data(nodes).join('g')
-    .attr('class', 'node')
-    .style('cursor', 'pointer')
-    .call(d3.drag()
-      .on('start', (ev, d) => { if (!ev.active) simulation.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
-      .on('drag',  (ev, d) => { d.fx = ev.x; d.fy = ev.y; })
-      .on('end',   (ev, d) => { if (!ev.active) simulation.alphaTarget(0); d.fx = null; d.fy = null; })
-    )
-    .on('click', (ev, d) => { ev.stopPropagation(); openPanel(d, edges); });
-
-  node.append('circle')
-    .attr('r', 38)
-    .attr('fill', d => getColor(d.neighborhood).fill)
-    .attr('stroke', d => getColor(d.neighborhood).stroke)
-    .attr('stroke-width', d => d.is_favorite ? 2 : 1)
-    .attr('opacity', 0)
-    .transition().duration(500).delay((d,i) => i * 80)
-    .attr('opacity', 1);
-
-  node.filter(d => d.is_favorite)
-    .append('text')
-    .attr('y', -30).attr('text-anchor', 'middle')
-    .attr('font-size', '12')
-    .attr('fill', '#fac86b')
-    .text('★');
-
-  node.append('text')
-    .attr('y', 4)
-    .attr('text-anchor', 'middle')
-    .attr('font-size', '12')
-    .attr('font-weight', '500')
-    .attr('font-family', "'DM Sans', sans-serif")
-    .attr('fill', d => getColor(d.neighborhood).text)
-    .attr('pointer-events', 'none')
-    .text(d => truncate(d.name, 14));
-
-  node.append('text')
-    .attr('y', 19)
-    .attr('text-anchor', 'middle')
-    .attr('font-size', '10')
-    .attr('fill', '#555')
-    .attr('font-family', "'DM Mono', monospace")
-    .attr('pointer-events', 'none')
-    .text(d => truncate(d.neighborhood, 13));
-
-  simulation.on('tick', () => {
-    link
-      .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
-      .attr('x2', d => {
-        const dx = d.target.x - d.source.x, dy = d.target.y - d.source.y;
-        const dist = Math.sqrt(dx*dx + dy*dy) || 1;
-        return d.target.x - (dx/dist) * 42;
-      })
-      .attr('y2', d => {
-        const dx = d.target.x - d.source.x, dy = d.target.y - d.source.y;
-        const dist = Math.sqrt(dx*dx + dy*dy) || 1;
-        return d.target.y - (dy/dist) * 42;
-      });
-
-    edgeLabel
-      .attr('x', d => (d.source.x + d.target.x) / 2)
-      .attr('y', d => (d.source.y + d.target.y) / 2 - 4);
-
-    node.attr('transform', d => `translate(${d.x},${d.y})`);
-  });
-
-  svg.on('click', () => closePanel());
-}
-
-function openPanel(d, edges) {
-  selectedNodeData = d;
-  const c = getColor(d.neighborhood);
-
-  document.getElementById('panel-badge').textContent = `• ${d.neighborhood || 'Medellín'}`;
-  document.getElementById('panel-badge').style.color = c.text;
-  document.getElementById('panel-badge').style.background = c.fill;
-  document.getElementById('panel-badge').style.borderColor = c.stroke + '44';
-
-  document.getElementById('panel-name').textContent = d.name;
-  document.getElementById('panel-neighborhood').textContent = d.neighborhood || 'Medellín';
-
-  const tagsEl = document.getElementById('panel-tags');
-  tagsEl.innerHTML = '';
-  (d.tags || []).forEach(t => {
-    const span = document.createElement('span');
-    span.className = 'tag';
-    span.textContent = t;
-    tagsEl.appendChild(span);
-  });
-
-  const ratingEl = document.getElementById('panel-rating');
-  ratingEl.textContent = d.rating ? `★ ${d.rating.toFixed(1)}` : '';
-
-  if (edges) {
-    const connected = edges.filter(e =>
-      (e.source && e.source.id === d.id) || (e.target && e.target.id === d.id)
-    );
-    const edgeConEl = document.getElementById('edge-connections');
-    const edgeListEl = document.getElementById('edge-list');
-    if (connected.length > 0) {
-      edgeConEl.style.display = 'block';
-      edgeListEl.innerHTML = connected.map(e => {
-        const other = e.source.id === d.id ? e.target : e.source;
-        return `<div class="edge-item"><span>${other ? truncate(other.name, 18) : '—'}</span> · ${truncate(e.reason, 24)}</div>`;
-      }).join('');
-    } else {
-      edgeConEl.style.display = 'none';
-    }
-  }
-
-  const addBtn = document.getElementById('panel-add-btn');
-  if (savedNodes.has(d.place_id)) {
-    addBtn.textContent = '✓ En tu mapa';
-    addBtn.className = 'btn-add saved';
-    addBtn.disabled = true;
-  } else {
-    addBtn.textContent = '+ Agregar a mi mapa';
-    addBtn.className = 'btn-add';
-    addBtn.disabled = false;
-  }
-
-  document.getElementById('detail-panel').classList.add('open');
-}
-
-function closePanel() {
-  document.getElementById('detail-panel').classList.remove('open');
-  selectedNodeData = null;
-}
-
-document.getElementById('panel-add-btn').addEventListener('click', () => {
-  if (!selectedNodeData || savedNodes.has(selectedNodeData.place_id)) return;
-  savedNodes.add(selectedNodeData.place_id);
-  showToast(`"${truncate(selectedNodeData.name, 20)}" agregado a tu mapa`);
-  const addBtn = document.getElementById('panel-add-btn');
-  addBtn.textContent = '✓ En tu mapa';
-  addBtn.className = 'btn-add saved';
-  addBtn.disabled = true;
-});
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
-}
-
-runSearch.demoMode = true;
-</script>
+</body>
+</html>
