@@ -114,7 +114,7 @@ let selectedD  = null;     // nodo seleccionado en el panel
 
 const MOCK_MODE = false; // ← Cambiar a false cuando el back esté listo
 
-async function fetchGraph(query, topK = 5) {
+async function fetchGraph(query) {
   if (MOCK_MODE) {
     // Simula latencia de red
     await new Promise(r => setTimeout(r, 600));
@@ -122,8 +122,7 @@ async function fetchGraph(query, topK = 5) {
   }
 
   // ── Llamada real al backend ──────────────────────────────
-  const params = new URLSearchParams({ q: query, top_k: topK });
-  const resp = await fetch(`/graph/api/one_shot_recommendation/${encodeURIComponent(query)}`, {
+  const resp = await fetch(`/graph/api/fetch-graph/`, {
   headers: { "Accept": "application/json" }
  });
   if (!resp.ok) throw new Error(`API error ${resp.status}`);
@@ -133,7 +132,7 @@ async function fetchGraph(query, topK = 5) {
   // El backend devuelve { graph: { nodes, edges } }
   // Normalizamos al formato interno { nodes, edges }
   return {
-    nodes: data.graph.nodes.map(n => ({
+    nodes: data.nodes.map(n => ({
       id: String(n.id),
       place_id: n.place_id,
       name: n.name,
@@ -141,7 +140,7 @@ async function fetchGraph(query, topK = 5) {
       rating: n.rating,
       tags: n.tags || [],
     })),
-    edges: data.graph.edges.map(e => ({
+    edges: data.edges.map(e => ({
       from: String(e.from_node),
       to:   String(e.to_node),
       weight: e.weight,
@@ -195,12 +194,14 @@ async function runSearch() {
 
   try {
     const data = await fetchGraph(q);
+    console.log("Búsqueda completada. Nodos recibidos:", data.nodes, "Edges recibidos:", data.edges);
 
     const W = document.querySelector(".canvas-wrap").clientWidth;
     const H = document.querySelector(".canvas-wrap").clientHeight;
 
     // Registrar nodos nuevos (sin sobrescribir posición de existentes)
     suggestIds = new Set();
+
     data.nodes.forEach(n => {
       suggestIds.add(n.place_id);
       if (!allNodes[n.place_id]) {

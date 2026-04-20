@@ -101,4 +101,6 @@ def fetch_graph(request):
     serialized_nodes = GraphNodeSerializer(nodes, many=True).data
     serialized_edges = GraphEdgeSerializer(edges, many=True).data
 
+    print(f"fetch_graph: returning {(serialized_nodes)} nodes and {(serialized_edges)} edges for user {request.user.username}")
+
     return JsonResponse({'nodes': serialized_nodes, 'edges': serialized_edges}, status=200)
