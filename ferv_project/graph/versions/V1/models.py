@@ -2,12 +2,9 @@ from django.conf import settings
 from django.db import models
 
 
-
 class GraphNode(models.Model):
     place = models.ForeignKey('places.Place', related_name='graph_nodes', on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='graph_nodes', on_delete=models.CASCADE)
-    rationale = models.CharField(max_length=255, blank=True)
-    status = models.CharField(max_length=60, blank=False, default='recommendation')
     is_favorite = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -38,3 +35,31 @@ class GraphEdge(models.Model):
 
     def __str__(self):
         return f"Edge from {self.from_node.place.name} to {self.to_node.place.name} (weight={self.weight})"
+
+
+class UserNode(models.Model):
+    """
+    Lugar que el usuario agregó explícitamente a su mapa personal.
+    Distinto de GraphNode (que es temporal, generado por el motor de recomendación).
+    Un registro por par usuario-lugar.
+    """
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='saved_nodes',
+    )
+    place = models.ForeignKey(
+        'places.Place',
+        on_delete=models.CASCADE,
+        related_name='user_nodes',
+    )
+    is_favorite = models.BooleanField(default=False)
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'place'], name='unique_user_saved_place')
+        ]
+
+    def __str__(self):
+        return f"{self.user.username} → {self.place.name}"

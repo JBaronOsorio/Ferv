@@ -25,7 +25,7 @@ class GraphNodeSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = GraphNode
-        fields = ['id', 'place', 'is_favorite', 'rationale', 'status']
+        fields = ['id', 'place', 'is_favorite']
 
 class GraphEdgeSerializer(serializers.ModelSerializer):
     source = GraphNodeSerializer(read_only=True, source='from_node')

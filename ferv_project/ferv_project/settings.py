@@ -13,9 +13,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+
 load_dotenv(Path(__file__).resolve().parent.parent.parent / '.env')
-print("GEMINI API KEY:", os.getenv("GEMINI_API_KEY"))
-# For OpenAI: print("OPENAI API KEY:", os.getenv("OPENAI_API_KEY"))
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -144,3 +143,48 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Recommendation system config
+
+EMBEDDING_MODELS = {
+    "gemini-embedding-001": {
+        "model_key": "gemini-embedding-001",
+        "name": "models/gemini-embedding-001",
+        "dimensions": 768,
+        "api_key_env_var": "GEMINI_API_KEY",
+    },
+    "gemini-embedding-001-large": {
+        "model_key": "gemini-embedding-001-large",
+        "name": "models/gemini-embedding-001",
+        "dimensions": 3072,
+        "api_key_env_var": "GEMINI_API_KEY",
+    },
+    "openai-text-embedding-3-small": {
+        "model_key": "openai-text-embedding-3-small",
+        "name": "text-embedding-3-small",
+        "dimensions": 1536,
+        "api_key_env_var": "OPENAI_API_KEY",
+    }
+}
+
+LANGUAGE_MODELS = {
+    "gemini-2.5-flash": {
+        "name": "gemini-2.5-flash",
+        "api_key_env_var": "GEMINI_API_KEY",
+    },
+    "gemini-2.5-pro": {
+        "name": "gemini-2.5-pro",
+        "api_key_env_var": "GEMINI_API_KEY",
+    },
+    "openai-gpt-4o-mini": {
+        "name": "gpt-4o-mini",
+        "api_key_env_var": "OPENAI_API_KEY",
+    }
+}
+
+RECOMMENDATION_CONFIGS = {
+    "default": {
+        "embedding_model": EMBEDDING_MODELS["gemini-embedding-001-large"],
+        "language_model": LANGUAGE_MODELS["gemini-2.5-flash"],
+    },
+}

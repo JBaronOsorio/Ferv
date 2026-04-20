@@ -1,229 +1,188 @@
 """
 graph_builder.py
 ----------------
-GraphBuilder service — takes a list of recommended places and a user profile,
-calls the LLM once to generate all edges, and saves the graph to the DB.
+GraphBuilder — Pipeline B orchestrator.
 
-Flow:
-    1. Create GraphNodes for each recommended place
-    2. Build a single prompt with all places + user profile
-    3. Call Gemini to generate edges as JSON
-    4. Save GraphEdges to the DB
+Workflow:
+  1. Load the recommendation-status GraphNode (verify it belongs to this user)
+  2. Retrieve top-N similar in_graph nodes for the user via vector similarity
+  3. If no in_graph nodes exist: transition status only, no LLM call
+  4. Assemble user profile text
+  5. Build prompt via PromptBuilder
+  6. Call LLM via LlmClient, validate response
+  7. Security-verify all returned node IDs belong to this user
+  8. In a transaction: create GraphEdge rows + transition node to in_graph
+  9. Log interaction to LlmInteractionLog
 """
 
-import json
 import logging
-import os
 
-import google.generativeai as genai
-from rest_framework import response
-# from openai import OpenAI  # Uncomment if using OpenAI instead
-from graph.models import GraphNode, GraphEdge
-from places.models import Place
+from django.db import transaction
+
+from graph.models import GraphEdge, GraphNode
+from recommendation.llm_client import EdgeBuildingOutput, LlmClient
+from recommendation.models import LlmInteractionLog
+from recommendation.prompt_builder import PromptBuilder
+from recommendation.services import Retriever
 
 log = logging.getLogger(__name__)
 
-# Simulated user profile — replace with request.user.profile when auth is merged
-SIMULATED_USER = {
-    "id": 1,
-    "preferred_atmospheres": ["quiet", "intimate"],
-    "preferred_activities": ["live_music", "gastronomy"],
-    "budget_range": "medium"
-}
+EDGE_CANDIDATE_N = 8  # max in_graph nodes passed as candidates for edge building
+
+
+def _node_block(node: GraphNode) -> str:
+    """Format a single node's place as a prompt block."""
+    place = node.place
+    tags = ", ".join(t.tag for t in place.tags.all())
+    summary = place.editorial_summary or "No description available."
+    return (
+        f"node_id: {node.pk}\n"
+        f"  place_id: {place.place_id}\n"
+        f"  name: {place.name}\n"
+        f"  neighborhood: {place.neighborhood or 'unknown'}\n"
+        f"  rating: {place.rating}\n"
+        f"  tags: {tags}\n"
+        f"  summary: {summary}"
+    )
+
+
+def _candidates_block(nodes: list) -> str:
+    return "\n\n".join(_node_block(n) for n in nodes)
 
 
 class GraphBuilder:
-    """
-    Builds a personalized recommendation graph for a user.
-    Creates GraphNodes for each place and GraphEdges between them
-    using the LLM to generate meaningful connection reasons.
-    """
-
-    def __init__(self):
-        api_key = os.getenv("GEMINI_API_KEY")
-        if not api_key:
-            raise ValueError("GEMINI_API_KEY is not set in your .env file.")
-        genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel('gemini-pro')
-        
-        # Uncomment below if using OpenAI instead:
-        # from openai import OpenAI
-        # self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
-    def build(self, place_ids: list[str], user_profile: dict = None) -> dict:
+    def add_to_graph(self, user, node_id: int) -> list[int]:
         """
-        Main entry point. Takes a list of place_ids from the recommendation
-        service and builds a graph for the simulated user.
-
-        Returns a dict with nodes and edges ready for the API response.
+        Promote a recommendation-status GraphNode to in_graph.
+        Returns list of created GraphEdge IDs.
+        Raises on invalid node, wrong user/status, or LLM validation failure.
         """
-        if user_profile is None:
-            user_profile = SIMULATED_USER
+        # Step 1 — load and validate the node
+        try:
+            node = GraphNode.objects.select_related("place").prefetch_related(
+                "place__tags"
+            ).get(id=node_id, user=user)
+        except GraphNode.DoesNotExist:
+            raise ValueError(f"GraphNode {node_id} not found for this user.")
 
-        # ── Step 1: Get Place objects ─────────────────────────────────────
-        places = list(
-            Place.objects.filter(place_id__in=place_ids)
-            .prefetch_related('tags', 'document')
+        if node.status != "recommendation":
+            raise ValueError(
+                f"GraphNode {node_id} has status '{node.status}', expected 'recommendation'."
+            )
+
+        retriever = Retriever()
+
+        # Step 2 — find similar in_graph nodes
+        candidate_nodes = retriever.get_similar_in_graph_nodes(
+            node, user, top_n=EDGE_CANDIDATE_N
         )
 
-        if not places:
-            log.warning("No places found for place_ids: %s", place_ids)
-            return {"nodes": [], "edges": []}
-
-        # ── Step 2: Create GraphNodes ─────────────────────────────────────
-        from django.contrib.auth.models import User
-        user = User.objects.get(id=user_profile["id"])
-
-        nodes = []
-        place_node_map = {}  # place_id → GraphNode
-
-        for place in places:
-            node, _ = GraphNode.objects.get_or_create(
-                user=user,
-                place=place,
-                defaults={"is_favorite": False}
+        # Step 3 — no existing in_graph nodes: transition only, skip LLM
+        if not candidate_nodes:
+            node.status = "in_graph"
+            node.save(update_fields=["status", "updated_at"])
+            log.info(
+                "add_to_graph: node %d → in_graph (no existing nodes, no edges)", node_id
             )
-            nodes.append(node)
-            place_node_map[place.place_id] = node
-
-        log.info("Created/found %d graph nodes.", len(nodes))
-
-        # ── Step 3: Call LLM to generate edges ───────────────────────────
-        edges_data = self._generate_edges(places, user_profile)
-
-        # ── Step 4: Save GraphEdges ───────────────────────────────────────
-        edges = []
-        for edge_data in edges_data:
-            try:
-                from_node = place_node_map.get(edge_data["from_place_id"])
-                to_node = place_node_map.get(edge_data["to_place_id"])
-
-                if not from_node or not to_node:
-                    log.warning("Skipping edge — node not found: %s", edge_data)
-                    continue
-
-                edge, _ = GraphEdge.objects.get_or_create(
-                    from_node=from_node,
-                    to_node=to_node,
-                    defaults={
-                        "user": user,
-                        "weight": edge_data.get("weight", 1.0),
-                        "reason": edge_data.get("reason", ""),
-                        "reason_type": edge_data.get("reason_type", "vibe_match"),
-                    }
-                )
-                edges.append(edge)
-
-            except Exception as e:
-                log.error("Failed to save edge: %s — %s", edge_data, e)
-
-        log.info("Created/found %d graph edges.", len(edges))
-
-        # ── Step 5: Return graph structure ────────────────────────────────
-        return self._serialize(nodes, edges)
-
-    def _generate_edges(self, places: list, user_profile: dict) -> list[dict]:
-        """
-        Sends all places and user profile to the LLM in a single call.
-        Returns a list of edge dicts with from_place_id, to_place_id,
-        weight, reason, and reason_type.
-        """
-        place_summaries = []
-        for place in places:
-            tags = [t.tag for t in place.tags.all()]
-            summary = (
-                f"- place_id: {place.place_id}\n"
-                f"  name: {place.name}\n"
-                f"  neighborhood: {place.neighborhood}\n"
-                f"  rating: {place.rating}\n"
-                f"  tags: {', '.join(tags)}\n"
-                f"  description: {place.editorial_summary or 'No description'}"
-            )
-            place_summaries.append(summary)
-
-        prompt = f"""
-You are a recommendation engine for a place discovery app in Medellín, Colombia.
-
-Given these recommended places:
-{chr(10).join(place_summaries)}
-
-And this user profile:
-- Preferred atmospheres: {user_profile.get('preferred_atmospheres', [])}
-- Preferred activities: {user_profile.get('preferred_activities', [])}
-- Budget range: {user_profile.get('budget_range', 'unknown')}
-
-Generate meaningful connections between these places.
-For each pair of related places, create an edge explaining why they are connected
-from the perspective of this user's preferences.
-
-Return ONLY a valid JSON array with this exact structure, no extra text:
-[
-  {{
-    "from_place_id": "place_id_here",
-    "to_place_id": "place_id_here",
-    "weight": 0.85,
-    "reason": "Short explanation of why these places are connected for this user",
-    "reason_type": "vibe_match"
-  }}
-]
-
-Rules:
-- weight must be between 0.0 and 1.0 (higher = stronger connection)
-- reason_type must be one of: vibe_match, category_overlap, atmosphere_match, activity_match
-- Only create edges between genuinely related places
-- Keep reasons concise (max 5 words, label style)
-- Do not repeat the same pair twice
-"""
-
-        try:
-            response = self.model.generate_content(prompt)
-            raw = response.text.strip()
-            
-            # Uncomment below if using OpenAI instead:
-            # response = self.client.chat.completions.create(
-            #     model="gpt-4o-mini",
-            #     messages=[{"role": "user", "content": prompt}],
-            #     temperature=0.3,
-            # )
-            # raw = response.choices[0].message.content.strip()
-            
-            raw = raw.replace("```json", "").replace("```", "").strip()
-            edges = json.loads(raw)
-            log.info("LLM generated %d edges.", len(edges))
-            return edges
-
-        except Exception as e:
-            log.error("LLM edge generation failed: %s", e)
             return []
 
-    def _serialize(self, nodes: list, edges: list) -> dict:
-        """
-        Formats nodes and edges into a clean dict for the API response.
-        """
-        serialized_nodes = [
-            {
-                "id": node.id,
-                "place_id": node.place.place_id,
-                "name": node.place.name,
-                "neighborhood": node.place.neighborhood,
-                "rating": node.place.rating,
-                "is_favorite": node.is_favorite,
-            }
-            for node in nodes
-        ]
+        builder = PromptBuilder()
+        llm = LlmClient()
 
-        serialized_edges = [
-            {
-                "from_node": edge.from_node.id,
-                "to_node": edge.to_node.id,
-                "weight": edge.weight,
-                "reason": edge.reason,
-                "reason_type": edge.reason_type,
-            }
-            for edge in edges
-        ]
+        # Step 4 — profile text
+        profile_text = user.get_profile_as_prompt_text()
 
-        return {
-            "nodes": serialized_nodes,
-            "edges": serialized_edges,
+        # Step 5 — build prompt
+        new_node_block = _node_block(node)
+        candidates_block = _candidates_block(candidate_nodes)
+        prompt, prompt_version = builder.build(
+            "edge_building_v1",
+            profile_text=profile_text or "No profile available.",
+            new_node_id=node.pk,
+            new_node_block=new_node_block,
+            candidates_block=candidates_block,
+        )
+
+        # Step 6 — LLM call
+        candidate_node_ids = {n.id for n in candidate_nodes}
+        valid_node_ids = candidate_node_ids | {node.pk}
+
+        input_payload = {
+            "new_node_id": node.pk,
+            "new_place_id": node.place.place_id,
+            "candidate_node_ids": list(candidate_node_ids),
+            "profile_snapshot": profile_text,
         }
+        raw_response = ""
+        parsed_output = None
+        outcome = "success"
+
+        try:
+            parsed, raw_response = llm.send(prompt, EdgeBuildingOutput)
+            parsed_output = parsed
+        except ValueError as e:
+            outcome = "validation_error"
+            LlmInteractionLog.objects.create(
+                user=user,
+                workflow="edge_building",
+                prompt_version=prompt_version,
+                embedding_model=Retriever()._vector_class.__name__,
+                language_model=llm.model_name,
+                input_payload=input_payload,
+                raw_llm_response=str(e),
+                parsed_output=None,
+                outcome=outcome,
+            )
+            raise
+
+        edges_data = parsed["edges"]
+
+        # Step 7 — security: verify all node IDs are from this user's graph
+        returned_ids = {e["from_node_id"] for e in edges_data} | {
+            e["to_node_id"] for e in edges_data
+        }
+        unauthorized = returned_ids - valid_node_ids
+        if unauthorized:
+            raise ValueError(
+                f"LLM returned node IDs not belonging to this user: {unauthorized}"
+            )
+
+        # Step 8 — persist edges + transition node, atomically
+        created_edge_ids = []
+        with transaction.atomic():
+            for edge_data in edges_data:
+                edge, created = GraphEdge.objects.get_or_create(
+                    from_node_id=edge_data["from_node_id"],
+                    to_node_id=edge_data["to_node_id"],
+                    defaults={
+                        "user": user,
+                        "weight": max(0.0, min(1.0, edge_data["weight"])),
+                        "reason": edge_data["reason"][:255],
+                        "reason_type": edge_data["reason_type"],
+                    },
+                )
+                if created:
+                    created_edge_ids.append(edge.pk)
+
+            node.status = "in_graph"
+            node.save(update_fields=["status", "updated_at"])
+
+        # Step 9 — log
+        LlmInteractionLog.objects.create(
+            user=user,
+            workflow="edge_building",
+            prompt_version=prompt_version,
+            embedding_model=Retriever()._vector_class.__name__,
+            language_model=llm.model_name,
+            input_payload=input_payload,
+            raw_llm_response=raw_response,
+            parsed_output=parsed_output,
+            outcome=outcome,
+        )
+
+        log.info(
+            "add_to_graph: node %d → in_graph, %d edges created",
+            node_id,
+            len(created_edge_ids),
+        )
+        return created_edge_ids
