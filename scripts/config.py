@@ -63,6 +63,7 @@ STRUCTURED_DIR = "structured"
 DOCUMENTS_DIR = "documents"
 QUALIFIED_DIR = "qualified"
 REJECTED_DIR = "rejected"
+EMBEDDINGS_DIR = "embeddings"
 
 # ── HTTP ──────────────────────────────────────────────────────────────────────
 
