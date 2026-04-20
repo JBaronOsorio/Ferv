@@ -123,7 +123,7 @@ async function fetchGraph(query, topK = 5) {
 
   // ── Llamada real al backend ──────────────────────────────
   const params = new URLSearchParams({ q: query, top_k: topK });
-  const resp = await fetch(`/graph/api/?${params}`, {
+  const resp = await fetch(`/graph/api/one_shot_recommendation/`, {
     headers: { "Accept": "application/json" }
   });
   if (!resp.ok) throw new Error(`API error ${resp.status}`);
