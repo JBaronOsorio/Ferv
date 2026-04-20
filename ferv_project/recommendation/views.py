@@ -1,69 +1,61 @@
 """
 views.py
 --------
-REST API endpoint for the recommendation system.
-
-GET /api/recommendation/?q=<query>&top_k=<int>
-
-Returns a ranked list of places most similar to the query.
+POST /api/recommendation/recommend/  → Pipeline A: one-shot recommendation
 """
 
+import json
 import logging
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from places.models import Place
-from recommendation.serializers import RecommendationResultSerializer
-from recommendation.services import RecommendationService
+
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 
 log = logging.getLogger(__name__)
 
 
-class RecommendationView(APIView):
+def _serialize_node(node) -> dict:
+    place = node.place
+    return {
+        "node_id": node.id,
+        "status": node.status,
+        "rationale": node.rationale,
+        "place": {
+            "place_id": place.place_id,
+            "name": place.name,
+            "neighborhood": place.neighborhood,
+            "rating": place.rating,
+            "price_level": place.price_level,
+            "editorial_summary": place.editorial_summary,
+        },
+    }
+
+
+@login_required
+@require_POST
+def recommend(request):
     """
-    Accepts a text query and returns the top-K most similar places.
-    Uses the RecommendationService to embed the query and search pgvector.
+    POST /api/recommendation/recommend/
+    Body JSON: { "prompt": "<free text>" }
+
+    Runs Pipeline A for the authenticated user and returns N recommendation nodes.
     """
+    try:
+        body = json.loads(request.body)
+        prompt_text = body.get("prompt", "").strip()
+    except (json.JSONDecodeError, AttributeError):
+        return JsonResponse({"error": "Invalid JSON."}, status=400)
 
-    def get(self, request):
-        query = request.query_params.get('q', '').strip()
-        top_k = int(request.query_params.get('top_k', 5))
+    if not prompt_text:
+        return JsonResponse({"error": "prompt is required."}, status=400)
 
-        if not query:
-            return Response(
-                {"error": "Query parameter 'q' is required."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        try:
-            svc = RecommendationService()
-            results = svc.recommend(query, top_k=top_k)
-
-            # Fetch full Place objects and attach distance
-            place_ids = [r['place_id'] for r in results]
-            distance_map = {r['place_id']: r['distance'] for r in results}
-
-            places = Place.objects.filter(
-                place_id__in=place_ids
-            ).prefetch_related('tags')
-
-            # Attach distance to each place object
-            for place in places:
-                place.distance = distance_map[place.place_id]
-
-            # Sort by distance
-            places = sorted(places, key=lambda p: p.distance)
-
-            serializer = RecommendationResultSerializer(places, many=True)
-            return Response({
-                "query": query,
-                "top_k": top_k,
-                "results": serializer.data
-            })
-
-        except Exception as e:
-            log.error("Recommendation error: %s", e)
-            return Response(
-                {"error": "Internal server error."},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+    try:
+        from recommendation.recommendation_service import RecommendationService
+        nodes = RecommendationService().recommend_one_shot(request.user, prompt_text)
+        return JsonResponse({"nodes": [_serialize_node(n) for n in nodes]})
+    except ValueError as e:
+        log.error("recommend view error: %s", e)
+        return JsonResponse({"error": str(e)}, status=500)
+    except Exception as e:
+        log.error("recommend view unexpected error: %s", e)
+        return JsonResponse({"error": "Internal server error."}, status=500)
