@@ -70,16 +70,14 @@ def add_node(request):
         return JsonResponse({'error': str(e)}, status=400)
 
 @login_required
-def one_shot_recommendation(request):
+def one_shot_recommendation(request, query):
     """
-    GET /graph/api/one_shot_recommendation/
+    GET /graph/api/one_shot_recommendation/<query>
     Legacy endpoint for quick testing of the recommendation service without the full graph.
     Returns top 5 recommendations for the query.
     """
-    print("Received one-shot recommendation request with query:", query)
     
     try:
-        query = request.GET.get('q', '')
         from recommendation.recommendation_service import RecommendationService
         svc = RecommendationService()
         results = svc.recommend_one_shot(user=request.user, prompt_text=query)
