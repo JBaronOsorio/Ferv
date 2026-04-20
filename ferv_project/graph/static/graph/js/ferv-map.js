@@ -133,18 +133,18 @@ async function fetchGraph(query) {
   // Normalizamos al formato interno { nodes, edges }
   return {
     nodes: data.nodes.map(n => ({
-      id: String(n.id),
-      place_id: n.place_id,
-      name: n.name,
-      neighborhood: n.neighborhood,
-      rating: n.rating,
-      tags: n.tags || [],
+    id: String(n.id),
+    place_id: n.place?.place_id,        // ← estaba: n.place_id
+    name: n.place?.name,                 // ← estaba: n.name
+    neighborhood: n.place?.neighborhood, // ← estaba: n.neighborhood
+    rating: n.place?.rating,             // ← estaba: n.rating
+    tags: (n.place?.tags || []).map(t => t.tag), // ← los tags vienen como [{tag:"..."}]
     })),
     edges: data.edges.map(e => ({
-      from: String(e.from_node),
-      to:   String(e.to_node),
-      weight: e.weight,
-      reason: e.reason,
+    from: String(e.source?.id),  // ← estaba: e.from_node
+    to:   String(e.target?.id),  // ← estaba: e.to_node
+    weight: e.weight,
+    reason: e.reason,
     }))
   };
 }
