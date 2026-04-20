@@ -86,8 +86,8 @@ class LlmClient:
             from google import genai
             if not api_key:
                 raise ValueError(f"{cfg['api_key_env_var']} is not set.")
-            genai_client = genai.Client(api_key=api_key)
-            self._genai_models = cast(_GenAiModels, genai_client.models)
+            self._genai_client = genai.Client(api_key=api_key)
+            self._genai_models = cast(_GenAiModels, self._genai_client.models)
             self._provider = "gemini"
         else:
             from openai import OpenAI
@@ -129,7 +129,7 @@ class LlmClient:
 
             cleaned = _strip_fences(raw)
             parsed = json.loads(cleaned)
-            print("LLM response: %s", parsed)
+            log.debug("LLM response: %s", parsed)
             validated = schema.model_validate(parsed)
             log.debug("LLM response validated against %s", schema.__name__)
             return validated.model_dump(), raw
