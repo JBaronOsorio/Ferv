@@ -78,3 +78,20 @@ def logout_view(request):
         logout(request)
         messages.info(request, 'Sesión cerrada. ¡Hasta pronto!')
     return redirect('user:login')
+
+@login_required
+def profile_view(request):
+    return render(request, 'user/profile.html', {'user': request.user})
+
+
+@login_required  
+def profile_edit_view(request):
+    if request.method == 'POST':
+        form = ProfileSetupForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Preferencias actualizadas.')
+            return redirect('user:profile')
+    else:
+        form = ProfileSetupForm(instance=request.user)
+    return render(request, 'user/profile_setup.html', {'form': form, 'editing': True})
