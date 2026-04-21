@@ -95,8 +95,22 @@ def fetch_graph(request):
     Returns the full graph (nodes and edges) for the logged-in user.
     """
 
-    nodes = GraphNode.objects.filter(user=request.user).select_related('place').prefetch_related('place__tags')
+    query = request.GET.get('q', None)
+
+    if query:
+        # Con query → llama al servicio de recomendación para sugerir lugares nuevos
+        from recommendation.recommendation_service import RecommendationService
+        svc = RecommendationService()
+        nodes = svc.recommend_one_shot(user=request.user, prompt_text=query)
+    else:
+        # Sin query → solo devuelve el mapa guardado del usuario
+        nodes = GraphNode.objects.filter(
+            user=request.user
+        ).select_related('place').prefetch_related('place__tags')
+
+    # Los edges siempre son los del mapa personal (in_graph)
     edges = GraphEdge.objects.filter(user=request.user).select_related('from_node', 'to_node')
+
 
     serialized_nodes = GraphNodeSerializer(nodes, many=True).data
     serialized_edges = GraphEdgeSerializer(edges, many=True).data

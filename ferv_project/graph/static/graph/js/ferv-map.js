@@ -15,17 +15,53 @@
 
 // ── 1. CONFIG ────────────────────────────────────────────────
 
-const HOOD_COLOR = {
-  "El Poblado": "#3dd6c8",
-  "Laureles":   "#9b6bfa",
-  "Envigado":   "#fa6b8a",
-  "Estadio":    "#6bfac8",
-  "Centro":     "#fac86b",
+// Color de nodo cuando está SUGERIDO (no guardado)
+// Un solo color neutro para todos — sin importar el barrio
+const SUGGESTED_COLOR = {
+  stroke: "rgba(255,255,255,0.18)",
+  fill:   "rgba(255,255,255,0.04)",
+  text:   "rgba(255,255,255,0.35)",
 };
 
-function hoodColor(n) { return HOOD_COLOR[n] || "#777"; }
-function hoodFill(n)  { return hoodColor(n) + "18"; }
-function trunc(s, n)  { return s && s.length > n ? s.slice(0, n) + "…" : (s || ""); }
+// Paleta de colores para nodos GUARDADOS
+// Se asigna dinámicamente por barrio la primera vez que se guarda un nodo de ese barrio.
+// Si llegan barrios nuevos del backend, automáticamente toman el siguiente color disponible.
+const SAVED_PALETTE = [
+  // "#3dd6c8",  // cyan  
+  "#9b6bfa",  // purple
+  "#fa6b8a",  // pink  
+  "#6bfac8",  // mint  
+  // "#fac86b",  // amber 
+  // "#6baafa",  // blue
+  // "#fa9b6b",  // orange
+  // "#c8fa6b",  // lime
+  // "#fa6bfa",  // fuchsia
+  // "#6bfafa",  // sky
+];
+
+// Mapa dinámico: neighborhood → color asignado
+// Se puebla automáticamente en saveNode() la primera vez que se guarda un nodo de ese barrio.
+const neighborhoodColorMap = {};
+let paletteIndex = 0;
+
+function getSavedColor(neighborhood) {
+  if (!neighborhood) return SAVED_PALETTE[0];
+  if (!neighborhoodColorMap[neighborhood]) {
+    neighborhoodColorMap[neighborhood] = SAVED_PALETTE[paletteIndex % SAVED_PALETTE.length];
+    paletteIndex++;
+  }
+  return neighborhoodColorMap[neighborhood];
+}
+
+// Devuelve el color correcto según el estado del nodo:
+//   - Sugerido → color neutro
+//   - Guardado → color del barrio (asignado dinámicamente)
+function nodeColor(d) {
+  if (savedSet.has(d.place_id)) return getSavedColor(d.neighborhood);
+  return null; // null = usar SUGGESTED_COLOR
+}
+
+function trunc(s, n) { return s && s.length > n ? s.slice(0, n) + "…" : (s || ""); }
 
 
 // ── 2. MOCK DATA ─────────────────────────────────────────────
@@ -53,11 +89,11 @@ const MOCK = {
   },
   bar: {
     nodes: [
-      { id:"b1", place_id:"p010", name:"El Social",    neighborhood:"El Poblado", rating:4.5, tags:["cócteles","jazz","vivo"] },
-      { id:"b2", place_id:"p011", name:"Son Havana",   neighborhood:"Laureles",   rating:4.7, tags:["salsa","cubano","bailar"] },
-      { id:"b3", place_id:"p012", name:"La Octava",    neighborhood:"Envigado",   rating:4.3, tags:["rock","cervezas","indie"] },
-      { id:"b4", place_id:"p013", name:"Envy Rooftop", neighborhood:"El Poblado", rating:4.6, tags:["vistas","electrónica","terraza"] },
-      { id:"b5", place_id:"p014", name:"Vintrash",     neighborhood:"Laureles",   rating:4.4, tags:["punk","vinilo","underground"] },
+      { id:"b1", place_id:"p010", name:"El Social",       neighborhood:"El Poblado",  rating:4.5, tags:["cócteles","jazz","vivo"] },
+      { id:"b2", place_id:"p011", name:"Son Havana",      neighborhood:"Laureles",    rating:4.7, tags:["salsa","cubano","bailar"] },
+      { id:"b3", place_id:"p012", name:"La Octava",       neighborhood:"Envigado",    rating:4.3, tags:["rock","cervezas","indie"] },
+      { id:"b4", place_id:"p013", name:"Envy Rooftop",    neighborhood:"El Poblado",  rating:4.6, tags:["vistas","electrónica","terraza"] },
+      { id:"b5", place_id:"p014", name:"Vintrash",        neighborhood:"Laureles",    rating:4.4, tags:["punk","vinilo","underground"] },
     ],
     edges: [
       { from:"b1", to:"b2", weight:0.85, reason:"Live music scene" },
@@ -68,11 +104,11 @@ const MOCK = {
   },
   sushi: {
     nodes: [
-      { id:"s1", place_id:"p020", name:"Osaki Sushi",  neighborhood:"El Poblado", rating:4.7, tags:["omakase","sake","íntimo"] },
-      { id:"s2", place_id:"p021", name:"Matsu",         neighborhood:"Laureles",   rating:4.5, tags:["ramen","izakaya","casual"] },
-      { id:"s3", place_id:"p022", name:"Nori",          neighborhood:"Envigado",   rating:4.4, tags:["fusión","nikkei","moderno"] },
-      { id:"s4", place_id:"p023", name:"Kai Robata",    neighborhood:"El Poblado", rating:4.6, tags:["parrilla","japonesa","barra"] },
-      { id:"s5", place_id:"p024", name:"Tanuki",        neighborhood:"Laureles",   rating:4.3, tags:["ramen","dumplings","callejero"] },
+      { id:"s1", place_id:"p020", name:"Osaki Sushi",     neighborhood:"El Poblado", rating:4.7, tags:["omakase","sake","íntimo"] },
+      { id:"s2", place_id:"p021", name:"Matsu",            neighborhood:"Laureles",   rating:4.5, tags:["ramen","izakaya","casual"] },
+      { id:"s3", place_id:"p022", name:"Nori",             neighborhood:"Envigado",   rating:4.4, tags:["fusión","nikkei","moderno"] },
+      { id:"s4", place_id:"p023", name:"Kai Robata",       neighborhood:"El Poblado", rating:4.6, tags:["parrilla","japonesa","barra"] },
+      { id:"s5", place_id:"p024", name:"Tanuki",           neighborhood:"Laureles",   rating:4.3, tags:["ramen","dumplings","callejero"] },
     ],
     edges: [
       { from:"s1", to:"s4", weight:0.90, reason:"Premium Japanese experience" },
@@ -94,87 +130,91 @@ function getMock(q) {
 
 // ── 3. ESTADO GLOBAL ─────────────────────────────────────────
 
-let allNodes   = {};       // place_id → node object (con x, y)
-let savedSet   = new Set();// place_ids guardados en el mapa personal
-let suggestIds = new Set();// place_ids de la búsqueda actual
-let mapEdges   = [];       // edges entre nodos guardados (persistentes)
-let searchEdges = [];      // edges de la búsqueda actual (temporales)
-let queries    = [];       // historial de queries (para los tags del canvas)
-let simulation = null;
-let svgG       = null;
-let selectedD  = null;     // nodo seleccionado en el panel
+let allNodes    = {};        // place_id → node object (con x, y)
+let savedSet    = new Set(); // place_ids guardados en el mapa personal
+let suggestIds  = new Set(); // place_ids de la búsqueda actual
+let mapEdges    = [];        // edges entre nodos guardados (persistentes, cyan)
+let searchEdges = [];        // edges de la búsqueda actual (temporales, morado)
+let queries     = [];        // historial de queries para los chips del canvas
+let simulation  = null;
+let svgG        = null;
+let selectedD   = null;      // nodo seleccionado en el panel
 
 
 // ── 4. API ───────────────────────────────────────────────────
 //
-//  Aquí conectas el backend Django.
-//  Cuando MOCK_MODE = false, fetchGraph() llama a /graph/api/
-//  y addNodeToBackend() llama a /graph/add-node/
-//  En el futuro, agrega removeNodeFromBackend() igual.
+//  Cambiar MOCK_MODE = false cuando el backend esté listo.
+//  fetchGraph() y addNodeToBackend() ya tienen la estructura correcta.
 
 const MOCK_MODE = false; // ← Cambiar a false cuando el back esté listo
 
 async function fetchGraph(query) {
   if (MOCK_MODE) {
-    // Simula latencia de red
+    if (!query) return { nodes: [], edges: [] };
     await new Promise(r => setTimeout(r, 600));
     return getMock(query);
   }
 
-  // ── Llamada real al backend ──────────────────────────────
-  const resp = await fetch(`/graph/api/fetch-graph/`, {
-  headers: { "Accept": "application/json" }
- });
-  if (!resp.ok) throw new Error(`API error ${resp.status}`);
+  const url = query
+    ? `/graph/api/fetch-graph/?q=${encodeURIComponent(query)}`
+    : `/graph/api/fetch-graph/`;
 
+
+  const resp = await fetch(url, {
+      headers: { "Accept": "application/json" }
+  });
+  
+  if (!resp.ok) throw new Error(`API error ${resp.status}`);
   const data = await resp.json();
 
-  // El backend devuelve { graph: { nodes, edges } }
-  // Normalizamos al formato interno { nodes, edges }
   return {
     nodes: data.nodes.map(n => ({
-    id: String(n.id),
-    place_id: n.place?.place_id,        // ← estaba: n.place_id
-    name: n.place?.name,                 // ← estaba: n.name
-    neighborhood: n.place?.neighborhood, // ← estaba: n.neighborhood
-    rating: n.place?.rating,             // ← estaba: n.rating
-    tags: (n.place?.tags || []).map(t => t.tag), // ← los tags vienen como [{tag:"..."}]
+      id:           String(n.id),
+      place_id:     n.place?.place_id,
+      name:         n.place?.name,
+      neighborhood: n.place?.neighborhood,
+      rating:       n.place?.rating,
+      tags:         (n.place?.tags || []).map(t => t.tag),
+      status:       n.status,
     })),
     edges: data.edges.map(e => ({
-    from: String(e.source?.id),  // ← estaba: e.from_node
-    to:   String(e.target?.id),  // ← estaba: e.to_node
-    weight: e.weight,
-    reason: e.reason,
+      from:   String(e.source?.id),
+      to:     String(e.target?.id),
+      weight: e.weight,
+      reason: e.reason,
     }))
   };
 }
 
 async function addNodeToBackend(placeId) {
-  if (MOCK_MODE) return; // En mock no hacemos nada
+  if (MOCK_MODE) return;
+
+  // LOG TEMPORAL ***************************************************
+  console.log("Enviando place_id:", placeId);
+  
+  const nodeId = parseInt(allNodes[placeId]?.id);  
+
 
   const csrf = document.cookie.match(/csrftoken=([^;]+)/)?.[1] || "";
   const resp = await fetch("/graph/add-node/", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRFToken": csrf,
-    },
-    body: JSON.stringify({ place_id: placeId })
+    headers: { "Content-Type": "application/json", "X-CSRFToken": csrf },
+    body: JSON.stringify({ node_id: nodeId })
   });
+
+  // LOG TEMPORAL
+  const body = await resp.json();
+  console.log("Respuesta add-node:", resp.status, body);
+
   if (!resp.ok) throw new Error(`add-node error ${resp.status}`);
 }
 
-// TODO: implementar cuando el endpoint exista en Django
 async function removeNodeFromBackend(placeId) {
   if (MOCK_MODE) return;
-
   const csrf = document.cookie.match(/csrftoken=([^;]+)/)?.[1] || "";
   const resp = await fetch("/graph/remove-node/", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRFToken": csrf,
-    },
+    headers: { "Content-Type": "application/json", "X-CSRFToken": csrf },
     body: JSON.stringify({ place_id: placeId })
   });
   if (!resp.ok) throw new Error(`remove-node error ${resp.status}`);
@@ -194,14 +234,11 @@ async function runSearch() {
 
   try {
     const data = await fetchGraph(q);
-    console.log("Búsqueda completada. Nodos recibidos:", data.nodes, "Edges recibidos:", data.edges);
 
     const W = document.querySelector(".canvas-wrap").clientWidth;
     const H = document.querySelector(".canvas-wrap").clientHeight;
 
-    // Registrar nodos nuevos (sin sobrescribir posición de existentes)
     suggestIds = new Set();
-
     data.nodes.forEach(n => {
       suggestIds.add(n.place_id);
       if (!allNodes[n.place_id]) {
@@ -212,9 +249,15 @@ async function runSearch() {
           vx: 0, vy: 0,
         };
       }
+      if (n.status === 'in_graph') {
+        getSavedColor(n.neighborhood); // asignar color al barrio
+        savedSet.add(n.place_id);
+        allNodes[n.place_id].fx = allNodes[n.place_id].x;
+        allNodes[n.place_id].fy = allNodes[n.place_id].y;
+      }
+
     });
 
-    // Construir edges de búsqueda usando place_id como clave
     searchEdges = data.edges
       .map(e => {
         const srcNode = data.nodes.find(n => n.id === e.from);
@@ -255,6 +298,10 @@ async function saveNode(placeId) {
   if (savedSet.has(placeId)) return;
   const node = allNodes[placeId];
   if (!node) return;
+
+  // Asignar color de barrio ANTES de renderizar
+  // Si el barrio ya tiene color asignado no hace nada, si es nuevo toma el siguiente de la paleta
+  getSavedColor(node.neighborhood);
 
   savedSet.add(placeId);
   node.fx = node.x;
@@ -304,6 +351,9 @@ async function removeNode(placeId) {
   mapEdges = mapEdges.filter(e =>
     e.source.place_id !== placeId && e.target.place_id !== placeId
   );
+
+  // Nota: NO borramos el color del barrio en neighborhoodColorMap.
+  // Si el usuario vuelve a guardar otro nodo del mismo barrio, mantiene el mismo color.
 
   try {
     await removeNodeFromBackend(placeId);
@@ -375,7 +425,7 @@ function rerender() {
     else            { n.fx = null; n.fy = null; }
   });
 
-  // ── Edges de mapa (guardados) ──
+  // ── Edges de mapa (cyan, entre guardados) ──
   const mapEdgeEls = svgG.append("g").selectAll("line")
     .data(visibleEdges.filter(e => e.type === "map")).join("line")
     .attr("stroke", "#3dd6c8")
@@ -390,7 +440,7 @@ function rerender() {
     .attr("text-anchor", "middle").attr("pointer-events", "none")
     .text(d => trunc(d.reason, 26));
 
-  // ── Edges de búsqueda ──
+  // ── Edges de búsqueda (morado tenue) ──
   const searchEdgeEls = svgG.append("g").selectAll("line")
     .data(visibleEdges.filter(e => e.type === "search")).join("line")
     .attr("stroke", d => `rgba(155,107,250,${0.10 + d.weight * 0.25})`)
@@ -416,22 +466,28 @@ function rerender() {
     )
     .on("click", (ev, d) => { ev.stopPropagation(); openPanel(d, visibleEdges); });
 
-  // Anillo exterior (solo guardados)
+  // Anillo exterior punteado — solo guardados
   nodeEls.filter(isSaved).append("circle")
     .attr("r", 50).attr("fill", "none")
-    .attr("stroke", d => hoodColor(d.neighborhood))
+    .attr("stroke", d => getSavedColor(d.neighborhood))
     .attr("stroke-width", 0.7).attr("stroke-opacity", 0.25)
     .attr("stroke-dasharray", "3,6");
 
   // Círculo principal
   nodeEls.append("circle")
     .attr("r", d => isSaved(d) ? 40 : 36)
-    .attr("fill", d => isSaved(d) ? hoodColor(d.neighborhood) + "28" : hoodFill(d.neighborhood))
-    .attr("stroke", d => hoodColor(d.neighborhood))
+    .attr("fill", d => isSaved(d)
+      ? getSavedColor(d.neighborhood) + "28"   // color del barrio con alpha bajo
+      : SUGGESTED_COLOR.fill                   // gris neutro
+    )
+    .attr("stroke", d => isSaved(d)
+      ? getSavedColor(d.neighborhood)
+      : SUGGESTED_COLOR.stroke
+    )
     .attr("stroke-width", d => isSaved(d) ? 2.2 : 0.8)
-    .attr("stroke-opacity", d => isSaved(d) ? 1 : 0.5);
+    .attr("stroke-opacity", d => isSaved(d) ? 1 : 1);
 
-  // Estrella (guardados)
+  // Estrella — guardados
   nodeEls.filter(isSaved).append("text")
     .attr("y", -30).attr("text-anchor", "middle")
     .attr("font-size", "11").attr("fill", "#fac86b")
@@ -442,19 +498,22 @@ function rerender() {
     .attr("y", 3).attr("text-anchor", "middle")
     .attr("font-size", "11.5").attr("font-weight", "500")
     .attr("font-family", "'DM Sans', sans-serif")
-    .attr("fill", d => isSaved(d) ? hoodColor(d.neighborhood) : hoodColor(d.neighborhood) + "bb")
+    .attr("fill", d => isSaved(d)
+      ? getSavedColor(d.neighborhood)   // color vivo del barrio
+      : SUGGESTED_COLOR.text            // blanco tenue
+    )
     .attr("pointer-events", "none")
     .text(d => trunc(d.name, 13));
 
   // Barrio
   nodeEls.append("text")
     .attr("y", 17).attr("text-anchor", "middle").attr("font-size", "9.5")
-    .attr("fill", d => isSaved(d) ? "#555" : "#383838")
+    .attr("fill", d => isSaved(d) ? "#666" : "#333")
     .attr("font-family", "'DM Mono', monospace")
     .attr("pointer-events", "none")
     .text(d => trunc(d.neighborhood, 13));
 
-  // Label "en mi mapa"
+  // Label "en mi mapa" — solo guardados
   nodeEls.filter(isSaved).append("text")
     .attr("y", 29).attr("text-anchor", "middle")
     .attr("font-size", "8.5").attr("fill", "#3dd6c8").attr("fill-opacity", "0.7")
@@ -497,19 +556,20 @@ function rerender() {
 
 function openPanel(d, edges) {
   selectedD = d;
-  const c = hoodColor(d.neighborhood);
+  const isSaved = savedSet.has(d.place_id);
 
-  // Badge de barrio
+  // Color del badge: si está guardado usa el color del barrio, si no un neutro
+  const badgeColor = isSaved ? getSavedColor(d.neighborhood) : "rgba(255,255,255,0.35)";
+
   const badge = document.getElementById("panel-badge");
   badge.textContent = `• ${d.neighborhood || "Medellín"}`;
-  badge.style.color = c;
-  badge.style.background = c + "15";
-  badge.style.borderColor = c + "33";
+  badge.style.color = badgeColor;
+  badge.style.background = badgeColor + "15";
+  badge.style.borderColor = badgeColor + "33";
 
   document.getElementById("panel-name").textContent = d.name;
   document.getElementById("panel-neighborhood").textContent = d.neighborhood || "Medellín";
 
-  // Tags
   const tagsEl = document.getElementById("panel-tags");
   tagsEl.innerHTML = "";
   (d.tags || []).forEach(t => {
@@ -525,17 +585,17 @@ function openPanel(d, edges) {
   const conns = edges.filter(e =>
     e.source?.place_id === d.place_id || e.target?.place_id === d.place_id
   );
-  const connEl = document.getElementById("panel-connections");
+  const connEl   = document.getElementById("panel-connections");
   const connList = document.getElementById("conn-list");
   if (conns.length) {
     connEl.style.display = "block";
     connList.innerHTML = conns.map(e => {
-      const other = e.source.place_id === d.place_id ? e.target : e.source;
-      const saved = savedSet.has(other?.place_id);
-      const col = other ? hoodColor(other.neighborhood) : "#777";
+      const other     = e.source.place_id === d.place_id ? e.target : e.source;
+      const otherSaved = savedSet.has(other?.place_id);
+      const col       = otherSaved ? getSavedColor(other?.neighborhood) : "rgba(255,255,255,0.25)";
       return `<div class="conn-item">
-        <div class="conn-dot" style="background:${col};opacity:${saved ? 1 : 0.4}"></div>
-        <span style="color:${saved ? col : "#555"}">${trunc(other?.name || "", 17)}</span>
+        <div class="conn-dot" style="background:${col};opacity:${otherSaved ? 1 : 0.5}"></div>
+        <span style="color:${col}">${trunc(other?.name || "", 17)}</span>
         <span style="color:#444;font-size:10px"> · ${trunc(e.reason, 20)}</span>
       </div>`;
     }).join("");
@@ -543,19 +603,18 @@ function openPanel(d, edges) {
     connEl.style.display = "none";
   }
 
-  // Botón Agregar / En tu mapa
-  const addBtn = document.getElementById("panel-add-btn");
+  const addBtn    = document.getElementById("panel-add-btn");
   const removeBtn = document.getElementById("panel-remove-btn");
 
-  if (savedSet.has(d.place_id)) {
-    addBtn.textContent = "✓ En tu mapa";
-    addBtn.className = "btn-add saved";
-    addBtn.disabled = true;
+  if (isSaved) {
+    addBtn.textContent  = "✓ En tu mapa";
+    addBtn.className    = "btn-add saved";
+    addBtn.disabled     = true;
     removeBtn.classList.add("visible");
   } else {
-    addBtn.textContent = "+ Agregar a mi mapa";
-    addBtn.className = "btn-add";
-    addBtn.disabled = false;
+    addBtn.textContent  = "+ Agregar a mi mapa";
+    addBtn.className    = "btn-add";
+    addBtn.disabled     = false;
     removeBtn.classList.remove("visible");
   }
 
@@ -598,8 +657,8 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove("show"), 2800);
 }
 
-// ── Chat bubble ──────────────────────────────────────────────
 
+// ── Chat ─────────────────────────────────────────────────────
 const chatBubble = document.getElementById("chatBubble");
 const chatPanel  = document.getElementById("chatPanel");
 const chatInput  = document.getElementById("chatInput");
@@ -624,7 +683,6 @@ async function chatSend() {
   if (!txt) return;
   chatAddMsg(txt, "user");
   chatInput.value = "";
-
   // TODO: reemplazar con llamada real al endpoint de chat
   // const resp = await fetch("/chat/", { method:"POST", body: JSON.stringify({message: txt}), ... })
   chatAddMsg("Buscando lugares para ti...", "bot");
@@ -635,6 +693,7 @@ chatInput.addEventListener("keydown", e => { if (e.key === "Enter") chatSend(); 
 
 
 // ── User menu ─────────────────────────────────────────────────
+
 const userMenu      = document.getElementById("userMenu");
 const userAvatarBtn = document.getElementById("userAvatarBtn");
 
@@ -643,7 +702,66 @@ userAvatarBtn.addEventListener("click", e => {
   userMenu.classList.toggle("open");
 });
 
-// Cierra al hacer click fuera
 document.addEventListener("click", () => {
   userMenu.classList.remove("open");
 });
+
+// ── Carga inicial del mapa ────────────────────────────────────
+async function loadUserMap() {
+  try {
+    const data = await fetchGraph(null); // null = sin query, solo carga el mapa
+    if (!data.nodes.length) return;     // mapa vacío, mostrar empty state
+
+    const W = document.querySelector(".canvas-wrap").clientWidth;
+    const H = document.querySelector(".canvas-wrap").clientHeight;
+
+    // Registrar todos los nodos
+    data.nodes.forEach(n => {
+      if (!allNodes[n.place_id]) {
+        allNodes[n.place_id] = {
+          ...n,
+          x: W / 2 + (Math.random() - 0.5) * 300,
+          y: H / 2 + (Math.random() - 0.5) * 300,
+          vx: 0, vy: 0,
+        };
+      }
+      if (n.status === "in_graph") {
+        getSavedColor(n.neighborhood);
+        savedSet.add(n.place_id);
+        allNodes[n.place_id].fx = allNodes[n.place_id].x;
+        allNodes[n.place_id].fy = allNodes[n.place_id].y;
+        suggestIds.add(n.place_id); // para que sean visibles sin búsqueda
+      }
+    });
+
+    // Cargar edges reales del backend
+    data.edges.forEach(e => {
+      console.log("Edge:", e);  
+
+      const src = Object.values(allNodes).find(n => n.id === e.from);
+      const tgt = Object.values(allNodes).find(n => n.id === e.to);
+
+      console.log("src:", src, "tgt:", tgt);  // ← y aquí
+
+      if (!src || !tgt) return;
+      const exists = mapEdges.some(me =>
+        (me.source.place_id === src.place_id && me.target.place_id === tgt.place_id) ||
+        (me.source.place_id === tgt.place_id && me.target.place_id === src.place_id)
+      );
+      if (!exists) {
+        mapEdges.push({ source: src, target: tgt, weight: e.weight, reason: e.reason, type: "map" });
+      }
+    });
+
+    document.getElementById("empty-state").style.display = "none";
+    document.getElementById("hud").style.display = "flex";
+    updateHUD();
+    rerender();
+
+  } catch (err) {
+    console.error("Error cargando mapa:", err);
+  }
+}
+
+// Ejecutar al cargar la página
+loadUserMap();
