@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function loadUserMap() {
   try {
-    const data = await fetchGraph(null); // null = sin query, solo carga el mapa
+    const data = await fetchUserGraph();
     if (!data.nodes.length) return;      // mapa vacío, mostrar empty state
 
     const W = document.querySelector(".canvas-wrap").clientWidth;

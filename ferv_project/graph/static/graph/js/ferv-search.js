@@ -15,7 +15,7 @@ async function runSearch() {
   closePanel();
 
   try {
-    const data = await fetchGraph(q);
+    const data = await fetchRecommendations(q);
 
     const W = document.querySelector(".canvas-wrap").clientWidth;
     const H = document.querySelector(".canvas-wrap").clientHeight;
