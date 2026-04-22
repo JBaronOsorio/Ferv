@@ -32,10 +32,11 @@ function parseNode(n) {
 }
 
 // Transforma un edge del backend al formato que usa D3
+// El back retorna source y target como objetos completos, no IDs
 function parseEdge(e) {
   return {
-    from:   String(e.from_node),   // ID del GraphNode origen
-    to:     String(e.to_node),     // ID del GraphNode destino
+    from:   String(e.source?.id),
+    to:     String(e.target?.id),
     weight: e.weight,
     reason: e.reason,
   };
@@ -50,7 +51,7 @@ function parseEdge(e) {
 async function fetchUserGraph() {
   if (MOCK_MODE) return { nodes: [], edges: [] };
 
-  const resp = await fetch("/graph/api/fetch_graph/", {
+  const resp = await fetch("/graph/api/fetch-graph/", {
     headers: { "Accept": "application/json" }
   });
   if (!resp.ok) throw new Error(`fetch_graph error ${resp.status}`);
