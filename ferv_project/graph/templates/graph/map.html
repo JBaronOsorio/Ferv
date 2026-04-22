@@ -13,6 +13,16 @@
   <!-- D3 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 
+  <!-- Módulos Ferv — respetar este orden -->
+  <script src="{% static 'graph/js/ferv-config.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-mock.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-state.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-api.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-map.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-search.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-panel.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-ui.js' %}"></script>
+  
   
 
   <!-- Estilos del mapa -->
@@ -193,8 +203,7 @@
 
 </div><!-- /ferv-root -->
 
-<!-- Lógica del mapa -->
-  <script src="{% static 'graph/js/ferv-map.js' %}"></script>
+
 
 </body>
 </html>
