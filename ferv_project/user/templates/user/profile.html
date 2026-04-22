@@ -1,0 +1,82 @@
+{% extends "user/base.html" %}
+{% block title %}Mi perfil — Ferv{% endblock %}
+
+{% block content %}
+<div class="profile-wrap">
+
+  <!-- Header -->
+  <div class="profile-header">
+    <div class="profile-identity">
+      <div class="profile-avatar">{{ user.username|first|upper }}</div>
+      <div>
+        <h1 class="profile-username">{{ user.username }}</h1>
+        <span class="profile-email">{{ user.email }}</span>
+      </div>
+    </div>
+    <a href="{% url 'user:profile_edit' %}" class="btn-primary">editar</a>
+  </div>
+
+  <div class="profile-divider"></div>
+
+  <!-- Preferencias en filas -->
+  <div class="profile-section">
+
+    <div class="pref-row">
+      <span class="pref-label">Tipos de lugares</span>
+      <div class="pref-tags">
+        {% for tipo in user.preferred_place_types %}
+          <span class="tag">{{ tipo }}</span>
+        {% empty %}
+          <span class="tag-empty">sin definir</span>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="pref-row">
+      <span class="pref-label">Atmósferas</span>
+      <div class="pref-tags">
+        {% for atm in user.preferred_atmospheres %}
+          <span class="tag">{{ atm }}</span>
+        {% empty %}
+          <span class="tag-empty">sin definir</span>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="pref-row">
+      <span class="pref-label">Actividades</span>
+      <div class="pref-tags">
+        {% for act in user.preferred_activities %}
+          <span class="tag">{{ act }}</span>
+        {% empty %}
+          <span class="tag-empty">sin definir</span>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="pref-row">
+      <span class="pref-label">Presupuesto</span>
+      <div class="pref-tags">
+        {% if user.budget_range %}
+          <span class="tag tag--budget">
+            {% if user.budget_range == 'low' %}$ económico
+            {% elif user.budget_range == 'medium' %}$$ moderado
+            {% elif user.budget_range == 'high' %}$$$ premium
+            {% else %}{{ user.budget_range }}
+            {% endif %}
+          </span>
+        {% else %}
+          <span class="tag-empty">sin definir</span>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Acciones -->
+  <div class="profile-actions">
+    <a href="{% url 'graph:map' %}" class="btn-ghost">← volver al mapa</a>
+  </div>
+
+</div>
+{% endblock %}

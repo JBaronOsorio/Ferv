@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ferv — Mapa</title>
+
+  <!-- Fuentes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- D3 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+
+  
+
+  <!-- Estilos del mapa -->
+  <link rel="stylesheet" href="{% static 'graph/css/ferv-map.css' %}">
+</head>
+<body>
+
+<div class="ferv-root">
+
+  <!-- ── Barra superior ── -->
+  <div class="topbar">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+          <circle cx="12" cy="9" r="2.5"/>
+        </svg>
+      </div>
+      <span class="logo-text">ferv</span>
+    </div>
+
+    <div class="search-wrap">
+      <input class="search-input" id="q-input" type="text"
+        placeholder="café tranquilo, bar con música, sushi..."
+        autocomplete="off"/>
+      <div class="spinner" id="spinner"></div>
+      <button class="btn-search" id="search-btn" onclick="runSearch()">Explorar</button>
+    </div>
+
+    <!-- Menú de usuario -->
+    <div class="user-menu" id="userMenu">
+  <div class="user-avatar" id="userAvatarBtn">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+         stroke="rgba(155,107,250,0.8)" stroke-width="2">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+      <circle cx="12" cy="7" r="4"/>
+    </svg>
+  </div>
+
+  <div class="user-dropdown" id="userDropdown">
+    <div class="user-info">
+      <div class="user-name">{{ request.user.get_full_name|default:request.user.username }}</div>
+      <div class="user-email">{{ request.user.email }}</div>
+    </div>
+    <a href="{% url 'user:profile' %}">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      Mi perfil
+    </a>
+    <a href="#">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+      Preferencias
+    </a>
+    
+    <form method="POST" action="{% url 'user:logout' %}" style="margin:0;padding:0;">
+      {% csrf_token %}
+      <button type="submit" class="logout-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Cerrar sesión
+      </button>
+    </form>
+      
+  </div>
+  </div>
+
+
+  </div>
+
+  <!-- ── Canvas del grafo ── -->
+  <div class="canvas-wrap">
+
+    <!-- Estado vacío -->
+    <div class="empty-state" id="empty-state">
+      <div class="empty-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="1.5">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </div>
+      <p>Tu mapa está vacío</p>
+      <p class="hint">Busca algo para empezar a explorar</p>
+    </div>
+
+    <!-- SVG del grafo D3 -->
+    <svg id="ferv-svg"></svg>
+
+    <!-- Tags de búsquedas realizadas -->
+    <div class="query-tags" id="query-tags"></div>
+
+    <!-- HUD — contadores bottom-left -->
+    <div class="hud" id="hud" style="display:none">
+      <div class="hud-pill">
+        <div class="hud-dot" style="background:#9b6bfa"></div>
+        <b id="hud-suggested" style="color:#9b6bfa">0</b> sugeridos
+      </div>
+      <div class="hud-pill">
+        <div class="hud-dot" style="background:#3dd6c8"></div>
+        <b id="hud-saved" style="color:#3dd6c8">0</b> en mi mapa
+      </div>
+    </div>
+
+    <!-- Panel lateral de detalle de nodo -->
+    <div class="panel" id="detail-panel">
+      <button class="panel-close" onclick="closePanel()">×</button>
+
+      <div class="panel-badge" id="panel-badge"></div>
+      <div id="panel-name"></div>
+      <div id="panel-neighborhood"></div>
+      <div id="panel-tags"></div>
+      <div class="panel-rating" id="panel-rating"></div>
+
+      <div class="panel-connections" id="panel-connections" style="display:none">
+        <h4>Conexiones</h4>
+        <div id="conn-list"></div>
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="panel-actions">
+        <button class="btn-add" id="panel-add-btn">+ Agregar a mi mapa</button>
+        <button class="btn-remove" id="panel-remove-btn">− Eliminar del mapa</button>
+      </div>
+    </div>
+
+    <!-- Panel de chat -->
+<div class="chat-panel" id="chatPanel">
+  <div class="panel-head">
+    <div class="panel-avatar">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2">
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+        <circle cx="12" cy="9" r="2.5"/>
+      </svg>
+    </div>
+    <div>
+      <div class="panel-chat-title">ferv chat</div>
+      <div class="panel-chat-sub">¿qué estás buscando hoy?</div>
+    </div>
+    <div class="panel-online-dot"></div>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-msg bot">Hola 👋 Cuéntame qué tipo de lugar te apetece y te ayudo a buscarlo.</div>
+  </div>
+  <div class="chat-panel-input-wrap">
+    <input class="chat-panel-input" id="chatInput" placeholder="busco un café tranquilo..." />
+    <button class="btn-chat-send" id="chatSendBtn">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+        <line x1="22" y1="2" x2="11" y2="13"/>
+        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+      </svg>
+    </button>
+  </div>
+  </div>
+
+    <!-- Burbuja flotante -->
+    <button class="chat-bubble" id="chatBubble">
+      <div class="notif-dot">1</div>
+      <svg class="bubble-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+      <svg class="bubble-icon-close" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+
+  </div><!-- /canvas-wrap -->
+
+  <!-- Toast de confirmación -->
+  <div class="toast" id="toast"></div>
+
+</div><!-- /ferv-root -->
+
+<!-- Lógica del mapa -->
+  <script src="{% static 'graph/js/ferv-map.js' %}"></script>
+
+</body>
+</html>

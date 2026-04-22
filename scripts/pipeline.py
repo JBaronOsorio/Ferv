@@ -4,11 +4,13 @@ pipeline.py
 -----------
 Ferv data collection pipeline — orchestrates the three stations:
 
-  1. collect_all()     Grid sweep → raw cache
-  2. deduplicate()     Raw cache → unique place stubs
-  3. collect_details() Place stubs → full place details
-  4. filter_details()  Place details → qualified place_ids for modeling
-  5. build_transformed()  Place stubs + Place details → Transformed data for modeling and embeddings
+  1. collect_all()      Grid sweep → raw cache
+  2. deduplicate()      Raw cache → unique place stubs
+  3. collect_details()  Place stubs → full place details
+  4. filter_details()   Place details → qualified place_ids for modeling
+  5. build_transformed()  Place stubs + Place details → Transformed data and documents
+  6. embed()            Documents → vector embeddings cache (no DB writes)
+  7. ingest_all()       All caches → PostgreSQL
 
 Each station is independently re-runnable. Cached entries are never re-fetched.
 
@@ -27,6 +29,7 @@ import sys
 import time
 
 import cache
+import embed
 import google_api
 import transform
 import ingest
@@ -231,8 +234,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument(
         "--steps",
         nargs="+",
-        choices=["collect", "deduplicate", "details", "filter", "transform", "ingest"],
-        default=["collect", "deduplicate", "details", "filter", "transform", "ingest"],
+        choices=["collect", "deduplicate", "details", "filter", "transform", "embed", "ingest"],
+        default=["collect", "deduplicate", "details", "filter", "transform", "embed", "ingest"],
         help="Which pipeline steps to run (default: all)"
     )
     return p.parse_args()
@@ -265,8 +268,12 @@ def main() -> None:
         log.info("── Station 5: Transform ──")
         build_transformed()
 
+    if "embed" in args.steps:
+        log.info("── Station 6: Embed ──")
+        embed.run()
+
     if "ingest" in args.steps:
-        log.info("── Station 6: Ingest ──")
+        log.info("── Station 7: Ingest ──")
         ingest.ingest_all()
 
     log.info("Pipeline complete.")

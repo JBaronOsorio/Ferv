@@ -1,13 +1,17 @@
+from django.conf import settings
 from django.db import models
 
-# Create your models here.
+
+
 class GraphNode(models.Model):
     place = models.ForeignKey('places.Place', related_name='graph_nodes', on_delete=models.CASCADE)
-    user = models.ForeignKey('auth.User', related_name='graph_nodes', on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='graph_nodes', on_delete=models.CASCADE)
+    rationale = models.CharField(max_length=255, blank=True)
+    status = models.CharField(max_length=60, blank=False, default='recommendation')
     is_favorite = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=["user", "place"], name="unique_user_place_node")
@@ -15,14 +19,15 @@ class GraphNode(models.Model):
 
     def __str__(self):
         return f"GraphNode for {self.place.name}"
-    
+
+
 class GraphEdge(models.Model):
-    user = models.ForeignKey('auth.User', related_name='graph_edges', on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='graph_edges', on_delete=models.CASCADE)
     from_node = models.ForeignKey(GraphNode, related_name='outgoing_edges', on_delete=models.CASCADE)
     to_node = models.ForeignKey(GraphNode, related_name='incoming_edges', on_delete=models.CASCADE)
     weight = models.FloatField(default=1.0)
     reason = models.CharField(max_length=255, blank=True)
-    reason_type = models.CharField(max_length=60, blank=True) # e.g. "vibe_match", "category_overlap", "user_feedback"
+    reason_type = models.CharField(max_length=60, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

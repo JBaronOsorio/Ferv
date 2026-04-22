@@ -18,14 +18,14 @@ class PlaceSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Place
-        fields = ['place_id', 'name', 'rating', 'tags', 'images']
+        fields = ['place_id', 'name', 'neighborhood', 'rating', 'tags', 'images']
 
 class GraphNodeSerializer(serializers.ModelSerializer):
     place = PlaceSerializer(read_only=True)
     
     class Meta:
         model = GraphNode
-        fields = ['id', 'place', 'is_favorite']
+        fields = ['id', 'place', 'is_favorite', 'rationale', 'status']
 
 class GraphEdgeSerializer(serializers.ModelSerializer):
     source = GraphNodeSerializer(read_only=True, source='from_node')

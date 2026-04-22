@@ -18,6 +18,10 @@ import logging
 import os
 import sys
 from pathlib import Path
+from config import CACHE_DIR, STRUCTURED_DIR, DOCUMENTS_DIR, EMBEDDINGS_DIR
+
+from places.models import Place, PlaceTag, PlaceDocument
+from recommendation.models import GeminiEmbeddingVector, GeminiEmbeddingVectorLarge, OpenAIEmbeddingVector, PlaceEmbedding
 
 log = logging.getLogger(__name__)
 
@@ -43,7 +47,6 @@ def ingest_place(data: dict) -> bool:
     Upsert a single structured place dict into the database.
     Returns True if created, False if updated.
     """
-    from places.models import Place, PlaceTag
 
     place, created = Place.objects.update_or_create(
         place_id=data["place_id"],
@@ -73,7 +76,6 @@ def ingest_document(place_id: str, text: str) -> bool:
     The Place record must already exist — call ingest_place() first.
     Returns True if created, False if updated.
     """
-    from places.models import Place, PlaceDocument
 
     try:
         place = Place.objects.get(place_id=place_id)
@@ -88,14 +90,91 @@ def ingest_document(place_id: str, text: str) -> bool:
 
     return created
 
+def ingest_embedding(place_id: str, vector: list, model_name: str) -> bool:
+    """
+    Upsert a PlaceEmbedding for the given place using the GFK model structure.
+    If a PlaceEmbedding already exists for the place, update its vector object in place.
+    Returns True if created, False if updated.
+    """
+    from django.contrib.contenttypes.models import ContentType
 
+
+    VectorClass = (
+        GeminiEmbeddingVector if "gemini" in model_name.lower() and len(vector) == 768
+        
+        else GeminiEmbeddingVectorLarge if "gemini" in model_name.lower() and len(vector) == 3072
+        
+        else OpenAIEmbeddingVector
+    )
+    ct = ContentType.objects.get_for_model(VectorClass)
+
+    try:
+        place = Place.objects.get(place_id=place_id)
+    except Place.DoesNotExist:
+        log.warning("Skipping embedding for unknown place_id: %s", place_id)
+        return False
+
+    try:
+        pe = PlaceEmbedding.objects.get(place=place)
+        VectorClass.objects.filter(id=pe.object_id).update(
+            vector=vector, model_name=model_name
+        )
+        return False
+    except PlaceEmbedding.DoesNotExist:
+        vector_obj = VectorClass.objects.create(vector=vector, model_name=model_name)
+        PlaceEmbedding.objects.create(place=place, content_type=ct, object_id=vector_obj.pk)
+        return True
+
+
+def ingest_embeddings_from_cache() -> None:
+    """
+    Pass 3 of ingest_all: read all embedding cache entries and upsert PlaceEmbedding rows.
+    Reads from data/cache/embeddings/<model-slug>/ directories.
+    """
+
+    embeddings_root = CACHE_DIR / EMBEDDINGS_DIR
+    if not embeddings_root.exists():
+        log.info("No embeddings cache found at %s — skipping.", embeddings_root)
+        return
+
+    model_dirs = [d for d in embeddings_root.iterdir() if d.is_dir()]
+    if not model_dirs:
+        log.info("No model subdirectories in embeddings cache — skipping.")
+        return
+
+    for model_dir in model_dirs:
+        files = list(model_dir.glob("*.json"))
+        log.info(
+            "ingest_embeddings — %d files in %s", len(files), model_dir.name
+        )
+        created = updated = failed = 0
+        for file_path in files:
+            try:
+                import json
+                with open(file_path, encoding="utf-8") as f:
+                    data = json.load(f)
+                place_id = file_path.stem
+                model_name = data.get("model", "")
+                vector = data.get("vector", [])
+                was_created = ingest_embedding(place_id, vector, model_name)
+                if was_created:
+                    created += 1
+                else:
+                    updated += 1
+            except Exception as e:
+                log.error("Failed to ingest embedding %s: %s", file_path.name, e)
+                failed += 1
+        log.info(
+            "Embeddings (%s) — created: %d, updated: %d, failed: %d",
+            model_dir.name, created, updated, failed,
+        )
+        
 def ingest_all() -> None:
     """
     Pipeline station — ingests all structured places then all documents.
     Places are ingested first so documents can resolve their FK safely.
     Raises FileNotFoundError if either cache directory is missing.
     """
-    from config import CACHE_DIR, STRUCTURED_DIR, DOCUMENTS_DIR
 
     _bootstrap_django()
 
@@ -157,4 +236,9 @@ def ingest_all() -> None:
             failed += 1
 
     log.info("Documents — created: %s, updated: %s, failed: %s", created, updated, failed)
+
+    # ── Pass 3: embeddings ────────────────────────────────────────────────────
+    ingest_embeddings_from_cache()
+
     log.info("ingest_all complete.")
+

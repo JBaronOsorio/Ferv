@@ -359,46 +359,15 @@
       <span class="section__meta">{{ featured_places|length }} lugares</span>
     </div>
 
-    <!-- Si hay lugares destacados, mostrar grid; si no, mostrar estado vacío -->
-    <!-- 
-    {% if featured_places %}
-      <div class="places-grid">
-        {% for place in featured_places %}
-          <div class="place-card">
 
-            {% with place.images.first as img %}
-              {% if img %}
-                <img class="place-card__image" src="{{ img.url }}" alt="{{ place.name }}" />
-              {% else %}
-                <div class="place-card__image">📍</div>
-              {% endif %}
-            {% endwith %}
+    <!-- Botón para mapa -->
+    <div style="text-align: right; margin-bottom: 2rem;">
+      <a href="{% url 'graph:map' %}" class="btn-primary">Ver en mapa</a>
+    </div>
 
-            <div class="place-card__body">
-              <div class="place-card__name">{{ place.name }}</div>
-              <div class="place-card__address">{{ place.address }}</div>
-              <div class="place-card__footer">
-                {% if place.rating %}
-                  <span class="place-card__rating">{{ place.rating }}</span>
-                {% endif %}
-                <div class="place-card__tags">
-                  {% for tag in place.tags.all|slice:":2" %}
-                    <span class="tag">{{ tag.tag }}</span>
-                  {% endfor %}
-                </div>
-              </div>
-            </div>
 
-          </div>
-        {% endfor %}
-      </div>
 
-    {% else %}
-      <div class="empty">
-        <div class="empty__icon">🗺️</div>
-        <p class="empty__text">Aún no hay lugares cargados en la base de datos.</p>
-      </div>
-    {% endif %} -->
+    <!-- GRID DE LUGARES -->
     {% if featured_places %}
 
         {% for place in featured_places %}

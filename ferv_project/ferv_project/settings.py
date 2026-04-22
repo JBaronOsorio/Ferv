@@ -13,7 +13,9 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 from dotenv import load_dotenv
 import os
-load_dotenv()
+
+load_dotenv(Path(__file__).resolve().parent.parent.parent / '.env')
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -83,11 +85,11 @@ WSGI_APPLICATION = 'ferv_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', 'ferv_db'),
-        'USER': os.getenv('DB_USER', 'ferv_user'),
-        'PASSWORD': os.getenv('DB_PASSWORD', ''),
-        'HOST': os.getenv('DB_HOST', 'localhost'),
-        'PORT': os.getenv('DB_PORT', '5432'),
+        'NAME': 'ferv_db',
+        'USER': 'postgres',
+        'PASSWORD': '1234',
+        'HOST': 'localhost',
+        'PORT': '5433',
     }
 }
 
@@ -141,3 +143,48 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Recommendation system config
+
+EMBEDDING_MODELS = {
+    "gemini-embedding-001": {
+        "model_key": "gemini-embedding-001",
+        "name": "models/gemini-embedding-001",
+        "dimensions": 768,
+        "api_key_env_var": "GEMINI_API_KEY",
+    },
+    "gemini-embedding-001-large": {
+        "model_key": "gemini-embedding-001-large",
+        "name": "models/gemini-embedding-001",
+        "dimensions": 3072,
+        "api_key_env_var": "GEMINI_API_KEY",
+    },
+    "openai-text-embedding-3-small": {
+        "model_key": "openai-text-embedding-3-small",
+        "name": "text-embedding-3-small",
+        "dimensions": 1536,
+        "api_key_env_var": "OPENAI_API_KEY",
+    }
+}
+
+LANGUAGE_MODELS = {
+    "gemini-2.5-flash": {
+        "name": "gemini-2.5-flash",
+        "api_key_env_var": "GEMINI_API_KEY",
+    },
+    "gemini-2.5-pro": {
+        "name": "gemini-2.5-pro",
+        "api_key_env_var": "GEMINI_API_KEY",
+    },
+    "openai-gpt-4o-mini": {
+        "name": "gpt-4o-mini",
+        "api_key_env_var": "OPENAI_API_KEY",
+    }
+}
+
+RECOMMENDATION_CONFIGS = {
+    "default": {
+        "embedding_model": EMBEDDING_MODELS["gemini-embedding-001-large"],
+        "language_model": LANGUAGE_MODELS["gemini-2.5-flash"],
+    },
+}

@@ -9,6 +9,9 @@ scripts/data/cache/*
 .venv/
 .fervenv
 .fervenv/
+.claude/
+.vscode/
+
 # SQLite database
 *.sqlite3
 
