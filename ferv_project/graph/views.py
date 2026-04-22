@@ -118,3 +118,11 @@ def fetch_graph(request):
     print(f"fetch_graph: returning {(serialized_nodes)} nodes and {(serialized_edges)} edges for user {request.user.username}")
 
     return JsonResponse({'nodes': serialized_nodes, 'edges': serialized_edges}, status=200)
+
+
+def delete_node(request, node_id):
+    """
+    DELETE /graph/api/delete_node/<node_id>
+    Deletes a node and its associated edges from the user's graph.
+    """
+    pass  # Implementar lógica de eliminación de nodo y sus edges asociados
