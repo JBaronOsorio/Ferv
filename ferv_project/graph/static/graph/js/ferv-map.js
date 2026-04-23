@@ -101,9 +101,7 @@ function rerender() {
 
   const isSaved = d => savedSet.has(d.place_id);
 
-  const visibleNodes = Object.values(allNodes).filter(n =>
-    isSaved(n) || suggestIds.has(n.place_id)
-  );
+  const visibleNodes = getFilteredVisibleNodes();
 
   const visiblePids = new Set(visibleNodes.map(n => n.place_id));
   const allEdges = [...searchEdges, ...mapEdges];

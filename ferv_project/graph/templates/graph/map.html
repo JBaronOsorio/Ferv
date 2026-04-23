@@ -21,6 +21,7 @@
   <script src="{% static 'graph/js/ferv-map.js' %}"></script>
   <script src="{% static 'graph/js/ferv-search.js' %}"></script>
   <script src="{% static 'graph/js/ferv-panel.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-filters.js' %}"></script>
   <script src="{% static 'graph/js/ferv-ui.js' %}"></script>
   
   
@@ -130,6 +131,48 @@
       <div class="hud-pill">
         <div class="hud-dot" style="background:#3dd6c8"></div>
         <b id="hud-saved" style="color:#3dd6c8">0</b> en mi mapa
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <button class="filters-fab" id="filters-fab" type="button" aria-controls="filters-panel" aria-expanded="false" title="Filtros">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 5h16l-6 7v5l-4 2v-7L4 5z"/>
+      </svg>
+    </button>
+
+    <div class="filters-panel" id="filters-panel" aria-hidden="true">
+      <div class="filters-panel__header">
+        <div>
+          <div class="filters-panel__eyebrow">Filtros</div>
+          <div class="filters-panel__title">Refina tu mapa</div>
+        </div>
+        <button class="filters-panel__close" id="filters-panel-close" type="button" aria-label="Cerrar filtros">×</button>
+      </div>
+
+      <div class="filters-panel__section">
+        <div class="filters-panel__label">Tag</div>
+        <div class="filters-tags" id="filters-tags"></div>
+      </div>
+
+      <div class="filters-panel__section">
+        <div class="filters-panel__label">Barrio</div>
+        <select class="filters-select" id="filters-neighborhood"></select>
+      </div>
+
+      <div class="filters-panel__section">
+        <div class="filters-panel__label">Rating mínimo</div>
+        <input class="filters-slider" id="filters-rating" type="range" min="0" max="5" step="0.5" value="0">
+        <div class="filters-slider__meta">
+          <span>0</span>
+          <span id="filters-rating-value">Cualquiera</span>
+          <span>5</span>
+        </div>
+      </div>
+
+      <div class="filters-panel__actions">
+        <button class="filters-btn filters-btn--ghost" id="filters-clear" type="button">Limpiar filtros</button>
+        <button class="filters-btn filters-btn--solid" id="filters-apply" type="button">Aplicar filtros</button>
       </div>
     </div>
 
