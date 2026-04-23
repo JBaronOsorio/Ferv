@@ -4,6 +4,15 @@ from django.db import models
 
 
 class GraphNode(models.Model):
+    
+    NODE_STATUS_CHOICES = [
+        ('recommendation', 'Recommendation'),
+        ('visited', 'Visited'),
+        ('in_graph', 'In_Graph'),
+        ('discarded', 'Discarded'),
+        ('removed', 'Removed'),
+    ]
+    
     place = models.ForeignKey('places.Place', related_name='graph_nodes', on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='graph_nodes', on_delete=models.CASCADE)
     rationale = models.CharField(max_length=255, blank=True)

@@ -12,10 +12,11 @@ async function saveNode(placeId) {
   getSavedColor(node.neighborhood); // asignar color de barrio antes de renderizar
 
   savedSet.add(placeId);
-  node.fx = node.x;
-  node.fy = node.y;
+  node.fx = null;
+  node.fy = null;
 
   // Crear edges cruzados con todos los ya guardados
+  /*
   const savedArr = [...savedSet].filter(id => id !== placeId);
   savedArr.forEach(otherId => {
     const other = allNodes[otherId];
@@ -29,14 +30,29 @@ async function saveNode(placeId) {
         source: node,
         target: other,
         weight: 0.7,
-        reason: crossReason(node, other),
+        reason: "",
         type: "map",
       });
     }
-  });
+  });*/
 
   try {
-    await addNodeToBackend(placeId);
+    newEdges = await addNodeToBackend(placeId);
+
+    newEdges.forEach(e => {
+      const sourceNode = allNodes[e.source_id];
+      const targetNode = allNodes[e.target_id];
+      if (sourceNode && targetNode) {
+        mapEdges.push({
+          source: sourceNode,
+          target: targetNode,
+          weight: e.weight,
+          reason: e.reason, 
+          type: "map",
+        });
+      }
+    });
+    
   } catch (err) {
     console.warn("No se pudo guardar en el backend:", err);
   }
@@ -78,6 +94,8 @@ function crossReason(a, b) {
   return "En tu mapa";
 }
 
+
+
 function rerender() {
   const svg = d3.select("#ferv-svg");
   svg.selectAll("*").remove();
@@ -99,7 +117,7 @@ function rerender() {
     d3.zoom().scaleExtent([0.15, 4]).on("zoom", e => svgG.attr("transform", e.transform))
   );
 
-  const isSaved = d => savedSet.has(d.place_id);
+  const isSaved = d => d.status === "in_graph";
 
   const visibleNodes = getFilteredVisibleNodes();
 
@@ -114,18 +132,13 @@ function rerender() {
   simulation = d3.forceSimulation(visibleNodes)
     .force("link", d3.forceLink(visibleEdges)
       .id(d => d.place_id)
-      .distance(d => d.type === "map" ? 100 : 130 - d.weight * 50)
-      .strength(d => d.type === "map" ? 0.8 : 0.4)
+      .distance(d => d.weight > 0.78 ? 380 : 200)
+      .strength(d => Math.max(0.05, d.weight - 0.3))
     )
-    .force("charge", d3.forceManyBody().strength(-260))
-    .force("center", d3.forceCenter(W / 2, H / 2).strength(0.04))
-    .force("collision", d3.forceCollide(56))
-    .alphaDecay(0.025);
-
-  visibleNodes.forEach(n => {
-    if (isSaved(n)) { n.fx = n.fx ?? n.x; n.fy = n.fy ?? n.y; }
-    else            { n.fx = null; n.fy = null; }
-  });
+    .force("charge", d3.forceManyBody().strength(-600))
+    .force("center", d3.forceCenter(W / 2, H / 2).strength(0.02))
+    .force("collision", d3.forceCollide(80))
+    .alphaDecay(0.018);
 
   // ── Edges de mapa (cyan, entre guardados) ──
   const mapEdgeEls = svgG.append("g").selectAll("line")
@@ -164,7 +177,7 @@ function rerender() {
     .call(d3.drag()
       .on("start", (ev, d) => { if (!ev.active) simulation.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
       .on("drag",  (ev, d) => { d.fx = ev.x; d.fy = ev.y; })
-      .on("end",   (ev, d) => { if (!ev.active) simulation.alphaTarget(0); if (!isSaved(d)) { d.fx = null; d.fy = null; } })
+      .on("end",   (ev, d) => { if (!ev.active) simulation.alphaTarget(0); d.fx = null; d.fy = null; })
     )
     .on("click", (ev, d) => { ev.stopPropagation(); openPanel(d, visibleEdges); });
 

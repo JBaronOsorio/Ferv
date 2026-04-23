@@ -95,8 +95,8 @@ async function loadUserMap() {
       if (!allNodes[n.place_id]) {
         allNodes[n.place_id] = {
           ...n,
-          x: W / 2 + (Math.random() - 0.5) * 300,
-          y: H / 2 + (Math.random() - 0.5) * 300,
+          x: null,//W / 2 + (Math.random() - 0.5) * 300,
+          y: null,//H / 2 + (Math.random() - 0.5) * 300,
           vx: 0, vy: 0,
         };
       }
