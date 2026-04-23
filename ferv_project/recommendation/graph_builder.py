@@ -35,6 +35,7 @@ def _node_block(node: GraphNode) -> str:
     place = node.place
     tags = ", ".join(t.tag for t in place.tags.all())
     summary = place.editorial_summary or "No description available."
+    document = place.document.text if hasattr(place, "document") else "No document available."
     return (
         f"node_id: {node.pk}\n"
         f"  place_id: {place.place_id}\n"
@@ -42,7 +43,8 @@ def _node_block(node: GraphNode) -> str:
         f"  neighborhood: {place.neighborhood or 'unknown'}\n"
         f"  rating: {place.rating}\n"
         f"  tags: {tags}\n"
-        f"  summary: {summary}"
+        f"  summary: {summary}\n"
+        f"  document: {document}"
     )
 
 
