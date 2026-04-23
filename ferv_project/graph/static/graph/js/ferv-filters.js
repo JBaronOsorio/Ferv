@@ -6,7 +6,15 @@
 
 let activeFilters = { tags: [], neighborhood: null, minRating: 0 };
 
-const FILTER_TAGS = ["bar", "café", "restaurante", "museo", "parque"];
+// Tags dinámicos — se leen de los nodos guardados, no hardcodeados
+// Tags ya son strings planos porque parseNode los convierte: ["bar", "cafe"]
+function getAvailableTags() {
+  const saved = Object.values(allNodes).filter(n => savedSet.has(n.place_id));
+  const tags = [...new Set(
+    saved.flatMap(n => Array.isArray(n.tags) ? n.tags : []).filter(Boolean)
+  )].sort();
+  return tags;
+}
 
 function hasActiveFilters() {
   return activeFilters.tags.length > 0 || activeFilters.neighborhood || activeFilters.minRating > 0;
@@ -16,7 +24,8 @@ function matchesActiveFilters(node) {
   const nodeTags = Array.isArray(node.tags) ? node.tags : [];
 
   if (activeFilters.tags.length) {
-    const tagMatch = activeFilters.tags.some(tag => nodeTags.some(t => t.tag === tag));
+    // tags son strings planos: ["bar", "cafe"]
+    const tagMatch = activeFilters.tags.some(tag => nodeTags.includes(tag));
     if (!tagMatch) return false;
   }
 
@@ -75,14 +84,15 @@ function populateNeighborhoodOptions() {
 
   const neighborhoods = [...new Set(
     Object.values(allNodes)
-      .map(node => node.neighborhood)
+      .filter(n => savedSet.has(n.place_id))  // ← solo guardados
+      .map(n => n.neighborhood)
       .filter(Boolean)
   )].sort((a, b) => a.localeCompare(b, "es"));
 
   const currentValue = activeFilters.neighborhood || "";
   select.innerHTML = [
     `<option value="">Todos los barrios</option>`,
-    ...neighborhoods.map(neighborhood => `<option value="${neighborhood}">${neighborhood}</option>`),
+    ...neighborhoods.map(n => `<option value="${n}">${n}</option>`),
   ].join("");
   select.value = currentValue;
 }
@@ -91,9 +101,18 @@ function renderTagButtons() {
   const wrap = document.getElementById("filters-tags");
   if (!wrap) return;
 
-  wrap.innerHTML = FILTER_TAGS.map(tag => {
-    const label = tag === "café" ? "Café" : tag.charAt(0).toUpperCase() + tag.slice(1);
+  const availableTags = getAvailableTags();
+
+  if (!availableTags.length) {
+    wrap.innerHTML = `<span style="color:rgba(255,255,255,0.3);font-size:11px">
+      Agrega lugares al mapa para ver filtros
+    </span>`;
+    return;
+  }
+
+  wrap.innerHTML = availableTags.map(tag => {
     const active = activeFilters.tags.includes(tag) ? "active" : "";
+    const label = tag.charAt(0).toUpperCase() + tag.slice(1);
     return `<button type="button" class="filters-tag ${active}" data-tag="${tag}">${label}</button>`;
   }).join("");
 }
