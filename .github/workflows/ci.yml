@@ -1,0 +1,71 @@
+name: CI — Ferv Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_DB: ferv_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DJANGO_SECRET_KEY: ci-secret-key-not-for-production
+      DB_NAME: ferv_db
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: localhost
+      DB_PORT: 5432
+      GEMINI_API_KEY: dummy-key-for-ci
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Análisis estático — Flake8
+        run: |
+          pip install flake8
+          flake8 ferv_project/ --max-line-length=119 --exclude=migrations
+
+      - name: Formato — Black
+        run: |
+          pip install black
+          black --check ferv_project/ --exclude migrations
+
+      - name: Ejecutar pruebas con coverage
+        run: |
+          pip install pytest pytest-django pytest-cov
+          cd ferv_project
+          pytest -m "not skip" --cov=. --cov-report=term-missing --cov-report=xml -v
+
+      - name: Subir reporte de coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: ferv_project/coverage.xml
