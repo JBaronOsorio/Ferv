@@ -16,7 +16,7 @@ import logging
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_http_methods
 from places.models import Place
 from rest_framework import status
 from rest_framework.response import Response
@@ -120,9 +120,24 @@ def fetch_graph(request):
     return JsonResponse({'nodes': serialized_nodes, 'edges': serialized_edges}, status=200)
 
 
+@login_required
+@require_http_methods(["DELETE"])
 def delete_node(request, node_id):
     """
     DELETE /graph/api/delete_node/<node_id>
-    Deletes a node and its associated edges from the user's graph.
+    Elimina un GraphNode del mapa del usuario y sus edges asociados.
+    Los GraphEdge se eliminan automáticamente por CASCADE.
+
+    Retorna: { "status": "ok" }
+    Errores: 404 si no existe, 403 si no pertenece al usuario
     """
-    pass  # Implementar lógica de eliminación de nodo y sus edges asociados
+    try:
+        node = GraphNode.objects.get(id=node_id)
+    except GraphNode.DoesNotExist:
+        return JsonResponse({'error': 'Nodo no encontrado.'}, status=404)
+
+    if node.user != request.user:
+        return JsonResponse({'error': 'No tienes permiso para eliminar este nodo.'}, status=403)
+
+    node.delete()  # CASCADE elimina los GraphEdge automáticamente
+    return JsonResponse({'status': 'ok'}, status=200)

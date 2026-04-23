@@ -10,7 +10,7 @@
 //  DEPENDE DE: ferv-mock.js (getMock), ferv-state.js (allNodes)
 // ══════════════════════════════════════════════════════════════
 
-const MOCK_MODE = false;
+const MOCK_MODE = true; // set to true para usar datos mock y evitar llamadas al backend durante el desarrollo del frontend
 
 // ── Helpers ──────────────────────────────────────────────────
 

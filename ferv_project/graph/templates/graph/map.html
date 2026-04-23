@@ -196,6 +196,20 @@
       </svg>
     </button>
 
+    <!-- Modal de confirmación de eliminación -->
+    <div class="remove-modal" id="remove-confirm-modal" aria-hidden="true">
+      <div class="remove-modal__backdrop"></div>
+      <div class="remove-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="remove-confirm-title">
+        <div class="remove-modal__eyebrow">Confirmar acción</div>
+        <h3 class="remove-modal__title" id="remove-confirm-title">Eliminar del mapa</h3>
+        <p class="remove-modal__message">¿Eliminar <span id="remove-confirm-name"></span> de tu mapa?</p>
+        <div class="remove-modal__actions">
+          <button type="button" class="remove-modal__btn remove-modal__btn--cancel" id="remove-confirm-cancel">Cancelar</button>
+          <button type="button" class="remove-modal__btn remove-modal__btn--danger" id="remove-confirm-accept">Eliminar</button>
+        </div>
+      </div>
+    </div>
+
   </div><!-- /canvas-wrap -->
 
   <!-- Toast de confirmación -->

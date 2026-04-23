@@ -76,6 +76,26 @@ function closePanel() {
   selectedD = null;
 }
 
+function openRemoveModal() {
+  if (!selectedD) return;
+
+  const modal = document.getElementById("remove-confirm-modal");
+  const nameEl = document.getElementById("remove-confirm-name");
+  if (!modal || !nameEl) return;
+
+  nameEl.textContent = selectedD.name || "este lugar";
+  modal.classList.add("open");
+  modal.setAttribute("aria-hidden", "false");
+}
+
+function closeRemoveModal() {
+  const modal = document.getElementById("remove-confirm-modal");
+  if (!modal) return;
+
+  modal.classList.remove("open");
+  modal.setAttribute("aria-hidden", "true");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("panel-add-btn").addEventListener("click", () => {
     if (!selectedD || savedSet.has(selectedD.place_id)) return;
@@ -85,6 +105,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("panel-remove-btn").addEventListener("click", () => {
     if (!selectedD) return;
+    openRemoveModal();
+  });
+
+  document.getElementById("remove-confirm-cancel").addEventListener("click", () => {
+    closeRemoveModal();
+  });
+
+  document.getElementById("remove-confirm-accept").addEventListener("click", () => {
+    if (!selectedD) return;
     removeNode(selectedD.place_id);
+    closeRemoveModal();
+  });
+
+  document.getElementById("remove-confirm-modal").addEventListener("click", (event) => {
+    if (event.target.id === "remove-confirm-modal" || event.target.classList.contains("remove-modal__backdrop")) {
+      closeRemoveModal();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeRemoveModal();
+    }
   });
 });
