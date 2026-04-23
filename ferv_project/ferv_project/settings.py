@@ -14,8 +14,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 
-load_dotenv(Path(__file__).resolve().parent.parent.parent / '.env')
-
+# load_dotenv(Path(__file__).resolve().parent.parent.parent / '.env')
+load_dotenv(override=False)  # Las variables del sistema operativo tienen prioridad
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
