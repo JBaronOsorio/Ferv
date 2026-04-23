@@ -10,4 +10,6 @@ urlpatterns = [
     path('map/', views.map_view, name='map'),           # Nueva — visualización del mapa
     path('add-node/', views.add_node, name='add-node'), # Nueva — agregar lugar al mapa
     path('api/fetch-graph/', views.fetch_graph, name='fetch-graph'), # Nueva — API para obtener nodos y edges
+    path('api/delete_node/<int:node_id>', views.delete_node, name='delete_node'),
+    
 ]
