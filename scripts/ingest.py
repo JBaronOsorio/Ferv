@@ -20,8 +20,8 @@ import sys
 from pathlib import Path
 from config import CACHE_DIR, STRUCTURED_DIR, DOCUMENTS_DIR, EMBEDDINGS_DIR
 
-from places.models import Place, PlaceTag, PlaceDocument
-from recommendation.models import GeminiEmbeddingVector, GeminiEmbeddingVectorLarge, OpenAIEmbeddingVector, PlaceEmbedding
+from places.models import Place, PlaceTag, PlaceDocument #type: ignore  # noqa: F401
+from recommendation.models import GeminiEmbeddingVector, GeminiEmbeddingVectorLarge, OpenAIEmbeddingVector, PlaceEmbedding #type: ignore  # noqa: F401
 
 log = logging.getLogger(__name__)
 

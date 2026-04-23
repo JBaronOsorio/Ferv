@@ -3,6 +3,8 @@
 *.env
 scripts/data/cache/*
 *__pycache__*
+__pycache__/
+*.pyo
 
 # Virtual environment
 .venv
@@ -11,6 +13,9 @@ scripts/data/cache/*
 .fervenv/
 .claude/
 .vscode/
+/pycache/
+__pycache__/
+*.log
 
 # SQLite database
 *.sqlite3
