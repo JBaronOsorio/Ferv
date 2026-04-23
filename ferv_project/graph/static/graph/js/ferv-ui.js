@@ -86,6 +86,21 @@ document.addEventListener("DOMContentLoaded", () => {
 async function loadUserMap() {
   try {
     const data = await fetchUserGraph();
+
+    // Carga la lista de descubrimientos en paralelo al mapa
+    fetchDiscoveryList().then(disc => {
+      disc.nodes.forEach(n => {
+        const pid = n.place?.place_id;
+        if (pid) {
+          discoveredSet.add(pid);
+          if (!allNodes[pid]) {
+            allNodes[pid] = parseNode(n);
+          }
+        }
+      });
+      updateDiscoveryBadge(disc.nodes.length);
+    }).catch(err => console.warn("Error cargando descubrimientos:", err));
+
     if (!data.nodes.length) return;      // mapa vacío, mostrar empty state
 
     const W = document.querySelector(".canvas-wrap").clientWidth;

@@ -24,7 +24,7 @@
   <script src="{% static 'graph/js/ferv-filters.js' %}"></script>
   <script src="{% static 'graph/js/ferv-ui.js' %}"></script>
   
-  
+
 
   <!-- Estilos del mapa -->
   <link rel="stylesheet" href="{% static 'graph/css/ferv-map.css' %}">
@@ -134,7 +134,7 @@
       </div>
     </div>
 
-    <!-- Filtros -->
+    <!-- FAB Filtros -->
     <button class="filters-fab" id="filters-fab" type="button" aria-controls="filters-panel" aria-expanded="false" title="Filtros">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M4 5h16l-6 7v5l-4 2v-7L4 5z"/>
@@ -176,6 +176,28 @@
       </div>
     </div>
 
+    <!-- FAB Descubrimientos -->
+    <button class="discovery-fab" id="discovery-fab" type="button" title="Descubrimientos">
+      <span class="discovery-badge" id="discovery-badge" style="display:none">0</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+      </svg>
+    </button>
+
+    <!-- Panel de descubrimientos -->
+    <div class="discovery-panel" id="discovery-panel">
+      <div class="discovery-panel__header">
+        <div>
+          <div class="discovery-panel__eyebrow">Descubrimientos</div>
+          <div class="discovery-panel__title">Guardados para después</div>
+        </div>
+        <button class="discovery-panel__close" id="discovery-panel-close" type="button" aria-label="Cerrar">×</button>
+      </div>
+      <div class="discovery-list" id="discovery-list">
+        <div class="discovery-empty">No tienes descubrimientos aún</div>
+      </div>
+    </div>
+
     <!-- Panel lateral de detalle de nodo -->
     <div class="panel" id="detail-panel">
       <button class="panel-close" onclick="closePanel()">×</button>
@@ -194,6 +216,7 @@
       <!-- Botones de acción -->
       <div class="panel-actions">
         <button class="btn-add" id="panel-add-btn">+ Agregar a mi mapa</button>
+        <button class="btn-discover" id="panel-discover-btn">☆ Descubrir</button>
         <button class="btn-remove" id="panel-remove-btn">− Eliminar del mapa</button>
       </div>
     </div>

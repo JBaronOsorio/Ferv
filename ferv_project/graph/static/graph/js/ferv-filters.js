@@ -61,6 +61,9 @@ function setEmptyState(isFilteredEmpty) {
 
 function getFilteredVisibleNodes() {
   const visibleNodes = Object.values(allNodes).filter(node => {
+    // Nunca mostrar nodos en la lista de descubrimiento en el canvas
+    if (discoveredSet.has(node.place_id)) return false;
+
     if (!savedSet.has(node.place_id)) {
       return suggestIds.has(node.place_id);
     }

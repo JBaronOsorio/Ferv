@@ -6,6 +6,9 @@
 //    GET  /graph/api/one_shot_recommendation/<query>  → recomendaciones nuevas
 //    POST /graph/add-node/                            → guardar nodo en mapa
 //    DELETE /graph/api/delete_node/<node_id>          → eliminar nodo del mapa
+//    POST /graph/api/discover-node/                   → mover nodo a descubrimientos
+//    GET  /graph/api/discovery-list/                  → lista de descubrimientos
+//    POST /graph/api/restore-node/                    → restaurar nodo descubierto
 //
 //  DEPENDE DE: ferv-mock.js (getMock), ferv-state.js (allNodes)
 // ══════════════════════════════════════════════════════════════
@@ -27,7 +30,7 @@ function parseNode(n) {
     neighborhood: n.place?.neighborhood,
     rating:       n.place?.rating,
     tags:         (n.place?.tags || []).map(t => t.tag),
-    status:       n.status,   // "in_graph" | "recommendation"
+    status:       n.status,   // "in_graph" | "recommendation" | "discovered"
   };
 }
 
@@ -146,5 +149,63 @@ async function removeNodeFromBackend(placeId) {
   if (!resp.ok) {
     const body = await resp.json().catch(() => ({}));
     throw new Error(`delete_node error ${resp.status}: ${body.error || ""}`);
+  }
+}
+
+
+// ── discoverNodeBackend ───────────────────────────────────────
+//  Mueve un nodo a status 'discovered' (lista de descubrimiento).
+//  POST /graph/api/discover-node/ → { node_id: <int> }
+
+async function discoverNodeBackend(placeId) {
+  if (MOCK_MODE) return;
+
+  const nodeId = parseInt(allNodes[placeId]?.id);
+  if (!nodeId) throw new Error(`No se encontró node_id para place_id=${placeId}`);
+
+  const resp = await fetch("/graph/api/discover-node/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-CSRFToken": getCsrf() },
+    body: JSON.stringify({ node_id: nodeId })
+  });
+
+  if (!resp.ok) {
+    const body = await resp.json().catch(() => ({}));
+    throw new Error(`discover-node error ${resp.status}: ${body.error || ""}`);
+  }
+}
+
+
+// ── fetchDiscoveryList ────────────────────────────────────────
+//  Carga la lista de descubrimientos del usuario.
+//  GET /graph/api/discovery-list/
+
+async function fetchDiscoveryList() {
+  if (MOCK_MODE) return { nodes: [] };
+
+  const resp = await fetch("/graph/api/discovery-list/", {
+    headers: { "Accept": "application/json" }
+  });
+  if (!resp.ok) throw new Error(`discovery-list error ${resp.status}`);
+  return await resp.json();
+}
+
+
+// ── restoreNodeBackend ────────────────────────────────────────
+//  Restaura un nodo de 'discovered' → 'recommendation' o 'in_graph'.
+//  POST /graph/api/restore-node/ → { node_id: <int>, target: <str> }
+
+async function restoreNodeBackend(nodeId, target) {
+  if (MOCK_MODE) return;
+
+  const resp = await fetch("/graph/api/restore-node/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-CSRFToken": getCsrf() },
+    body: JSON.stringify({ node_id: nodeId, target: target })
+  });
+
+  if (!resp.ok) {
+    const body = await resp.json().catch(() => ({}));
+    throw new Error(`restore-node error ${resp.status}: ${body.error || ""}`);
   }
 }
