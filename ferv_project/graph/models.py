@@ -22,6 +22,19 @@ class GraphNode(models.Model):
 
 
 class GraphEdge(models.Model):
+    
+    REASON_TYPE_CHOICES = [
+        ('ambiance', 'Ambiance'),
+        ('cuisine', 'Cuisine'),
+        ('activity', 'Activity'),
+        ('green_space', 'Green Space'),
+        ('art_culture', 'Art & Culture'),
+        ('family_friendly', 'Family Friendly'),
+        ('nightlife', 'Nightlife'),
+        ('outdoors', 'Outdoors'),
+        ('drinks', 'Drinks'),
+    ]
+    
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='graph_edges', on_delete=models.CASCADE)
     from_node = models.ForeignKey(GraphNode, related_name='outgoing_edges', on_delete=models.CASCADE)
     to_node = models.ForeignKey(GraphNode, related_name='incoming_edges', on_delete=models.CASCADE)

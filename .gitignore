@@ -13,6 +13,9 @@ __pycache__/
 .fervenv/
 .claude/
 .vscode/
+/pycache/
+__pycache__/
+*.log
 
 # SQLite database
 *.sqlite3

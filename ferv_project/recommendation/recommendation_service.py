@@ -24,8 +24,8 @@ from recommendation.services import EmbeddingService, Retriever
 
 log = logging.getLogger(__name__)
 
-RECOMMENDATION_K = 20  # retrieval breadth (candidates passed to LLM)
-RECOMMENDATION_N = 5   # final picks returned to the user
+RECOMMENDATION_K = 12  # retrieval breadth (candidates passed to LLM)
+RECOMMENDATION_N = 4   # final picks returned to the user
 
 
 def _candidates_block(candidates: list[dict]) -> str:
@@ -35,13 +35,15 @@ def _candidates_block(candidates: list[dict]) -> str:
         place = c["place"]
         tags = ", ".join(t.tag for t in place.tags.all())
         summary = place.editorial_summary or "No description available."
+        document = place.document.text if hasattr(place, "document") else "No document available."
         lines.append(
             f"place_id: {place.place_id}\n"
             f"  name: {place.name}\n"
             f"  neighborhood: {place.neighborhood or 'unknown'}\n"
             f"  rating: {place.rating}\n"
             f"  tags: {tags}\n"
-            f"  summary: {summary}"
+            f"  summary: {summary}\n"
+            f"  document: {document}"
         )
     return "\n\n".join(lines)
 

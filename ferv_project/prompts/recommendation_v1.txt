@@ -13,7 +13,7 @@ CANDIDATE PLACES ({candidate_count} retrieved by semantic similarity):
 Select exactly {n} places that best match the user's request AND their profile.
 Return ONLY a valid JSON object — no markdown, no extra text, nothing before or after the JSON:
 
-{{"recommendations": [{{"place_id": "<place_id from candidates>", "rationale": "<5-10 words that concisely describe compatibility between the user and the place>"}}]}}
+{{"recommendations": [{{"place_id": "<place_id from candidates>", "rationale": "<5-10 words that concisely describe compatibility between the user and the place, rationale must not under any circumnstances contain double quotation marks, if they're present swap for single quotation marks>"}}]}}
 
 Rules:
 - Select exactly {n} places (fewer only if fewer candidates exist)

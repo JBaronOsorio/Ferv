@@ -16,7 +16,15 @@ async function saveNode(placeId) {
   node.fy = node.y;
 
   // Crear edges cruzados con todos los ya guardados
-  const savedArr = [...savedSet].filter(id => id !== placeId);
+  // const savedArr = [...savedSet].filter(id => id !== placeId);
+  const savedArr = [...savedSet].filter(id => {
+  if (id === placeId) return false;
+  const other = allNodes[id];
+  if (!other) return false;
+  // Solo conectar si comparten al menos un tag
+  const sharedTags = (node.tags || []).filter(t => (other.tags || []).includes(t));
+  return sharedTags.length > 0;
+});
   savedArr.forEach(otherId => {
     const other = allNodes[otherId];
     if (!other) return;
@@ -101,33 +109,34 @@ function rerender() {
 
   const isSaved = d => savedSet.has(d.place_id);
 
-  const visibleNodes = Object.values(allNodes).filter(n =>
-    isSaved(n) || suggestIds.has(n.place_id)
-  );
+  const visibleNodes = getFilteredVisibleNodes();
 
   const visiblePids = new Set(visibleNodes.map(n => n.place_id));
   const allEdges = [...searchEdges, ...mapEdges];
-  const visibleEdges = allEdges.filter(e =>
-    visiblePids.has(e.source?.place_id) && visiblePids.has(e.target?.place_id)
-  );
+  const visibleEdges = allEdges.filter(e => {
+  if (!visiblePids.has(e.source?.place_id) || !visiblePids.has(e.target?.place_id)) return false;
+  // Solo dibujar edges relevantes — mapa siempre, sugeridos solo si peso > 0.75
+  if (e.type === "search" && e.weight < 0.75) return false;
+  return true;
+});
 
   // ── Simulación de fuerzas ──
   if (simulation) simulation.stop();
   simulation = d3.forceSimulation(visibleNodes)
     .force("link", d3.forceLink(visibleEdges)
       .id(d => d.place_id)
-      .distance(d => d.type === "map" ? 100 : 130 - d.weight * 50)
-      .strength(d => d.type === "map" ? 0.8 : 0.4)
+      .distance(d => d.type === "map" ? 80 : 160 - d.weight * 100)
+      .strength(d => d.type === "map" ? 1.0 : 0.3 + d.weight * 0.6)
     )
-    .force("charge", d3.forceManyBody().strength(-260))
-    .force("center", d3.forceCenter(W / 2, H / 2).strength(0.04))
-    .force("collision", d3.forceCollide(56))
-    .alphaDecay(0.025);
+    .force("charge", d3.forceManyBody().strength(-120))
+    .force("center", d3.forceCenter(W / 2, H / 2).strength(0.08))
+    .force("collision", d3.forceCollide(48))
+    .alphaDecay(0.02);
 
   visibleNodes.forEach(n => {
-    if (isSaved(n)) { n.fx = n.fx ?? n.x; n.fy = n.fy ?? n.y; }
-    else            { n.fx = null; n.fy = null; }
-  });
+  n.fx = null;
+  n.fy = null;
+});
 
   // ── Edges de mapa (cyan, entre guardados) ──
   const mapEdgeEls = svgG.append("g").selectAll("line")

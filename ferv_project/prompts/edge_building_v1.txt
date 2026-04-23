@@ -11,15 +11,17 @@ EXISTING PLACES IN USER'S GRAPH (candidates for connection):
 {candidates_block}
 
 Identify meaningful connections between the new place and the existing places, from the perspective of this user's preferences.
-Not every candidate needs an edge — only create edges where there is a genuine shared dimension relevant to this user.
+Not every candidate needs an edge — only create edges where there is a genuine shared dimension relevant to this user. 
+Relevance to the user means places dont connect by characteristics like "same neighborhood" or "In your map" or "Same place type" but by personal values of the user
+two different people might have the same two nodes connected for different reasons, for one the edge my be labeled "High end cuisine" and for other "live music".
 
 Return ONLY a valid JSON object — no markdown, no extra text, nothing before or after the JSON:
 
-{{"edges": [{{"from_node_id": <int>, "to_node_id": <int>, "weight": 0.85, "reason": "<short label, 5 words max>", "reason_type": "<food|ambiance|activity|neighborhood|social|other>"}}]}}
+{{"edges": [{{"from_node_id": <int>, "to_node_id": <int>, "weight": 0.85, "reason": "<short label, 3 words max>", "reason_type": "<ambiance|cuisine|activity|green_space|art_culture|family_friendly|nightlife|outdoors|drinks>"}}]}}
 
 Rules:
 - weight must be between 0.0 and 1.0 (higher = stronger, more personal connection)
-- reason_type must be exactly one of: food, ambiance, activity, neighborhood, social, other
+- reason_type must be exactly one of: ambiance, cuisine, activity, green_space, art_culture, family_friendly, nightlife, outdoors, drinks.
 - Either from_node_id or to_node_id must equal {new_node_id} (the new place's node ID)
 - All node IDs must come from the candidates list above or be {new_node_id}
 - Do not create the same pair twice (no duplicate edges)
