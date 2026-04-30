@@ -52,11 +52,9 @@ function setEmptyState(isFilteredEmpty) {
 
 function getFilteredVisibleNodes() {
   const visibleNodes = Object.values(allNodes).filter(node => {
-    if (!savedSet.has(node.place_id)) {
-      return suggestIds.has(node.place_id);
-    }
-
-    return matchesActiveFilters(node);
+    if (node.status === "in_graph") return matchesActiveFilters(node);
+    if (node.status === "recommendation") return true;
+    return false;
   });
 
   setEmptyState(visibleNodes.length === 0 && hasActiveFilters());

@@ -9,8 +9,10 @@
 // ── HUD ──────────────────────────────────────────────────────
 
 function updateHUD() {
-  document.getElementById("hud-suggested").textContent = Object.keys(allNodes).length - savedSet.size;
-  document.getElementById("hud-saved").textContent = savedSet.size;
+  const nodes = Object.values(allNodes);
+  const savedCount = nodes.filter(n => n.status === "in_graph").length;
+  document.getElementById("hud-suggested").textContent = nodes.length - savedCount;
+  document.getElementById("hud-saved").textContent = savedCount;
 }
 
 function updateQueryTags() {
@@ -99,13 +101,6 @@ async function loadUserMap() {
           y: null,//H / 2 + (Math.random() - 0.5) * 300,
           vx: 0, vy: 0,
         };
-      }
-      if (n.status === "in_graph") {
-        getSavedColor(n.neighborhood);
-        savedSet.add(n.place_id);
-        allNodes[n.place_id].fx = allNodes[n.place_id].x;
-        allNodes[n.place_id].fy = allNodes[n.place_id].y;
-        suggestIds.add(n.place_id);
       }
     });
 

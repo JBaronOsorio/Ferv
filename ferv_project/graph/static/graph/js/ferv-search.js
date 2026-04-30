@@ -20,9 +20,12 @@ async function runSearch() {
     const W = document.querySelector(".canvas-wrap").clientWidth;
     const H = document.querySelector(".canvas-wrap").clientHeight;
 
-    suggestIds = new Set();
+    // Clear stale recommendation nodes from a previous search before adding new ones
+    Object.keys(allNodes).forEach(pid => {
+      if (allNodes[pid].status === "recommendation") delete allNodes[pid];
+    });
+
     data.nodes.forEach(n => {
-      suggestIds.add(n.place_id);
       if (!allNodes[n.place_id]) {
         allNodes[n.place_id] = {
           ...n,
@@ -30,12 +33,8 @@ async function runSearch() {
           y: H / 2 + (Math.random() - 0.5) * 200,
           vx: 0, vy: 0,
         };
-      }
-      if (n.status === 'in_graph') {
+      } else if (allNodes[n.place_id].status === "in_graph") {
         getSavedColor(n.neighborhood);
-        savedSet.add(n.place_id);
-        allNodes[n.place_id].fx = allNodes[n.place_id].x;
-        allNodes[n.place_id].fy = allNodes[n.place_id].y;
       }
     });
 

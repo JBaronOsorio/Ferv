@@ -7,7 +7,7 @@
 
 function openPanel(d, edges) {
   selectedD = d;
-  const isSaved = savedSet.has(d.place_id);
+  const isSaved = d.status === "in_graph";
 
   const badgeColor = isSaved ? getSavedColor(d.neighborhood) : "rgba(255,255,255,0.35)";
 
@@ -41,7 +41,7 @@ function openPanel(d, edges) {
     connEl.style.display = "block";
     connList.innerHTML = conns.map(e => {
       const other      = e.source.place_id === d.place_id ? e.target : e.source;
-      const otherSaved = savedSet.has(other?.place_id);
+      const otherSaved = other?.status === "in_graph";
       const col        = otherSaved ? getSavedColor(other?.neighborhood) : "rgba(255,255,255,0.25)";
       return `<div class="conn-item">
         <div class="conn-dot" style="background:${col};opacity:${otherSaved ? 1 : 0.5}"></div>
@@ -98,7 +98,7 @@ function closeRemoveModal() {
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("panel-add-btn").addEventListener("click", () => {
-    if (!selectedD || savedSet.has(selectedD.place_id)) return;
+    if (!selectedD || selectedD.status === "in_graph") return;
     saveNode(selectedD.place_id);
     closePanel();
   });

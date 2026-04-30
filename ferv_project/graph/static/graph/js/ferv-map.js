@@ -5,13 +5,12 @@
 // ══════════════════════════════════════════════════════════════
 
 async function saveNode(placeId) {
-  if (savedSet.has(placeId)) return;
+  if (allNodes[placeId]?.status === "in_graph") return;
   const node = allNodes[placeId];
   if (!node) return;
 
   getSavedColor(node.neighborhood); // asignar color de barrio antes de renderizar
 
-  savedSet.add(placeId);
   node.fx = null;
   node.fy = null;
 
@@ -37,7 +36,8 @@ async function saveNode(placeId) {
   });*/
 
   try {
-    newEdges = await addNodeToBackend(placeId);
+    const newEdges = await addNodeToBackend(placeId);
+    node.status = "in_graph";
 
     newEdges.forEach(e => {
       const sourceNode = allNodes[e.source_id];
@@ -47,12 +47,12 @@ async function saveNode(placeId) {
           source: sourceNode,
           target: targetNode,
           weight: e.weight,
-          reason: e.reason, 
+          reason: e.reason,
           type: "map",
         });
       }
     });
-    
+
   } catch (err) {
     console.warn("No se pudo guardar en el backend:", err);
   }
@@ -63,13 +63,9 @@ async function saveNode(placeId) {
 }
 
 async function removeNode(placeId) {
-  if (!savedSet.has(placeId)) return;
+  if (allNodes[placeId]?.status !== "in_graph") return;
   const node = allNodes[placeId];
   if (!node) return;
-
-  savedSet.delete(placeId);
-  node.fx = null;
-  node.fy = null;
 
   mapEdges = mapEdges.filter(e =>
     e.source.place_id !== placeId && e.target.place_id !== placeId
@@ -77,6 +73,7 @@ async function removeNode(placeId) {
 
   try {
     await removeNodeFromBackend(placeId);
+    delete allNodes[placeId];
   } catch (err) {
     console.warn("No se pudo eliminar en el backend:", err);
   }
