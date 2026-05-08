@@ -123,6 +123,7 @@ async function handleVisitedChoice(choice) {
   }
 
   if (choice === "map") {
+    showMapLoading("Agregando a tu mapa...");
     try {
       const result = await markVisitedAPI(parseInt(nodeId));
 
@@ -133,10 +134,16 @@ async function handleVisitedChoice(choice) {
       const W = document.querySelector(".canvas-wrap").clientWidth;
       const H = document.querySelector(".canvas-wrap").clientHeight;
 
+      const mapNodes = Object.values(allNodes).filter(
+        n => (n.status === "in_graph" || n.status === "visited") && n.x != null
+      );
+      const cx = mapNodes.length ? mapNodes.reduce((s, n) => s + n.x, 0) / mapNodes.length : W / 2;
+      const cy = mapNodes.length ? mapNodes.reduce((s, n) => s + n.y, 0) / mapNodes.length : H / 2;
+
       allNodes[parsed.place_id] = {
         ...parsed,
-        x: W / 2 + (Math.random() - 0.5) * 300,
-        y: H / 2 + (Math.random() - 0.5) * 300,
+        x: cx + (Math.random() - 0.5) * 160,
+        y: cy + (Math.random() - 0.5) * 160,
         vx: 0, vy: 0,
       };
 
@@ -162,6 +169,8 @@ async function handleVisitedChoice(choice) {
     } catch (_err) {
       showToast("Error al marcar como visitado. El lugar sigue en tu lista.");
       loadDiscoveryList();
+    } finally {
+      hideMapLoading();
     }
   }
 }
