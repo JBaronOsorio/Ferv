@@ -4,68 +4,81 @@
 //  DEPENDE DE: ferv-config.js, ferv-state.js, ferv-api.js, ferv-ui.js
 // ══════════════════════════════════════════════════════════════
 
+function showMapLoading(text = "Construyendo tu mapa...") {
+  const el = document.getElementById("loading-overlay");
+  if (!el) return;
+  el.querySelector(".loading-overlay__text").textContent = text;
+  el.classList.add("show");
+}
+
+function hideMapLoading() {
+  document.getElementById("loading-overlay")?.classList.remove("show");
+}
+
 async function saveNode(placeId) {
   if (allNodes[placeId]?.status === "in_graph") return;
   const node = allNodes[placeId];
   if (!node) return;
 
-  getSavedColor(node.neighborhood); // asignar color de barrio antes de renderizar
-
-  node.fx = null;
-  node.fy = null;
-
-  // Crear edges cruzados con todos los ya guardados
-  /*
-  const savedArr = [...savedSet].filter(id => id !== placeId);
-  savedArr.forEach(otherId => {
-    const other = allNodes[otherId];
-    if (!other) return;
-    const exists = mapEdges.some(e =>
-      (e.source.place_id === placeId && e.target.place_id === otherId) ||
-      (e.source.place_id === otherId && e.target.place_id === placeId)
-    );
-    if (!exists) {
-      mapEdges.push({
-        source: node,
-        target: other,
-        weight: 0.7,
-        reason: "",
-        type: "map",
-      });
-    }
-  });*/
+  getSavedColor(node.neighborhood);
+  showMapLoading();
 
   try {
-    const newEdges = await addNodeToBackend(placeId);
+    const newEdges = await addNodeToMap(placeId);
     node.status = "in_graph";
 
+    const nodeList = Object.values(allNodes);
     newEdges.forEach(e => {
-      const sourceNode = allNodes[e.source_id];
-      const targetNode = allNodes[e.target_id];
-      if (sourceNode && targetNode) {
-        mapEdges.push({
-          source: sourceNode,
-          target: targetNode,
-          weight: e.weight,
-          reason: e.reason,
-          type: "map",
-        });
+      const src = nodeList.find(n => n.id === String(e.source_id));
+      const tgt = nodeList.find(n => n.id === String(e.target_id));
+      if (src && tgt) {
+        mapEdges.push({ source: src, target: tgt, weight: e.weight, reason: e.reason, type: "map" });
       }
     });
 
+    showToast(`"${trunc(node.name, 22)}" fijado en tu mapa`);
   } catch (err) {
-    console.warn("No se pudo guardar en el backend:", err);
+    showToast("Error al guardar en el mapa");
+    console.error(err);
+  } finally {
+    hideMapLoading();
+    updateHUD();
+    rerender();
   }
+}
 
-  updateHUD();
-  rerender();
-  showToast(`"${trunc(node.name, 22)}" fijado en tu mapa`);
+async function addToDiscovery(placeId) {
+  const node = allNodes[placeId];
+  if (!node || node.status === "discovery") return;
+
+  try {
+    await addToDiscoveryAPI(parseInt(node.id));
+
+    if (node.status === "in_graph" || node.status === "visited") {
+      mapEdges = mapEdges.filter(e =>
+        e.source.place_id !== placeId && e.target.place_id !== placeId
+      );
+    }
+    const name = node.name;
+    delete allNodes[placeId];
+
+    closePanel();
+    updateHUD();
+    rerender();
+    showToast(`"${trunc(name, 22)}" guardado en tu lista`);
+  } catch (err) {
+    if (err.status === 409) {
+      showToast("Este lugar ya está en tu lista");
+    } else {
+      showToast("Error al guardar en la lista");
+      console.error(err);
+    }
+  }
 }
 
 async function removeNode(placeId) {
-  if (allNodes[placeId]?.status !== "in_graph") return;
   const node = allNodes[placeId];
-  if (!node) return;
+  if (!node || (node.status !== "in_graph" && node.status !== "visited")) return;
 
   mapEdges = mapEdges.filter(e =>
     e.source.place_id !== placeId && e.target.place_id !== placeId
@@ -114,7 +127,9 @@ function rerender() {
     d3.zoom().scaleExtent([0.15, 4]).on("zoom", e => svgG.attr("transform", e.transform))
   );
 
-  const isSaved = d => d.status === "in_graph";
+  const isSaved   = d => d.status === "in_graph";
+  const isVisited = d => d.status === "visited";
+  const isOnMap   = d => d.status === "in_graph" || d.status === "visited";
 
   const visibleNodes = getFilteredVisibleNodes();
 
@@ -178,56 +193,69 @@ function rerender() {
     )
     .on("click", (ev, d) => { ev.stopPropagation(); openPanel(d, visibleEdges); });
 
-  // Anillo exterior punteado — solo guardados
-  nodeEls.filter(isSaved).append("circle")
+  // Anillo exterior punteado — en mapa y visitados (estilo diferente)
+  nodeEls.filter(isOnMap).append("circle")
     .attr("r", 50).attr("fill", "none")
     .attr("stroke", d => getSavedColor(d.neighborhood))
-    .attr("stroke-width", 0.7).attr("stroke-opacity", 0.25)
-    .attr("stroke-dasharray", "3,6");
+    .attr("stroke-width", d => isVisited(d) ? 0.5 : 0.7)
+    .attr("stroke-opacity", d => isVisited(d) ? 0.14 : 0.25)
+    .attr("stroke-dasharray", d => isVisited(d) ? "2,8" : "3,6");
 
   // Círculo principal
   nodeEls.append("circle")
-    .attr("r", d => isSaved(d) ? 40 : 36)
-    .attr("fill", d => isSaved(d)
-      ? getSavedColor(d.neighborhood) + "28"
+    .attr("r", d => isOnMap(d) ? 40 : 36)
+    .attr("fill", d => isOnMap(d)
+      ? getSavedColor(d.neighborhood) + (isVisited(d) ? "18" : "28")
       : SUGGESTED_COLOR.fill
     )
-    .attr("stroke", d => isSaved(d)
+    .attr("stroke", d => isOnMap(d)
       ? getSavedColor(d.neighborhood)
       : SUGGESTED_COLOR.stroke
     )
-    .attr("stroke-width", d => isSaved(d) ? 2.2 : 0.8)
-    .attr("stroke-opacity", d => isSaved(d) ? 1 : 1);
+    .attr("stroke-width", d => isOnMap(d) ? 2.2 : 0.8)
+    .attr("stroke-opacity", d => isVisited(d) ? 0.45 : 1);
 
-  // Estrella — guardados
+  // Ícono: ★ guardados, ✓ visitados
   nodeEls.filter(isSaved).append("text")
     .attr("y", -30).attr("text-anchor", "middle")
     .attr("font-size", "11").attr("fill", "#fac86b")
     .attr("pointer-events", "none").text("★");
+
+  nodeEls.filter(isVisited).append("text")
+    .attr("y", -30).attr("text-anchor", "middle")
+    .attr("font-size", "12").attr("fill", "#5bba6f")
+    .attr("pointer-events", "none").text("✓");
 
   // Nombre
   nodeEls.append("text")
     .attr("y", 3).attr("text-anchor", "middle")
     .attr("font-size", "11.5").attr("font-weight", "500")
     .attr("font-family", "'DM Sans', sans-serif")
-    .attr("fill", d => isSaved(d) ? getSavedColor(d.neighborhood) : SUGGESTED_COLOR.text)
+    .attr("fill", d => isOnMap(d) ? getSavedColor(d.neighborhood) : SUGGESTED_COLOR.text)
+    .attr("fill-opacity", d => isVisited(d) ? 0.55 : 1)
     .attr("pointer-events", "none")
     .text(d => trunc(d.name, 13));
 
   // Barrio
   nodeEls.append("text")
     .attr("y", 17).attr("text-anchor", "middle").attr("font-size", "9.5")
-    .attr("fill", d => isSaved(d) ? "#666" : "#333")
+    .attr("fill", d => isOnMap(d) ? "#666" : "#333")
     .attr("font-family", "'DM Mono', monospace")
     .attr("pointer-events", "none")
     .text(d => trunc(d.neighborhood, 13));
 
-  // Label "en mi mapa" — solo guardados
+  // Label inferior: "en mi mapa" / "visitado"
   nodeEls.filter(isSaved).append("text")
     .attr("y", 29).attr("text-anchor", "middle")
     .attr("font-size", "8.5").attr("fill", "#3dd6c8").attr("fill-opacity", "0.7")
     .attr("font-family", "'DM Mono', monospace")
     .attr("pointer-events", "none").text("en mi mapa");
+
+  nodeEls.filter(isVisited).append("text")
+    .attr("y", 29).attr("text-anchor", "middle")
+    .attr("font-size", "8.5").attr("fill", "#5bba6f").attr("fill-opacity", "0.6")
+    .attr("font-family", "'DM Mono', monospace")
+    .attr("pointer-events", "none").text("visitado");
 
   // ── Tick de simulación ──
   function edgeEnd(d, r = 44) {

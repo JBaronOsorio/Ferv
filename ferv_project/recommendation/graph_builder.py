@@ -53,9 +53,9 @@ def _candidates_block(nodes: list) -> str:
 
 
 class GraphBuilder:
-    def add_to_graph(self, user, node_id: int) -> list[int]:
+    def add_to_graph(self, user, node_id: int, target_status: str = "in_graph") -> list[int]:
         """
-        Promote a recommendation-status GraphNode to in_graph.
+        Promote a GraphNode (recommendation or discovery status) to target_status.
         Returns list of created GraphEdge IDs.
         Raises on invalid node, wrong user/status, or LLM validation failure.
         """
@@ -67,9 +67,10 @@ class GraphBuilder:
         except GraphNode.DoesNotExist:
             raise ValueError(f"GraphNode {node_id} not found for this user.")
 
-        if node.status != "recommendation":
+        allowed_source_statuses = {"recommendation", "discovery"}
+        if node.status not in allowed_source_statuses:
             raise ValueError(
-                f"GraphNode {node_id} has status '{node.status}', expected 'recommendation'."
+                f"GraphNode {node_id} has status '{node.status}', expected one of {allowed_source_statuses}."
             )
 
         retriever = Retriever()
@@ -81,10 +82,10 @@ class GraphBuilder:
 
         # Step 3 — no existing in_graph nodes: transition only, skip LLM
         if not candidate_nodes:
-            node.status = "in_graph"
+            node.status = target_status
             node.save(update_fields=["status", "updated_at"])
             log.info(
-                "add_to_graph: node %d → in_graph (no existing nodes, no edges)", node_id
+                "add_to_graph: node %d → %s (no existing nodes, no edges)", node_id, target_status
             )
             return []
 
@@ -166,7 +167,7 @@ class GraphBuilder:
                 if created:
                     created_edge_ids.append(edge.pk)
 
-            node.status = "in_graph"
+            node.status = target_status
             node.save(update_fields=["status", "updated_at"])
 
         # Step 9 — log
@@ -183,8 +184,9 @@ class GraphBuilder:
         )
 
         log.info(
-            "add_to_graph: node %d → in_graph, %d edges created",
+            "add_to_graph: node %d → %s, %d edges created",
             node_id,
+            target_status,
             len(created_edge_ids),
         )
         return created_edge_ids

@@ -20,7 +20,7 @@ async function runSearch() {
     const W = document.querySelector(".canvas-wrap").clientWidth;
     const H = document.querySelector(".canvas-wrap").clientHeight;
 
-    // Clear stale recommendation nodes from a previous search before adding new ones
+    // Limpiar solo nodos recommendation (preservar in_graph, visited; discovery no está en allNodes)
     Object.keys(allNodes).forEach(pid => {
       if (allNodes[pid].status === "recommendation") delete allNodes[pid];
     });

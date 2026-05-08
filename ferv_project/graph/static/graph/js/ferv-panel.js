@@ -53,18 +53,34 @@ function openPanel(d, edges) {
     connEl.style.display = "none";
   }
 
-  const addBtn    = document.getElementById("panel-add-btn");
-  const removeBtn = document.getElementById("panel-remove-btn");
+  const addBtn      = document.getElementById("panel-add-btn");
+  const discoverBtn = document.getElementById("panel-discover-btn");
+  const removeBtn   = document.getElementById("panel-remove-btn");
+  const isVisited   = d.status === "visited";
 
-  if (isSaved) {
+  if (isVisited) {
+    addBtn.textContent  = "✓ Visitado";
+    addBtn.className    = "btn-add saved";
+    addBtn.disabled     = true;
+    discoverBtn.style.display = "none";
+    removeBtn.classList.add("visible");
+  } else if (isSaved) {
     addBtn.textContent  = "✓ En tu mapa";
     addBtn.className    = "btn-add saved";
     addBtn.disabled     = true;
+    discoverBtn.textContent  = "♡ Guardar en lista";
+    discoverBtn.className    = "btn-discover-panel";
+    discoverBtn.disabled     = false;
+    discoverBtn.style.display = "";
     removeBtn.classList.add("visible");
   } else {
     addBtn.textContent  = "+ Agregar a mi mapa";
     addBtn.className    = "btn-add";
     addBtn.disabled     = false;
+    discoverBtn.textContent  = "♡ Guardar en lista";
+    discoverBtn.className    = "btn-discover-panel";
+    discoverBtn.disabled     = false;
+    discoverBtn.style.display = "";
     removeBtn.classList.remove("visible");
   }
 
@@ -98,9 +114,14 @@ function closeRemoveModal() {
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("panel-add-btn").addEventListener("click", () => {
-    if (!selectedD || selectedD.status === "in_graph") return;
+    if (!selectedD || selectedD.status === "in_graph" || selectedD.status === "visited") return;
     saveNode(selectedD.place_id);
     closePanel();
+  });
+
+  document.getElementById("panel-discover-btn").addEventListener("click", () => {
+    if (!selectedD || selectedD.status === "discovery") return;
+    addToDiscovery(selectedD.place_id);
   });
 
   document.getElementById("panel-remove-btn").addEventListener("click", () => {
@@ -116,6 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!selectedD) return;
     removeNode(selectedD.place_id);
     closeRemoveModal();
+    closePanel();
   });
 
   document.getElementById("remove-confirm-modal").addEventListener("click", (event) => {
