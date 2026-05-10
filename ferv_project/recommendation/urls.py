@@ -6,4 +6,5 @@ app_name = 'recommendation'
 
 urlpatterns = [
     path('recommend/', views.recommend, name='recommend'),
+    path('exploratory/', views.exploratory_recommend, name='exploratory'),
 ]

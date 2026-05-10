@@ -92,7 +92,7 @@ for logging.
 5. **Direction decoding.** `Retriever` finds the top-D nearest places to the raw direction vector 
 alone (not the perturbed query vector). These place labels are stored as a human-readable proxy 
 for the perturbation direction and are not used for candidate retrieval.
-6. **Candidate pool retrieval.** `Retriever` executes two vector similarity queries against the 
+6. **Candidate pool retrieval.** `Retriever` executes a vector similarity querie from the 
 perturbed query vector. SQL-level filter excludes places already linked to this user in any 
 `GraphNode` status. First query returns a broad set of K places (default K=200). Second query 
 returns a top set of K' places (default K'=20). Both queries exclude places already linked to 
