@@ -9,6 +9,7 @@ class GraphNode(models.Model):
         ('recommendation', 'Recommendation'),
         ('visited', 'Visited'),
         ('in_graph', 'In_Graph'),
+        ('discovery', 'Discovery'),
         ('discarded', 'Discarded'),
         ('removed', 'Removed'),
     ]

@@ -16,7 +16,7 @@ function matchesActiveFilters(node) {
   const nodeTags = Array.isArray(node.tags) ? node.tags : [];
 
   if (activeFilters.tags.length) {
-    const tagMatch = activeFilters.tags.some(tag => nodeTags.some(t => t.tag === tag));
+    const tagMatch = activeFilters.tags.some(tag => nodeTags.some(t => t === tag));
     if (!tagMatch) return false;
   }
 
@@ -53,6 +53,7 @@ function setEmptyState(isFilteredEmpty) {
 function getFilteredVisibleNodes() {
   const visibleNodes = Object.values(allNodes).filter(node => {
     if (node.status === "in_graph") return matchesActiveFilters(node);
+    if (node.status === "visited") return matchesActiveFilters(node);
     if (node.status === "recommendation") return true;
     return false;
   });
