@@ -37,7 +37,7 @@ django.setup()
 # ── Imports (after Django setup) ──────────────────────────────────────────────
 import cache
 from config import CACHE_DIR, DOCUMENTS_DIR, EMBEDDINGS_DIR
-from recommendation.services import EmbeddingService
+from recommendation.embedding_service import EmbeddingService
 
 logging.basicConfig(
     level=logging.INFO,

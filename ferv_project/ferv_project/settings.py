@@ -148,18 +148,21 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 EMBEDDING_MODELS = {
     "gemini-embedding-001": {
+        "provider": "gemini-small",
         "model_key": "gemini-embedding-001",
         "name": "models/gemini-embedding-001",
         "dimensions": 768,
         "api_key_env_var": "GEMINI_API_KEY",
     },
     "gemini-embedding-001-large": {
+        "provider": "gemini-large",
         "model_key": "gemini-embedding-001-large",
         "name": "models/gemini-embedding-001",
         "dimensions": 3072,
         "api_key_env_var": "GEMINI_API_KEY",
     },
     "openai-text-embedding-3-small": {
+        "provider": "openai",
         "model_key": "openai-text-embedding-3-small",
         "name": "text-embedding-3-small",
         "dimensions": 1536,
@@ -169,14 +172,17 @@ EMBEDDING_MODELS = {
 
 LANGUAGE_MODELS = {
     "gemini-2.5-flash": {
+        "provider": "gemini",
         "name": "gemini-2.5-flash",
         "api_key_env_var": "GEMINI_API_KEY",
     },
     "gemini-2.5-pro": {
+        "provider": "gemini",
         "name": "gemini-2.5-pro",
         "api_key_env_var": "GEMINI_API_KEY",
     },
     "openai-gpt-4o-mini": {
+        "provider": "openai",
         "name": "gpt-4o-mini",
         "api_key_env_var": "OPENAI_API_KEY",
     }
