@@ -58,6 +58,11 @@ jobs:
           pip install black
           black --check ferv_project/ --exclude migrations || true
 
+      - name: Aplicar migraciones
+        run: |
+          cd ferv_project
+          python manage.py migrate --noinput
+
       - name: Ejecutar pruebas con coverage
         run: |
           pip install pytest pytest-django pytest-cov
