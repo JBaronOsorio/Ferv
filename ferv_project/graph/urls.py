@@ -14,4 +14,5 @@ urlpatterns = [
     path('api/discovery-list/', views.discovery_list, name='discovery-list'),
     path('api/add-to-discovery/', views.add_to_discovery, name='add-to-discovery'),
     path('api/mark-visited/<int:node_id>/', views.mark_visited, name='mark-visited'),
+    path('api/stats/', views.user_stats, name='stats'),
 ]
