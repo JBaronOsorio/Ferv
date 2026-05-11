@@ -248,6 +248,27 @@
   cursor: default;
 }
 
+/* ── Botón "Explorar similares" (solo in_graph) ── */
+.btn-explore {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(155, 107, 250, 0.22);
+  background: rgba(155, 107, 250, 0.06);
+  color: rgba(155, 107, 250, 0.75);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  display: none;
+}
+.btn-explore:hover {
+  background: rgba(155, 107, 250, 0.13);
+  border-color: rgba(155, 107, 250, 0.38);
+  color: #9b6bfa;
+}
+
 /* ── Botón eliminar (solo visible cuando está guardado) ── */
 .btn-remove {
   width: 100%;

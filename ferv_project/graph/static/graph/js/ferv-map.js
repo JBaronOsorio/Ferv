@@ -97,6 +97,53 @@ async function removeNode(placeId) {
   showToast(`"${trunc(node.name, 22)}" eliminado del mapa`);
 }
 
+async function exploreFromNode(placeId) {
+  const node = allNodes[placeId];
+  if (!node) return;
+
+  closePanel();
+  showMapLoading("Buscando lugares similares...");
+
+  try {
+    const newNodes = await fetchNodeBasedRecommendations(parseInt(node.id));
+
+    Object.keys(allNodes).forEach(pid => {
+      if (allNodes[pid].status === "recommendation") delete allNodes[pid];
+    });
+    searchEdges = [];
+
+    if (!newNodes.length) {
+      showToast("No encontramos sugerencias desde este lugar. Prueba con otro.");
+      rerender();
+      return;
+    }
+
+    const anchorX = node.x ?? document.querySelector(".canvas-wrap").clientWidth / 2;
+    const anchorY = node.y ?? document.querySelector(".canvas-wrap").clientHeight / 2;
+
+    newNodes.forEach(n => {
+      if (!allNodes[n.place_id]) {
+        allNodes[n.place_id] = {
+          ...n,
+          x: anchorX + (Math.random() - 0.5) * 260,
+          y: anchorY + (Math.random() - 0.5) * 260,
+          vx: 0, vy: 0,
+        };
+      }
+    });
+
+    document.getElementById("hud").style.display = "flex";
+    updateHUD();
+    rerender();
+    showToast(`${newNodes.length} sugerencias desde "${trunc(node.name, 18)}"`);
+
+  } catch (_err) {
+    showToast("Error al cargar sugerencias. Puedes intentarlo de nuevo.");
+  } finally {
+    hideMapLoading();
+  }
+}
+
 function crossReason(a, b) {
   if (a.neighborhood === b.neighborhood) return `Ambos en ${a.neighborhood}`;
   const shared = (a.tags || []).filter(t => (b.tags || []).includes(t));

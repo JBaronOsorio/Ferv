@@ -55,6 +55,7 @@ function openPanel(d, edges) {
 
   const addBtn      = document.getElementById("panel-add-btn");
   const discoverBtn = document.getElementById("panel-discover-btn");
+  const exploreBtn  = document.getElementById("panel-explore-btn");
   const removeBtn   = document.getElementById("panel-remove-btn");
   const isVisited   = d.status === "visited";
 
@@ -63,6 +64,7 @@ function openPanel(d, edges) {
     addBtn.className    = "btn-add saved";
     addBtn.disabled     = true;
     discoverBtn.style.display = "none";
+    exploreBtn.style.display  = "block";
     removeBtn.classList.add("visible");
   } else if (isSaved) {
     addBtn.textContent  = "✓ En tu mapa";
@@ -72,6 +74,7 @@ function openPanel(d, edges) {
     discoverBtn.className    = "btn-discover-panel";
     discoverBtn.disabled     = false;
     discoverBtn.style.display = "";
+    exploreBtn.style.display  = "block";
     removeBtn.classList.add("visible");
   } else {
     addBtn.textContent  = "+ Agregar a mi mapa";
@@ -81,6 +84,7 @@ function openPanel(d, edges) {
     discoverBtn.className    = "btn-discover-panel";
     discoverBtn.disabled     = false;
     discoverBtn.style.display = "";
+    exploreBtn.style.display  = "none";
     removeBtn.classList.remove("visible");
   }
 
@@ -122,6 +126,11 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("panel-discover-btn").addEventListener("click", () => {
     if (!selectedD || selectedD.status === "discovery") return;
     addToDiscovery(selectedD.place_id);
+  });
+
+  document.getElementById("panel-explore-btn").addEventListener("click", () => {
+    if (!selectedD || (selectedD.status !== "in_graph" && selectedD.status !== "visited")) return;
+    exploreFromNode(selectedD.place_id);
   });
 
   document.getElementById("panel-remove-btn").addEventListener("click", () => {
