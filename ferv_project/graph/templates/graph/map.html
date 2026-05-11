@@ -25,6 +25,7 @@
   <script src="{% static 'graph/js/ferv-discover.js' %}"></script>
   <script src="{% static 'graph/js/ferv-explore.js' %}"></script>
   <script src="{% static 'graph/js/ferv-export.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-stats.js' %}"></script>
   <script src="{% static 'graph/js/ferv-ui.js' %}"></script>
   
   
@@ -88,6 +89,13 @@
       </svg>
       Mi perfil
     </a>
+    <button type="button" id="open-stats-btn" class="stats-menu-btn">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
+        <line x1="6" y1="20" x2="6" y2="14"/>
+      </svg>
+      Mis estadísticas
+    </button>
     <a href="#">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="12" cy="12" r="3"/>
@@ -267,7 +275,7 @@
       <div class="panel-actions">
         <button class="btn-add" id="panel-add-btn">+ Agregar a mi mapa</button>
         <button class="btn-discover-panel" id="panel-discover-btn">♡ Lo quiero visitar</button>
-        <button class="btn-explore" id="panel-explore-btn">↗ Explorar similares</button>
+        <button class="btn-explore" id="panel-explore-btn"> Explorar similares</button>
         <button class="btn-remove" id="panel-remove-btn">− Eliminar del mapa</button>
       </div>
     </div>
@@ -288,7 +296,7 @@
     <div class="panel-online-dot"></div>
   </div>
   <div class="chat-messages" id="chatMessages">
-    <div class="chat-msg bot">Hola 👋 Cuéntame qué tipo de lugar te apetece y te ayudo a buscarlo.</div>
+    <div class="chat-msg bot">Hola!! Cuéntame qué tipo de lugar te apetece y te ayudo a buscarlo.</div>
   </div>
   <div class="chat-panel-input-wrap">
     <input class="chat-panel-input" id="chatInput" placeholder="busco un café tranquilo..." />
@@ -324,6 +332,21 @@
           <button type="button" class="visited-modal__btn visited-modal__btn--map" id="visited-modal-map">Pasarlo al mapa</button>
           <button type="button" class="visited-modal__btn visited-modal__btn--remove" id="visited-modal-remove">Quitarlo de la lista</button>
         </div>
+      </div>
+    </div>
+
+    <!-- Modal de estadísticas -->
+    <div class="stats-modal" id="stats-modal" aria-hidden="true">
+      <div class="stats-modal__backdrop"></div>
+      <div class="stats-modal__dialog" role="dialog" aria-modal="true">
+        <div class="stats-modal__header">
+          <div>
+            <div class="stats-modal__eyebrow">Tu actividad</div>
+            <h3 class="stats-modal__title">Mis estadísticas</h3>
+          </div>
+          <button class="stats-modal__close" id="stats-modal-close" type="button" aria-label="Cerrar estadísticas">×</button>
+        </div>
+        <div id="stats-content"></div>
       </div>
     </div>
 

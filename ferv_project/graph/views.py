@@ -12,11 +12,13 @@ GET  /api/graph/?q=<query>      → legacy: one-shot recommend + build graph JSO
 
 import json
 import logging
+from collections import Counter
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count, Q
 from django.http import JsonResponse
 from django.shortcuts import render
-from django.db.models import Q
+from django.utils import timezone
 from django.views.decorators.http import require_POST, require_http_methods
 from places.models import Place
 from rest_framework import status
@@ -202,6 +204,55 @@ def add_to_discovery(request):
     node.status = 'discovery'
     node.save(update_fields=['status', 'updated_at'])
     return JsonResponse({'status': 'ok'}, status=200)
+
+
+@login_required
+def user_stats(request):
+    """
+    GET /graph/api/stats/
+    Devuelve estadísticas de actividad del usuario:
+    conteos por status, top tags y top barrios de nodos in_graph/visited.
+    """
+    nodes_qs = GraphNode.objects.filter(user=request.user)
+
+    in_graph_count  = nodes_qs.filter(status='in_graph').count()
+    visited_count   = nodes_qs.filter(status='visited').count()
+    discovery_count = nodes_qs.filter(status='discovery').count()
+
+    map_nodes = (
+        nodes_qs.filter(status__in=['in_graph', 'visited'])
+        .select_related('place')
+        .prefetch_related('place__tags')
+    )
+
+    tag_counter = Counter()
+    for node in map_nodes:
+        for tag in node.place.tags.all():
+            tag_counter[tag.tag] += 1
+    top_tags = [{"tag": t, "count": c} for t, c in tag_counter.most_common(6)]
+
+    top_neigh_qs = (
+        nodes_qs.filter(status__in=['in_graph', 'visited'])
+        .values('place__neighborhood')
+        .annotate(count=Count('id'))
+        .order_by('-count')[:6]
+    )
+    top_neighborhoods = [
+        {"neighborhood": d['place__neighborhood'], "count": d['count']}
+        for d in top_neigh_qs
+        if d['place__neighborhood']
+    ]
+
+    return JsonResponse({
+        "counts": {
+            "in_graph":  in_graph_count,
+            "visited":   visited_count,
+            "discovery": discovery_count,
+        },
+        "top_tags":          top_tags,
+        "top_neighborhoods": top_neighborhoods,
+        "updated_at":        timezone.now().isoformat(),
+    }, status=200)
 
 
 @login_required
