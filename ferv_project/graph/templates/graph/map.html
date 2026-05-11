@@ -23,6 +23,8 @@
   <script src="{% static 'graph/js/ferv-panel.js' %}"></script>
   <script src="{% static 'graph/js/ferv-filters.js' %}"></script>
   <script src="{% static 'graph/js/ferv-discover.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-explore.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-export.js' %}"></script>
   <script src="{% static 'graph/js/ferv-ui.js' %}"></script>
   
   
@@ -53,6 +55,16 @@
       <div class="spinner" id="spinner"></div>
       <button class="btn-search" id="search-btn" onclick="runSearch()">Explorar</button>
     </div>
+
+    <!-- Botón exportar -->
+    <button class="btn-export" id="export-btn" title="Exportar mapa como imagen">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      <span>Exportar</span>
+    </button>
 
     <!-- Menú de usuario -->
     <div class="user-menu" id="userMenu">
@@ -142,6 +154,36 @@
     </div>
 
     <!-- Filtros -->
+    <!-- FAB Modo exploración -->
+    <button class="explore-fab" id="explore-fab" type="button" aria-controls="explore-panel" aria-expanded="false" title="Modo exploración">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+      </svg>
+    </button>
+
+    <!-- Panel modo exploración -->
+    <div class="explore-panel" id="explore-panel" aria-hidden="true">
+      <div class="explore-panel__header">
+        <div>
+          <div class="explore-panel__eyebrow">Modo exploración</div>
+          <div class="explore-panel__title">Sorpréndeme</div>
+        </div>
+        <button class="explore-panel__close" id="explore-panel-close" type="button" aria-label="Cerrar exploración">×</button>
+      </div>
+      <p class="explore-panel__desc">Descubre lugares que no esperarías encontrar según tu perfil habitual.</p>
+      <div class="explore-panel__section">
+        <div class="explore-panel__label">Qué tan diferente</div>
+        <input class="explore-slider" id="explore-heat" type="range" min="0" max="1" step="0.1" value="0.5">
+        <div class="explore-slider__meta">
+          <span>Cercano</span>
+          <span id="explore-heat-value">Moderado</span>
+          <span>Inesperado</span>
+        </div>
+      </div>
+      <button class="explore-run-btn" id="explore-run-btn" type="button">✦ Descubrir lugares</button>
+    </div>
+
     <!-- FAB Lista de descubrimiento -->
     <button class="discover-fab" id="discover-fab" type="button" title="Mi lista de descubrimiento">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
