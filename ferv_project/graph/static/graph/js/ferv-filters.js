@@ -6,8 +6,6 @@
 
 let activeFilters = { tags: [], neighborhood: null, minRating: 0 };
 
-const FILTER_TAGS = ["bar", "café", "restaurante", "museo", "parque"];
-
 function hasActiveFilters() {
   return activeFilters.tags.length > 0 || activeFilters.neighborhood || activeFilters.minRating > 0;
 }
@@ -86,12 +84,28 @@ function populateNeighborhoodOptions() {
   select.value = currentValue;
 }
 
+function getAvailableTags() {
+  const tagSet = new Set();
+  Object.values(allNodes).forEach(node => {
+    (node.tags || []).forEach(t => tagSet.add(t));
+  });
+  return [...tagSet].sort((a, b) => a.localeCompare(b, "es"));
+}
+
 function renderTagButtons() {
   const wrap = document.getElementById("filters-tags");
   if (!wrap) return;
 
-  wrap.innerHTML = FILTER_TAGS.map(tag => {
-    const label = tag === "café" ? "Café" : tag.charAt(0).toUpperCase() + tag.slice(1);
+  const tags = getAvailableTags();
+  if (!tags.length) {
+    wrap.innerHTML = '<span class="filters-tags-empty">Sin etiquetas disponibles</span>';
+    return;
+  }
+
+  activeFilters.tags = activeFilters.tags.filter(t => tags.includes(t));
+
+  wrap.innerHTML = tags.map(tag => {
+    const label = tag.charAt(0).toUpperCase() + tag.slice(1);
     const active = activeFilters.tags.includes(tag) ? "active" : "";
     return `<button type="button" class="filters-tag ${active}" data-tag="${tag}">${label}</button>`;
   }).join("");
