@@ -6,9 +6,6 @@
 //    GET  /graph/api/one_shot_recommendation/<query>  → recomendaciones nuevas
 //    POST /graph/add-node/                            → guardar nodo en mapa
 //    DELETE /graph/api/delete_node/<node_id>          → eliminar nodo del mapa
-//    POST /graph/api/discover-node/                   → mover nodo a descubrimientos
-//    GET  /graph/api/discovery-list/                  → lista de descubrimientos
-//    POST /graph/api/restore-node/                    → restaurar nodo descubierto
 //
 //  DEPENDE DE: ferv-mock.js (getMock), ferv-state.js (allNodes)
 // ══════════════════════════════════════════════════════════════
@@ -30,7 +27,7 @@ function parseNode(n) {
     neighborhood: n.place?.neighborhood,
     rating:       n.place?.rating,
     tags:         (n.place?.tags || []).map(t => t.tag),
-    status:       n.status,   // "in_graph" | "recommendation" | "discovered"
+    status:       n.status,   // "in_graph" | "recommendation"
   };
 }
 
@@ -94,18 +91,16 @@ async function fetchRecommendations(query) {
 }
 
 
-// ── addNodeToBackend ──────────────────────────────────────────
+// ── addNodeToMap ──────────────────────────────────────────────
 //  Promueve un GraphNode de "recommendation" a "in_graph".
 //  POST /graph/add-node/ → { node_id: <int> }
-//  Retorna { edge_ids: [...] }
+//  Retorna array de edges: [{ source_id, target_id, weight, reason }]
 
-async function addNodeToBackend(placeId) {
-  if (MOCK_MODE) return;
+async function addNodeToMap(placeId) {
+  if (MOCK_MODE) return [];
 
   const nodeId = parseInt(allNodes[placeId]?.id);
   if (!nodeId) throw new Error(`No se encontró node_id para place_id=${placeId}`);
-
-  console.log("add-node →", { node_id: nodeId, place_id: placeId });
 
   const resp = await fetch("/graph/add-node/", {
     method: "POST",
@@ -114,26 +109,85 @@ async function addNodeToBackend(placeId) {
   });
 
   const body = await resp.json();
-  console.log("add-node ←", resp.status, body);
-
   if (!resp.ok) throw new Error(`add-node error ${resp.status}: ${body.error}`);
+  return body.edges || [];
+}
+
+
+// ── fetchDiscoveryList ────────────────────────────────────────
+//  Devuelve los nodos con status='discovery' del usuario.
+//  GET /graph/api/discovery-list/
+
+async function fetchDiscoveryList() {
+  const resp = await fetch("/graph/api/discovery-list/", {
+    headers: { "Accept": "application/json" }
+  });
+  if (!resp.ok) throw new Error(`discovery-list error ${resp.status}`);
+  const data = await resp.json();
+  return { nodes: data.nodes.map(parseNode) };
+}
+
+
+// ── addToDiscoveryAPI ─────────────────────────────────────────
+//  Mueve un nodo a la lista de descubrimiento.
+//  POST /graph/api/add-to-discovery/ → { node_id: <int> }
+//  Lanza error con .status=409 si el lugar ya está en la lista.
+
+async function addToDiscoveryAPI(nodeId) {
+  const resp = await fetch("/graph/api/add-to-discovery/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-CSRFToken": getCsrf() },
+    body: JSON.stringify({ node_id: nodeId })
+  });
+  const body = await resp.json().catch(() => ({}));
+  if (resp.status === 409) {
+    const err = new Error(body.error || "Ya en lista");
+    err.status = 409;
+    throw err;
+  }
+  if (!resp.ok) throw new Error(`add-to-discovery error ${resp.status}: ${body.error}`);
   return body;
 }
 
 
+// ── markVisitedAPI ────────────────────────────────────────────
+//  Marca un nodo de discovery como visited y corre Pipeline B.
+//  PATCH /graph/api/mark-visited/<nodeId>/
+//  Retorna { status, node, edges: [{source_id, target_id, weight, reason}] }
+
+async function markVisitedAPI(nodeId) {
+  const resp = await fetch(`/graph/api/mark-visited/${nodeId}/`, {
+    method: "PATCH",
+    headers: { "X-CSRFToken": getCsrf() }
+  });
+  const body = await resp.json().catch(() => ({}));
+  if (!resp.ok) throw new Error(`mark-visited error ${resp.status}: ${body.error}`);
+  return body;
+}
+
+
+// ── deleteNodeById ────────────────────────────────────────────
+//  Elimina un nodo directamente por su GraphNode ID.
+//  Usado por la lista de descubrimiento (nodos no presentes en allNodes).
+//  DELETE /graph/api/delete_node/<nodeId>
+
+async function deleteNodeById(nodeId) {
+  const resp = await fetch(`/graph/api/delete_node/${nodeId}`, {
+    method: "DELETE",
+    headers: { "X-CSRFToken": getCsrf() },
+  });
+  if (!resp.ok) {
+    const body = await resp.json().catch(() => ({}));
+    throw new Error(`delete_node error ${resp.status}: ${body.error || ""}`);
+  }
+}
+
+
 // ── removeNodeFromBackend ─────────────────────────────────────
-//  Elimina un nodo del mapa personal del usuario.
+//  Elimina un nodo in_graph/visited del mapa personal (requiere que el nodo
+//  esté en allNodes para resolver el node_id). Para nodos fuera del state
+//  (discovery) usar deleteNodeById.
 //  DELETE /graph/api/delete_node/<node_id>
-//
-//  NOTA PARA EL COMPAÑERO DE BACK — este endpoint está vacío (pass).
-//  Necesita implementarse así:
-//
-//    Recibe:  node_id en la URL
-//    Debe:    1. Buscar GraphNode con id=node_id y user=request.user
-//             2. Eliminar sus GraphEdges asociados (from_node o to_node)
-//             3. Eliminar el GraphNode
-//    Retorna: { "status": "ok" }
-//    Errores: 404 si no existe, 403 si no pertenece al usuario
 
 async function removeNodeFromBackend(placeId) {
   if (MOCK_MODE) return;
@@ -149,63 +203,5 @@ async function removeNodeFromBackend(placeId) {
   if (!resp.ok) {
     const body = await resp.json().catch(() => ({}));
     throw new Error(`delete_node error ${resp.status}: ${body.error || ""}`);
-  }
-}
-
-
-// ── discoverNodeBackend ───────────────────────────────────────
-//  Mueve un nodo a status 'discovered' (lista de descubrimiento).
-//  POST /graph/api/discover-node/ → { node_id: <int> }
-
-async function discoverNodeBackend(placeId) {
-  if (MOCK_MODE) return;
-
-  const nodeId = parseInt(allNodes[placeId]?.id);
-  if (!nodeId) throw new Error(`No se encontró node_id para place_id=${placeId}`);
-
-  const resp = await fetch("/graph/api/discover-node/", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "X-CSRFToken": getCsrf() },
-    body: JSON.stringify({ node_id: nodeId })
-  });
-
-  if (!resp.ok) {
-    const body = await resp.json().catch(() => ({}));
-    throw new Error(`discover-node error ${resp.status}: ${body.error || ""}`);
-  }
-}
-
-
-// ── fetchDiscoveryList ────────────────────────────────────────
-//  Carga la lista de descubrimientos del usuario.
-//  GET /graph/api/discovery-list/
-
-async function fetchDiscoveryList() {
-  if (MOCK_MODE) return { nodes: [] };
-
-  const resp = await fetch("/graph/api/discovery-list/", {
-    headers: { "Accept": "application/json" }
-  });
-  if (!resp.ok) throw new Error(`discovery-list error ${resp.status}`);
-  return await resp.json();
-}
-
-
-// ── restoreNodeBackend ────────────────────────────────────────
-//  Restaura un nodo de 'discovered' → 'recommendation' o 'in_graph'.
-//  POST /graph/api/restore-node/ → { node_id: <int>, target: <str> }
-
-async function restoreNodeBackend(nodeId, target) {
-  if (MOCK_MODE) return;
-
-  const resp = await fetch("/graph/api/restore-node/", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "X-CSRFToken": getCsrf() },
-    body: JSON.stringify({ node_id: nodeId, target: target })
-  });
-
-  if (!resp.ok) {
-    const body = await resp.json().catch(() => ({}));
-    throw new Error(`restore-node error ${resp.status}: ${body.error || ""}`);
   }
 }

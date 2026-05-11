@@ -22,9 +22,10 @@
   <script src="{% static 'graph/js/ferv-search.js' %}"></script>
   <script src="{% static 'graph/js/ferv-panel.js' %}"></script>
   <script src="{% static 'graph/js/ferv-filters.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-discover.js' %}"></script>
   <script src="{% static 'graph/js/ferv-ui.js' %}"></script>
   
-
+  
 
   <!-- Estilos del mapa -->
   <link rel="stylesheet" href="{% static 'graph/css/ferv-map.css' %}">
@@ -116,6 +117,12 @@
       <p class="hint">Busca algo para empezar a explorar</p>
     </div>
 
+    <!-- Overlay de carga (Pipeline B) -->
+    <div class="loading-overlay" id="loading-overlay" aria-hidden="true">
+      <div class="loading-overlay__spinner"></div>
+      <div class="loading-overlay__text">Construyendo tu mapa...</div>
+    </div>
+
     <!-- SVG del grafo D3 -->
     <svg id="ferv-svg"></svg>
 
@@ -134,7 +141,30 @@
       </div>
     </div>
 
-    <!-- FAB Filtros -->
+    <!-- Filtros -->
+    <!-- FAB Lista de descubrimiento -->
+    <button class="discover-fab" id="discover-fab" type="button" title="Mi lista de descubrimiento">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+      </svg>
+      <span class="discover-fab__badge" id="discover-count-badge" style="display:none">0</span>
+    </button>
+
+    <!-- Panel lista de descubrimiento -->
+    <div class="discovery-panel" id="discovery-drawer" aria-hidden="true">
+      <div class="discovery-panel__header">
+        <div>
+          <div class="discovery-panel__eyebrow">Para visitar</div>
+          <div class="discovery-panel__title">
+            Mi lista
+            <span class="discovery-panel__count" id="discovery-header-count">0</span>
+          </div>
+        </div>
+        <button class="discovery-panel__close" id="discovery-drawer-close" type="button" aria-label="Cerrar lista">×</button>
+      </div>
+      <div class="discovery-list" id="discovery-list"></div>
+    </div>
+
     <button class="filters-fab" id="filters-fab" type="button" aria-controls="filters-panel" aria-expanded="false" title="Filtros">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M4 5h16l-6 7v5l-4 2v-7L4 5z"/>
@@ -176,28 +206,6 @@
       </div>
     </div>
 
-    <!-- FAB Descubrimientos -->
-    <button class="discovery-fab" id="discovery-fab" type="button" title="Descubrimientos">
-      <span class="discovery-badge" id="discovery-badge" style="display:none">0</span>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
-      </svg>
-    </button>
-
-    <!-- Panel de descubrimientos -->
-    <div class="discovery-panel" id="discovery-panel">
-      <div class="discovery-panel__header">
-        <div>
-          <div class="discovery-panel__eyebrow">Descubrimientos</div>
-          <div class="discovery-panel__title">Guardados para después</div>
-        </div>
-        <button class="discovery-panel__close" id="discovery-panel-close" type="button" aria-label="Cerrar">×</button>
-      </div>
-      <div class="discovery-list" id="discovery-list">
-        <div class="discovery-empty">No tienes descubrimientos aún</div>
-      </div>
-    </div>
-
     <!-- Panel lateral de detalle de nodo -->
     <div class="panel" id="detail-panel">
       <button class="panel-close" onclick="closePanel()">×</button>
@@ -216,7 +224,7 @@
       <!-- Botones de acción -->
       <div class="panel-actions">
         <button class="btn-add" id="panel-add-btn">+ Agregar a mi mapa</button>
-        <button class="btn-discover" id="panel-discover-btn">☆ Descubrir</button>
+        <button class="btn-discover-panel" id="panel-discover-btn">♡ Lo quiero visitar</button>
         <button class="btn-remove" id="panel-remove-btn">− Eliminar del mapa</button>
       </div>
     </div>
@@ -261,6 +269,20 @@
         <line x1="6" y1="6" x2="18" y2="18"/>
       </svg>
     </button>
+
+    <!-- Modal "Ya fui" — qué hacer con el lugar visitado -->
+    <div class="visited-modal" id="visited-modal" aria-hidden="true">
+      <div class="visited-modal__backdrop"></div>
+      <div class="visited-modal__dialog" role="dialog" aria-modal="true">
+        <div class="visited-modal__eyebrow">¡Qué bien que fuiste!</div>
+        <h3 class="visited-modal__title">¿Qué hacemos con <span id="visited-modal-name"></span>?</h3>
+        <div class="visited-modal__actions">
+          <button type="button" class="visited-modal__btn visited-modal__btn--keep" id="visited-modal-keep">Dejarlo en la lista</button>
+          <button type="button" class="visited-modal__btn visited-modal__btn--map" id="visited-modal-map">Pasarlo al mapa</button>
+          <button type="button" class="visited-modal__btn visited-modal__btn--remove" id="visited-modal-remove">Quitarlo de la lista</button>
+        </div>
+      </div>
+    </div>
 
     <!-- Modal de confirmación de eliminación -->
     <div class="remove-modal" id="remove-confirm-modal" aria-hidden="true">

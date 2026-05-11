@@ -53,3 +53,6 @@ class LlmInteractionLog(models.Model):
     parsed_output = models.JSONField(null=True)
     outcome = models.CharField(max_length=60)         # 'success' | 'validation_error'
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        get_latest_by = 'created_at'

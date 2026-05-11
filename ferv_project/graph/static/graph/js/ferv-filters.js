@@ -6,15 +6,7 @@
 
 let activeFilters = { tags: [], neighborhood: null, minRating: 0 };
 
-// Tags dinámicos — se leen de los nodos guardados, no hardcodeados
-// Tags ya son strings planos porque parseNode los convierte: ["bar", "cafe"]
-function getAvailableTags() {
-  const saved = Object.values(allNodes).filter(n => savedSet.has(n.place_id));
-  const tags = [...new Set(
-    saved.flatMap(n => Array.isArray(n.tags) ? n.tags : []).filter(Boolean)
-  )].sort();
-  return tags;
-}
+const FILTER_TAGS = ["bar", "café", "restaurante", "museo", "parque"];
 
 function hasActiveFilters() {
   return activeFilters.tags.length > 0 || activeFilters.neighborhood || activeFilters.minRating > 0;
@@ -24,8 +16,7 @@ function matchesActiveFilters(node) {
   const nodeTags = Array.isArray(node.tags) ? node.tags : [];
 
   if (activeFilters.tags.length) {
-    // tags son strings planos: ["bar", "cafe"]
-    const tagMatch = activeFilters.tags.some(tag => nodeTags.includes(tag));
+    const tagMatch = activeFilters.tags.some(tag => nodeTags.some(t => t === tag));
     if (!tagMatch) return false;
   }
 
@@ -61,14 +52,10 @@ function setEmptyState(isFilteredEmpty) {
 
 function getFilteredVisibleNodes() {
   const visibleNodes = Object.values(allNodes).filter(node => {
-    // Nunca mostrar nodos en la lista de descubrimiento en el canvas
-    if (discoveredSet.has(node.place_id)) return false;
-
-    if (!savedSet.has(node.place_id)) {
-      return suggestIds.has(node.place_id);
-    }
-
-    return matchesActiveFilters(node);
+    if (node.status === "in_graph") return matchesActiveFilters(node);
+    if (node.status === "visited") return matchesActiveFilters(node);
+    if (node.status === "recommendation") return true;
+    return false;
   });
 
   setEmptyState(visibleNodes.length === 0 && hasActiveFilters());
@@ -87,15 +74,14 @@ function populateNeighborhoodOptions() {
 
   const neighborhoods = [...new Set(
     Object.values(allNodes)
-      .filter(n => savedSet.has(n.place_id))  // ← solo guardados
-      .map(n => n.neighborhood)
+      .map(node => node.neighborhood)
       .filter(Boolean)
   )].sort((a, b) => a.localeCompare(b, "es"));
 
   const currentValue = activeFilters.neighborhood || "";
   select.innerHTML = [
     `<option value="">Todos los barrios</option>`,
-    ...neighborhoods.map(n => `<option value="${n}">${n}</option>`),
+    ...neighborhoods.map(neighborhood => `<option value="${neighborhood}">${neighborhood}</option>`),
   ].join("");
   select.value = currentValue;
 }
@@ -104,18 +90,9 @@ function renderTagButtons() {
   const wrap = document.getElementById("filters-tags");
   if (!wrap) return;
 
-  const availableTags = getAvailableTags();
-
-  if (!availableTags.length) {
-    wrap.innerHTML = `<span style="color:rgba(255,255,255,0.3);font-size:11px">
-      Agrega lugares al mapa para ver filtros
-    </span>`;
-    return;
-  }
-
-  wrap.innerHTML = availableTags.map(tag => {
+  wrap.innerHTML = FILTER_TAGS.map(tag => {
+    const label = tag === "café" ? "Café" : tag.charAt(0).toUpperCase() + tag.slice(1);
     const active = activeFilters.tags.includes(tag) ? "active" : "";
-    const label = tag.charAt(0).toUpperCase() + tag.slice(1);
     return `<button type="button" class="filters-tag ${active}" data-tag="${tag}">${label}</button>`;
   }).join("");
 }

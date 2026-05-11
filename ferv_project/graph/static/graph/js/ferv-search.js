@@ -20,22 +20,28 @@ async function runSearch() {
     const W = document.querySelector(".canvas-wrap").clientWidth;
     const H = document.querySelector(".canvas-wrap").clientHeight;
 
-    suggestIds = new Set();
+    // Limpiar solo nodos recommendation (preservar in_graph, visited; discovery no está en allNodes)
+    Object.keys(allNodes).forEach(pid => {
+      if (allNodes[pid].status === "recommendation") delete allNodes[pid];
+    });
+
+    // Centroide de nodos guardados para anclar las recomendaciones cerca del mapa existente
+    const mapNodes = Object.values(allNodes).filter(
+      n => (n.status === "in_graph" || n.status === "visited") && n.x != null
+    );
+    const cx = mapNodes.length ? mapNodes.reduce((s, n) => s + n.x, 0) / mapNodes.length : W / 2;
+    const cy = mapNodes.length ? mapNodes.reduce((s, n) => s + n.y, 0) / mapNodes.length : H / 2;
+
     data.nodes.forEach(n => {
-      suggestIds.add(n.place_id);
       if (!allNodes[n.place_id]) {
         allNodes[n.place_id] = {
           ...n,
-          x: W / 2 + (Math.random() - 0.5) * 200,
-          y: H / 2 + (Math.random() - 0.5) * 200,
+          x: cx + (Math.random() - 0.5) * 160,
+          y: cy + (Math.random() - 0.5) * 160,
           vx: 0, vy: 0,
         };
-      }
-      if (n.status === 'in_graph') {
+      } else if (allNodes[n.place_id].status === "in_graph") {
         getSavedColor(n.neighborhood);
-        savedSet.add(n.place_id);
-        allNodes[n.place_id].fx = allNodes[n.place_id].x;
-        allNodes[n.place_id].fy = allNodes[n.place_id].y;
       }
     });
 

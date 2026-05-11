@@ -8,18 +8,15 @@ GET  /graph/welcome/            → featured places (login required)
 GET  /graph/map/                → interactive map (login required)
 POST /graph/add-node/           → Pipeline B: promote recommendation to in_graph
 GET  /api/graph/?q=<query>      → legacy: one-shot recommend + build graph JSON
-POST /graph/api/discover-node/  → mueve un nodo a 'discovered'
-GET  /graph/api/discovery-list/ → lista de nodos descubiertos del usuario
-POST /graph/api/restore-node/   → restaura un nodo descubierto al mapa o lo suelta
 """
 
 import json
 import logging
 
 from django.contrib.auth.decorators import login_required
-from django.db import models
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.db.models import Q
 from django.views.decorators.http import require_POST, require_http_methods
 from places.models import Place
 from rest_framework import status
@@ -68,7 +65,17 @@ def add_node(request):
     try:
         from recommendation.graph_builder import GraphBuilder
         edge_ids = GraphBuilder().add_to_graph(request.user, node_id)
-        return JsonResponse({'edge_ids': edge_ids}, status=200)
+        edges = GraphEdge.objects.filter(id__in=edge_ids).select_related('from_node', 'to_node')
+        edges_data = [
+            {
+                'source_id': e.from_node.id,
+                'target_id': e.to_node.id,
+                'weight': e.weight,
+                'reason': e.reason,
+            }
+            for e in edges
+        ]
+        return JsonResponse({'edges': edges_data}, status=200)
     except Exception as e:
         log.error("add_node error for node_id=%s: %s", node_id, e)
         return JsonResponse({'error': str(e)}, status=400)
@@ -107,12 +114,13 @@ def fetch_graph(request):
         svc = RecommendationService()
         nodes = svc.recommend_one_shot(user=request.user, prompt_text=query)
     else:
-        # Sin query → solo devuelve el mapa guardado del usuario
+        # Sin query → solo devuelve el mapa guardado del usuario (in_graph + visited)
         nodes = GraphNode.objects.filter(
-            user=request.user
+            user=request.user,
+            status__in=['in_graph', 'visited'],
         ).select_related('place').prefetch_related('place__tags')
 
-    # Los edges siempre son los del mapa personal (in_graph)
+    # Los edges siempre son los del mapa personal (in_graph + visited)
     edges = GraphEdge.objects.filter(user=request.user).select_related('from_node', 'to_node')
 
 
@@ -122,97 +130,6 @@ def fetch_graph(request):
     print(f"fetch_graph: returning {(serialized_nodes)} nodes and {(serialized_edges)} edges for user {request.user.username}")
 
     return JsonResponse({'nodes': serialized_nodes, 'edges': serialized_edges}, status=200)
-
-
-@login_required
-@require_POST
-def discover_node(request):
-    """
-    POST /graph/api/discover-node/
-    Body JSON: { "node_id": <int> }
-
-    Mueve un GraphNode a status 'discovered' y elimina sus edges asociados.
-    Retorna: { "status": "ok" }
-    Errores: 404 si no existe, 400 si JSON inválido
-    """
-    try:
-        body = json.loads(request.body)
-        node_id = body.get('node_id')
-    except (json.JSONDecodeError, AttributeError):
-        return JsonResponse({'error': 'Invalid JSON.'}, status=400)
-
-    if node_id is None:
-        return JsonResponse({'error': 'node_id is required.'}, status=400)
-
-    try:
-        node = GraphNode.objects.get(id=node_id, user=request.user)
-    except GraphNode.DoesNotExist:
-        return JsonResponse({'error': 'Nodo no encontrado.'}, status=404)
-
-    # Elimina edges asociados y cambia el status
-    GraphEdge.objects.filter(user=request.user).filter(
-        models.Q(from_node=node) | models.Q(to_node=node)
-    ).delete()
-    node.status = 'discovered'
-    node.save(update_fields=['status'])
-    return JsonResponse({'status': 'ok'})
-
-
-@login_required
-def discovery_list(request):
-    """
-    GET /graph/api/discovery-list/
-    Retorna todos los nodos con status 'discovered' del usuario autenticado.
-    """
-    nodes = GraphNode.objects.filter(
-        user=request.user, status='discovered'
-    ).select_related('place').prefetch_related('place__tags')
-    serialized = GraphNodeSerializer(nodes, many=True).data
-    return JsonResponse({'nodes': serialized})
-
-
-@login_required
-@require_POST
-def restore_node(request):
-    """
-    POST /graph/api/restore-node/
-    Body JSON: { "node_id": <int>, "target": "in_graph" | "recommendation" }
-
-    Restaura un nodo descubierto:
-      - "in_graph"       → lo promueve al mapa personal via Pipeline B
-      - "recommendation" → lo vuelve a soltar como sugerencia
-    Retorna: { "status": "ok" }
-    Errores: 404 si no existe o no está en 'discovered'
-    """
-    try:
-        body = json.loads(request.body)
-        node_id = body.get('node_id')
-        target = body.get('target', 'recommendation')
-    except (json.JSONDecodeError, AttributeError):
-        return JsonResponse({'error': 'Invalid JSON.'}, status=400)
-
-    if node_id is None:
-        return JsonResponse({'error': 'node_id is required.'}, status=400)
-
-    try:
-        node = GraphNode.objects.get(id=node_id, user=request.user, status='discovered')
-    except GraphNode.DoesNotExist:
-        return JsonResponse({'error': 'Nodo no encontrado.'}, status=404)
-
-    if target == 'in_graph':
-        try:
-            from recommendation.graph_builder import GraphBuilder
-            node.status = 'recommendation'
-            node.save(update_fields=['status'])
-            edge_ids = GraphBuilder().add_to_graph(request.user, node_id)
-            return JsonResponse({'status': 'ok', 'edge_ids': edge_ids})
-        except Exception as e:
-            log.error("restore_node add_to_graph error: %s", e)
-            return JsonResponse({'error': str(e)}, status=400)
-    else:
-        node.status = 'recommendation'
-        node.save(update_fields=['status'])
-        return JsonResponse({'status': 'ok'})
 
 
 @login_required
@@ -236,3 +153,92 @@ def delete_node(request, node_id):
 
     node.delete()  # CASCADE elimina los GraphEdge automáticamente
     return JsonResponse({'status': 'ok'}, status=200)
+
+
+@login_required
+def discovery_list(request):
+    """
+    GET /graph/api/discovery-list/
+    Devuelve los nodos con status='discovery' del usuario.
+    """
+    nodes = GraphNode.objects.filter(
+        user=request.user, status='discovery'
+    ).select_related('place').prefetch_related('place__tags')
+    serialized = GraphNodeSerializer(nodes, many=True).data
+    return JsonResponse({'nodes': list(serialized)}, status=200)
+
+
+@login_required
+@require_POST
+def add_to_discovery(request):
+    """
+    POST /graph/api/add-to-discovery/
+    Body JSON: { "node_id": <int> }
+
+    Mueve un GraphNode (recommendation o in_graph) a status='discovery'.
+    Si ya está en discovery → 409.
+    Si estaba in_graph → borra sus edges del mapa antes de moverlo.
+    """
+    try:
+        body = json.loads(request.body)
+        node_id = body.get('node_id')
+    except (json.JSONDecodeError, AttributeError):
+        return JsonResponse({'error': 'Invalid JSON.'}, status=400)
+
+    if node_id is None:
+        return JsonResponse({'error': 'node_id is required.'}, status=400)
+
+    try:
+        node = GraphNode.objects.get(id=node_id, user=request.user)
+    except GraphNode.DoesNotExist:
+        return JsonResponse({'error': 'Nodo no encontrado.'}, status=404)
+
+    if node.status == 'discovery':
+        return JsonResponse({'error': 'El lugar ya está en tu lista de descubrimiento.'}, status=409)
+
+    if node.status == 'in_graph':
+        GraphEdge.objects.filter(Q(from_node=node) | Q(to_node=node)).delete()
+
+    node.status = 'discovery'
+    node.save(update_fields=['status', 'updated_at'])
+    return JsonResponse({'status': 'ok'}, status=200)
+
+
+@login_required
+@require_http_methods(["PATCH"])
+def mark_visited(request, node_id):
+    """
+    PATCH /graph/api/mark-visited/<node_id>/
+    Mueve un nodo de discovery a visited, corriendo Pipeline B para crear edges.
+    Retorna el nodo actualizado y los edges creados con source_id/target_id/weight/reason.
+    """
+    try:
+        node = GraphNode.objects.get(id=node_id, user=request.user)
+    except GraphNode.DoesNotExist:
+        return JsonResponse({'error': 'Nodo no encontrado.'}, status=404)
+
+    if node.status != 'discovery':
+        return JsonResponse({'error': 'El nodo no está en la lista de descubrimiento.'}, status=400)
+
+    try:
+        from recommendation.graph_builder import GraphBuilder
+        created_edge_ids = GraphBuilder().add_to_graph(request.user, node_id, target_status='visited')
+
+        node.refresh_from_db()
+        serialized_node = GraphNodeSerializer(node).data
+
+        edges = GraphEdge.objects.filter(id__in=created_edge_ids).select_related('from_node', 'to_node')
+        edges_data = [
+            {
+                'source_id': e.from_node.id,
+                'target_id': e.to_node.id,
+                'weight': e.weight,
+                'reason': e.reason,
+            }
+            for e in edges
+        ]
+
+        return JsonResponse({'status': 'ok', 'node': serialized_node, 'edges': edges_data}, status=200)
+    except Exception as e:
+        log.error("mark_visited error for node_id=%s: %s", node_id, e)
+        return JsonResponse({'error': str(e)}, status=400)
