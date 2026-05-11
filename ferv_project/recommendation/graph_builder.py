@@ -23,7 +23,7 @@ from graph.models import GraphEdge, GraphNode
 from recommendation.llm_client import EdgeBuildingOutput, LlmClient
 from recommendation.models import LlmInteractionLog
 from recommendation.prompt_builder import PromptBuilder
-from recommendation.services import Retriever
+from recommendation.retriever import Retriever
 
 log = logging.getLogger(__name__)
 

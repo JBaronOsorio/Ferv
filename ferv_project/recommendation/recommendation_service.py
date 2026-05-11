@@ -20,7 +20,8 @@ from places.models import Place
 from recommendation.llm_client import LlmClient, RecommendationOutput
 from recommendation.models import LlmInteractionLog
 from recommendation.prompt_builder import PromptBuilder
-from recommendation.services import EmbeddingService, Retriever
+from recommendation.embedding_service import EmbeddingService
+from recommendation.retriever import Retriever
 
 log = logging.getLogger(__name__)
 
