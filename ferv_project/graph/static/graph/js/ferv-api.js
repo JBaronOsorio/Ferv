@@ -183,6 +183,32 @@ async function deleteNodeById(nodeId) {
 }
 
 
+// ── fetchExploratoryRecommendations ──────────────────────────
+//  Pipeline C: sugerencias fuera del perfil habitual del usuario.
+//  POST /api/recommendation/exploratory/ → { nodes: [...] }
+//  heat: float [0-1]  (0 = cercano al perfil, 1 = totalmente diferente)
+
+async function fetchExploratoryRecommendations(heat) {
+  const resp = await fetch("/api/recommendation/exploratory/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-CSRFToken": getCsrf() },
+    body: JSON.stringify({ heat }),
+  });
+  const body = await resp.json().catch(() => ({}));
+  if (!resp.ok) throw new Error(`exploratory error ${resp.status}: ${body.error || ""}`);
+  return (body.nodes || []).map(n => ({
+    id:           String(n.node_id),
+    place_id:     n.place?.place_id,
+    name:         n.place?.name,
+    neighborhood: n.place?.neighborhood,
+    rating:       n.place?.rating,
+    tags:         [],
+    status:       n.status,
+    rationale:    n.rationale,
+  }));
+}
+
+
 // ── fetchNodeBasedRecommendations ────────────────────────────
 //  Pipeline B: sugerencias basadas en un nodo existente del mapa.
 //  POST /api/recommendation/node_based/ → { nodes: [...] }

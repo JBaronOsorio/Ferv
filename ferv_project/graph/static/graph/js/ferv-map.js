@@ -97,6 +97,64 @@ async function removeNode(placeId) {
   showToast(`"${trunc(node.name, 22)}" eliminado del mapa`);
 }
 
+async function runExploratoryMode(heat) {
+  const savedCount = Object.values(allNodes).filter(
+    n => n.status === "in_graph" || n.status === "visited"
+  ).length;
+
+  if (!savedCount) {
+    showToast("Agrega lugares a tu mapa primero para usar el modo exploración.");
+    return;
+  }
+
+  closeExplorePanel();
+  showMapLoading("Explorando fuera de tu perfil...");
+
+  try {
+    const newNodes = await fetchExploratoryRecommendations(heat);
+
+    Object.keys(allNodes).forEach(pid => {
+      if (allNodes[pid].status === "recommendation") delete allNodes[pid];
+    });
+    searchEdges = [];
+
+    if (!newNodes.length) {
+      showToast("No encontramos sugerencias exploratorias. Intenta enriquecer tu perfil.");
+      rerender();
+      return;
+    }
+
+    const W = document.querySelector(".canvas-wrap").clientWidth;
+    const H = document.querySelector(".canvas-wrap").clientHeight;
+    const mapNodes = Object.values(allNodes).filter(
+      n => (n.status === "in_graph" || n.status === "visited") && n.x != null
+    );
+    const cx = mapNodes.length ? mapNodes.reduce((s, n) => s + n.x, 0) / mapNodes.length : W / 2;
+    const cy = mapNodes.length ? mapNodes.reduce((s, n) => s + n.y, 0) / mapNodes.length : H / 2;
+
+    newNodes.forEach(n => {
+      if (!allNodes[n.place_id]) {
+        allNodes[n.place_id] = {
+          ...n,
+          x: cx + (Math.random() - 0.5) * 300,
+          y: cy + (Math.random() - 0.5) * 300,
+          vx: 0, vy: 0,
+        };
+      }
+    });
+
+    document.getElementById("hud").style.display = "flex";
+    updateHUD();
+    rerender();
+    showToast(`${newNodes.length} lugares fuera de lo usual para ti`);
+
+  } catch (_err) {
+    showToast("Error al cargar sugerencias exploratorias. Puedes intentarlo de nuevo.");
+  } finally {
+    hideMapLoading();
+  }
+}
+
 async function exploreFromNode(placeId) {
   const node = allNodes[placeId];
   if (!node) return;
