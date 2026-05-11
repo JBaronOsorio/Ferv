@@ -77,7 +77,9 @@ Domain models touched by orchestrators (defined in the `graph` app):
 
 Routed in [urls.py](../ferv_project/recommendation/urls.py) and handled by [views.py](../ferv_project/recommendation/views.py):
 
-- `POST /api/recommendation/recommend/` → `RecommendationService.recommend_one_shot`.
+- `POST /api/recommendation/recommend/` → `RecommendationService.recommend_one_shot` (Pipeline A).
+- `POST /api/recommendation/node_based/` → `RecommendationService.recommend_node_based` (Pipeline B). Body: `{"node_ids": [<int>, ...]}` — the user's `in_graph` GraphNode IDs to seed retrieval.
+- `POST /api/recommendation/exploratory/` → `RecommendationService.recommend_exploratory` (Pipeline C). Body: `{"heat": <float in [0,1]>}`.
 
 `GraphBuilder` is callable in code; an HTTP route will be added when the add-to-graph workflow is exposed.
 

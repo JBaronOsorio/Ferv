@@ -1,29 +1,27 @@
 """
 recommendation_service.py
 --------------------------
-RecommendationService — Pipeline A orchestrator.
+RecommendationService — orchestrator for the three recommendation pipelines:
+  - Pipeline A: one-shot recommendation from a free-text prompt
+  - Pipeline B: node-based recommendation, seeded by the user's in_graph nodes
+  - Pipeline C: exploratory recommendation, seeded by a perturbed profile vector
 
-Workflow:
-  1. Embed the user's prompt text
-  2. Retrieve top-K candidate places by vector similarity (excluding user's existing nodes)
-  3. Assemble user profile text
-  4. Build prompt via PromptBuilder
-  5. Call LLM via LlmClient, validate response
-  6. Create GraphNode rows (status='recommendation') for each LLM-selected place
-  7. Log interaction to LlmInteractionLog
+Each pipeline ends with N GraphNode rows in 'recommendation' status and an
+LlmInteractionLog row capturing the inputs, raw LLM response, and outcome.
 """
 
 import hashlib
 import logging
 import struct
 
+from django.contrib.contenttypes.models import ContentType
 from django.db import transaction
 
 from graph.models import GraphNode
 from places.models import Place
 from recommendation import vector_utils
 from recommendation.llm_client import LlmClient, RecommendationOutput
-from recommendation.models import LlmInteractionLog
+from recommendation.models import LlmInteractionLog, PlaceEmbedding
 from recommendation.prompt_builder import PromptBuilder
 from recommendation.embedding_service import EmbeddingService
 from recommendation.retriever import Retriever
@@ -32,6 +30,11 @@ log = logging.getLogger(__name__)
 
 RECOMMENDATION_K = 12  # retrieval breadth (candidates passed to LLM)
 RECOMMENDATION_N = 4   # final picks returned to the user
+
+NODE_BASED_K_PRIME = 50   # per-anchor retrieval breadth
+NODE_BASED_K = 20         # distilled candidates after RRF
+NODE_BASED_N = 5          # final picks returned to the user
+RRF_C = 60                # RRF constant (Cormack/Buettcher/Clarke default)
 
 EXPLORATORY_K = 200          # broad retrieval set (perturbed query vector)
 EXPLORATORY_K_TOP = 180      # exclusion zone — top of the broad set is dropped
@@ -59,6 +62,33 @@ def _candidates_block(candidates: list[dict]) -> str:
             f"  document: {document}"
         )
     return "\n\n".join(lines)
+
+
+def _anchor_vectors(places: list[Place], vector_class: type) -> dict[int, list[float]]:
+    """
+    Return {place.pk: vector} for every place that has a PlaceEmbedding row
+    pointing at the given VectorClass. Places without an embedding are absent
+    from the result; the caller decides how to react.
+
+    Two queries total regardless of len(places).
+    """
+    if not places:
+        return {}
+    ct = ContentType.objects.get_for_model(vector_class)
+    place_embs = list(
+        PlaceEmbedding.objects.filter(
+            place__in=places, content_type=ct
+        ).values("place_id", "object_id")
+    )
+    if not place_embs:
+        return {}
+    vector_id_to_place_id = {pe["object_id"]: pe["place_id"] for pe in place_embs}
+    rows = vector_class.objects.filter(id__in=list(vector_id_to_place_id.keys())).values(
+        "id", "vector"
+    )
+    return {
+        vector_id_to_place_id[row["id"]]: list(row["vector"]) for row in rows
+    }
 
 
 class RecommendationService:
@@ -152,6 +182,183 @@ class RecommendationService:
         LlmInteractionLog.objects.create(
             user=user,
             workflow="recommendation",
+            prompt_version=prompt_version,
+            embedding_model=embedder.model_name,
+            language_model=llm.model_name,
+            input_payload=input_payload,
+            raw_llm_response=raw_response,
+            parsed_output=parsed_output,
+            outcome=outcome,
+        )
+
+        return nodes
+
+    def recommend_node_based(self, user, node_ids: list[int]) -> list:
+        """
+        Pipeline B — Node-based recommendation.
+
+        Given a list of the user's existing in_graph GraphNode IDs, run one
+        similarity query per anchor node, fuse the ranked lists with
+        Reciprocal Rank Fusion, and ask the LLM to pick N candidates that
+        extend the pattern set by the anchors.
+        """
+        if not isinstance(node_ids, list) or not node_ids:
+            raise ValueError(f"node_ids must be a non-empty list, got {node_ids!r}")
+        if not all(isinstance(nid, int) and not isinstance(nid, bool) for nid in node_ids):
+            raise ValueError(f"node_ids must be a list of ints, got {node_ids!r}")
+
+        embedder = EmbeddingService()
+        retriever = Retriever()
+        builder = PromptBuilder()
+        llm = LlmClient()
+
+        # Step 1 — fetch anchor nodes (must all belong to user, status=in_graph).
+        unique_ids = list(dict.fromkeys(node_ids))  # preserve order, dedupe
+        anchor_nodes = list(
+            GraphNode.objects.filter(
+                id__in=unique_ids, user=user, status="in_graph"
+            ).select_related("place")
+        )
+        if len(anchor_nodes) != len(unique_ids):
+            found_ids = {n.id for n in anchor_nodes}
+            missing = [nid for nid in unique_ids if nid not in found_ids]
+            raise ValueError(
+                f"node_ids missing, not owned by user, or not in_graph: {missing}"
+            )
+
+        # Step 2 — resolve each anchor place's embedding vector.
+        anchor_places = [n.place for n in anchor_nodes]
+        place_id_to_vector = _anchor_vectors(anchor_places, embedder.vector_class)
+        missing_embeddings = [
+            p.place_id for p in anchor_places if p.pk not in place_id_to_vector
+        ]
+        if missing_embeddings:
+            raise ValueError(
+                f"anchor places without an embedding: {missing_embeddings}"
+            )
+
+        # Step 3 — n independent similarity queries, one per anchor.
+        per_anchor_lists: list[list[str]] = []
+        per_anchor_candidates: dict[str, dict] = {}
+        per_anchor_log: list[dict] = []
+        for node in anchor_nodes:
+            vec = place_id_to_vector[node.place.pk]
+            results = retriever.get_candidates(
+                vec, top_k=NODE_BASED_K_PRIME, exclude_user=user
+            )
+            ranked_ids = [c["place"].place_id for c in results]
+            per_anchor_lists.append(ranked_ids)
+            per_anchor_log.append(
+                {
+                    "anchor_node_id": node.id,
+                    "anchor_place_id": node.place.place_id,
+                    "ranked_place_ids": ranked_ids,
+                }
+            )
+            for c in results:
+                # Keep the first sighting; later anchors don't overwrite.
+                per_anchor_candidates.setdefault(c["place"].place_id, c)
+
+        # Step 4 — RRF fuse the per-anchor lists, take top-K.
+        fused = vector_utils.reciprocal_rank_fusion(per_anchor_lists, c=RRF_C)
+        fused_top = fused[:NODE_BASED_K]
+        if not fused_top:
+            log.warning(
+                "Pipeline B produced no candidates for user %s with anchors %s",
+                user.id, [n.id for n in anchor_nodes],
+            )
+            return []
+
+        # Step 5 — materialize candidate dicts in fused order.
+        candidates = [per_anchor_candidates[pid] for pid, _score in fused_top]
+        fused_log = [
+            {"place_id": pid, "rrf_score": score} for pid, score in fused_top
+        ]
+
+        # Step 6 — profile + prompt assembly.
+        profile_text = user.get_profile_as_prompt_text()
+        anchors_block = _candidates_block([{"place": p} for p in anchor_places])
+        candidates_block = _candidates_block(candidates)
+        n = min(NODE_BASED_N, len(candidates))
+        prompt, prompt_version = builder.build(
+            "node_based_recommendation_v1",
+            anchors_block=anchors_block,
+            profile_text=profile_text or "No profile available.",
+            candidates_block=candidates_block,
+            candidate_count=len(candidates),
+            n=n,
+        )
+
+        # Step 7 — LLM call.
+        input_payload = {
+            "anchor_node_ids": [n.id for n in anchor_nodes],
+            "anchor_place_ids": [p.place_id for p in anchor_places],
+            "per_anchor_retrieval": per_anchor_log,
+            "fused_top_k": fused_log,
+            "profile_snapshot": profile_text,
+            "n": n,
+        }
+        raw_response = ""
+        parsed_output = None
+        outcome = "success"
+        try:
+            parsed, raw_response = llm.send(prompt, RecommendationOutput)
+            parsed_output = parsed
+        except ValueError as e:
+            outcome = "validation_error"
+            LlmInteractionLog.objects.create(
+                user=user,
+                workflow="node_based_recommendation",
+                prompt_version=prompt_version,
+                embedding_model=embedder.model_name,
+                language_model=llm.model_name,
+                input_payload=input_payload,
+                raw_llm_response=str(e),
+                parsed_output=None,
+                outcome=outcome,
+            )
+            raise
+
+        # Step 8 — validate picks ⊆ fused candidate set.
+        candidate_place_map = {c["place"].place_id: c["place"] for c in candidates}
+        picks = parsed["recommendations"]
+        unknown = [p["place_id"] for p in picks if p["place_id"] not in candidate_place_map]
+        if unknown:
+            outcome = "validation_error"
+            LlmInteractionLog.objects.create(
+                user=user,
+                workflow="node_based_recommendation",
+                prompt_version=prompt_version,
+                embedding_model=embedder.model_name,
+                language_model=llm.model_name,
+                input_payload=input_payload,
+                raw_llm_response=raw_response,
+                parsed_output=parsed_output,
+                outcome=outcome,
+            )
+            raise ValueError(
+                f"LLM returned place_ids outside the fused candidate set: {unknown}"
+            )
+
+        # Step 9 — create GraphNode rows atomically.
+        with transaction.atomic():
+            nodes = []
+            for pick in picks:
+                place = candidate_place_map[pick["place_id"]]
+                node, _ = GraphNode.objects.get_or_create(
+                    user=user,
+                    place=place,
+                    defaults={
+                        "status": "recommendation",
+                        "rationale": pick["rationale"][:255],
+                    },
+                )
+                nodes.append(node)
+
+        # Step 10 — log success.
+        LlmInteractionLog.objects.create(
+            user=user,
+            workflow="node_based_recommendation",
             prompt_version=prompt_version,
             embedding_model=embedder.model_name,
             language_model=llm.model_name,

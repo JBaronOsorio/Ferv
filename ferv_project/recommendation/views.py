@@ -2,6 +2,7 @@
 views.py
 --------
 POST /api/recommendation/recommend/    → Pipeline A: one-shot recommendation
+POST /api/recommendation/node_based/   → Pipeline B: node-based recommendation
 POST /api/recommendation/exploratory/  → Pipeline C: exploratory recommendation
 """
 
@@ -60,6 +61,41 @@ def recommend(request):
         return JsonResponse({"error": str(e)}, status=500)
     except Exception as e:
         log.error("recommend view unexpected error: %s", e)
+        return JsonResponse({"error": "Internal server error."}, status=500)
+
+
+@login_required
+@require_POST
+def node_based_recommend(request):
+    """
+    POST /api/recommendation/node_based/
+    Body JSON: { "node_ids": [<int>, ...] }
+
+    Runs Pipeline B for the authenticated user, seeded by their existing
+    in_graph GraphNode IDs. Returns up to N new recommendation nodes.
+    """
+    try:
+        body = json.loads(request.body)
+    except (json.JSONDecodeError, AttributeError):
+        return JsonResponse({"error": "Invalid JSON."}, status=400)
+
+    node_ids = body.get("node_ids")
+    if not node_ids:
+        return JsonResponse({"error": "node_ids is required."}, status=400)
+    if not isinstance(node_ids, list):
+        return JsonResponse({"error": "node_ids must be a list."}, status=400)
+    if not all(isinstance(nid, int) and not isinstance(nid, bool) for nid in node_ids):
+        return JsonResponse({"error": "node_ids must contain only integers."}, status=400)
+
+    try:
+        from recommendation.recommendation_service import RecommendationService
+        nodes = RecommendationService().recommend_node_based(request.user, node_ids)
+        return JsonResponse({"nodes": [_serialize_node(n) for n in nodes]})
+    except ValueError as e:
+        log.error("node_based_recommend view error: %s", e)
+        return JsonResponse({"error": str(e)}, status=500)
+    except Exception as e:
+        log.error("node_based_recommend view unexpected error: %s", e)
         return JsonResponse({"error": "Internal server error."}, status=500)
 
 
