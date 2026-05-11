@@ -220,7 +220,7 @@ class RecommendationService:
             ).select_related("place")
         )
         if len(anchor_nodes) != len(unique_ids):
-            found_ids = {n.id for n in anchor_nodes}
+            found_ids = {n.pk for n in anchor_nodes}
             missing = [nid for nid in unique_ids if nid not in found_ids]
             raise ValueError(
                 f"node_ids missing, not owned by user, or not in_graph: {missing}"
@@ -250,7 +250,7 @@ class RecommendationService:
             per_anchor_lists.append(ranked_ids)
             per_anchor_log.append(
                 {
-                    "anchor_node_id": node.id,
+                    "anchor_node_id": node.pk,
                     "anchor_place_id": node.place.place_id,
                     "ranked_place_ids": ranked_ids,
                 }
@@ -265,12 +265,12 @@ class RecommendationService:
         if not fused_top:
             log.warning(
                 "Pipeline B produced no candidates for user %s with anchors %s",
-                user.id, [n.id for n in anchor_nodes],
+                user.id, [n.pk for n in anchor_nodes],
             )
             return []
 
         # Step 5 — materialize candidate dicts in fused order.
-        candidates = [per_anchor_candidates[pid] for pid, _score in fused_top]
+        candidates = [per_anchor_candidates[str(pid)] for pid, _score in fused_top]
         fused_log = [
             {"place_id": pid, "rrf_score": score} for pid, score in fused_top
         ]
@@ -291,7 +291,7 @@ class RecommendationService:
 
         # Step 7 — LLM call.
         input_payload = {
-            "anchor_node_ids": [n.id for n in anchor_nodes],
+            "anchor_node_ids": [n.pk for n in anchor_nodes],
             "anchor_place_ids": [p.place_id for p in anchor_places],
             "per_anchor_retrieval": per_anchor_log,
             "fused_top_k": fused_log,
