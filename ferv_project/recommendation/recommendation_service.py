@@ -216,7 +216,7 @@ class RecommendationService:
         unique_ids = list(dict.fromkeys(node_ids))  # preserve order, dedupe
         anchor_nodes = list(
             GraphNode.objects.filter(
-                id__in=unique_ids, user=user, status="in_graph"
+                id__in=unique_ids, user=user, status__in=["in_graph", "visited"]
             ).select_related("place")
         )
         if len(anchor_nodes) != len(unique_ids):

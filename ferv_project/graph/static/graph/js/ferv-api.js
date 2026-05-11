@@ -183,6 +183,32 @@ async function deleteNodeById(nodeId) {
 }
 
 
+// ── fetchNodeBasedRecommendations ────────────────────────────
+//  Pipeline B: sugerencias basadas en un nodo existente del mapa.
+//  POST /api/recommendation/node_based/ → { nodes: [...] }
+//  La respuesta usa node_id (no id) y no incluye tags.
+
+async function fetchNodeBasedRecommendations(nodeId) {
+  const resp = await fetch("/api/recommendation/node_based/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-CSRFToken": getCsrf() },
+    body: JSON.stringify({ node_ids: [nodeId] }),
+  });
+  const body = await resp.json().catch(() => ({}));
+  if (!resp.ok) throw new Error(`node_based error ${resp.status}: ${body.error || ""}`);
+  return (body.nodes || []).map(n => ({
+    id:           String(n.node_id),
+    place_id:     n.place?.place_id,
+    name:         n.place?.name,
+    neighborhood: n.place?.neighborhood,
+    rating:       n.place?.rating,
+    tags:         [],
+    status:       n.status,
+    rationale:    n.rationale,
+  }));
+}
+
+
 // ── removeNodeFromBackend ─────────────────────────────────────
 //  Elimina un nodo in_graph/visited del mapa personal (requiere que el nodo
 //  esté en allNodes para resolver el node_id). Para nodos fuera del state
