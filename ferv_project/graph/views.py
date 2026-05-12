@@ -73,8 +73,8 @@ def add_node(request):
         edges = GraphEdge.objects.filter(id__in=edge_ids).select_related('from_node', 'to_node')
         edges_data = [
             {
-                'source_id': e.from_node.id,
-                'target_id': e.to_node.id,
+                'source_id': e.from_node.pk,
+                'target_id': e.to_node.pk,
                 'weight': e.weight,
                 'reason': e.reason,
             }
@@ -132,7 +132,6 @@ def fetch_graph(request):
     serialized_nodes = GraphNodeSerializer(nodes, many=True).data
     serialized_edges = GraphEdgeSerializer(edges, many=True).data
 
-    print(f"fetch_graph: returning {(serialized_nodes)} nodes and {(serialized_edges)} edges for user {request.user.username}")
 
     return JsonResponse({'nodes': serialized_nodes, 'edges': serialized_edges}, status=200)
 
@@ -315,8 +314,8 @@ def mark_visited(request, node_id):
         edges = GraphEdge.objects.filter(id__in=created_edge_ids).select_related('from_node', 'to_node')
         edges_data = [
             {
-                'source_id': e.from_node.id,
-                'target_id': e.to_node.id,
+                'source_id': e.from_node.pk,
+                'target_id': e.to_node.pk,
                 'weight': e.weight,
                 'reason': e.reason,
             }
