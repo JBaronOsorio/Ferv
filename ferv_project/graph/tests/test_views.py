@@ -7,6 +7,7 @@ HU07: Protected Routes
 
 import pytest
 from django.urls import reverse
+from graph.models import GraphNode
 
 
 @pytest.mark.django_db
@@ -62,3 +63,31 @@ class TestMapViews:
         assert response.status_code == 200
         templates = [t.name for t in response.templates]
         assert 'graph/welcome.html' in templates
+
+    def test_favorites_list_returns_only_favorite_nodes(self, client, test_user_with_profile, test_place, test_place_2):
+        """
+        GET /graph/api/favorites-list/ should return only nodes with is_favorite=True.
+        """
+        client.force_login(test_user_with_profile)
+
+        GraphNode.objects.create(
+            user=test_user_with_profile,
+            place=test_place,
+            status='in_graph',
+            is_favorite=True,
+        )
+        GraphNode.objects.create(
+            user=test_user_with_profile,
+            place=test_place_2,
+            status='visited',
+            is_favorite=False,
+        )
+
+        url = reverse('graph:favorites-list')
+        response = client.get(url)
+
+        assert response.status_code == 200
+        payload = response.json()
+        assert len(payload['nodes']) == 1
+        assert payload['nodes'][0]['place']['place_id'] == test_place.place_id
+        assert payload['nodes'][0]['is_favorite'] is True

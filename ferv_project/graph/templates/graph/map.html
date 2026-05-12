@@ -23,6 +23,7 @@
   <script src="{% static 'graph/js/ferv-panel.js' %}"></script>
   <script src="{% static 'graph/js/ferv-filters.js' %}"></script>
   <script src="{% static 'graph/js/ferv-discover.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-favorites.js' %}"></script>
   <script src="{% static 'graph/js/ferv-explore.js' %}"></script>
   <script src="{% static 'graph/js/ferv-export.js' %}"></script>
   <script src="{% static 'graph/js/ferv-stats.js' %}"></script>
@@ -89,6 +90,16 @@
       </svg>
       Mi perfil
     </a>
+
+    <!-- Lista de lugares marcados como favoritos -->
+    <button type="button" id="favorites-list-btn" class="stats-menu-btn">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2.25l2.89 5.86 6.47.94-4.68 4.56 1.1 6.44L12 16.98l-5.78 3.04 1.1-6.44-4.68-4.56 6.47-.94L12 2.25z"/>
+      </svg>
+      Mis favoritos
+    </button>
+
+
     <button type="button" id="open-stats-btn" class="stats-menu-btn">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
@@ -213,6 +224,21 @@
         <button class="discovery-panel__close" id="discovery-drawer-close" type="button" aria-label="Cerrar lista">×</button>
       </div>
       <div class="discovery-list" id="discovery-list"></div>
+    </div>
+
+      <!-- Panel lista de favoritos -->
+      <div class="favorites-panel" id="favorites-drawer" aria-hidden="true">
+      <div class="favorites-panel__header">
+        <div>
+            <div class="favorites-panel__eyebrow">Favoritos</div>
+            <div class="favorites-panel__title">
+              Mis favoritos
+              <span class="favorites-panel__count" id="favorites-header-count">0</span>
+            </div>
+        </div>
+          <button class="favorites-panel__close" id="favorites-drawer-close" type="button" aria-label="Cerrar favoritos">×</button>
+      </div>
+        <div class="favorites-list" id="favorites-list"></div>
     </div>
 
     <button class="filters-fab" id="filters-fab" type="button" aria-controls="filters-panel" aria-expanded="false" title="Filtros">

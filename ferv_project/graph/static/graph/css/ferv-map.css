@@ -1527,6 +1527,178 @@
 .stats-menu-btn svg { flex-shrink: 0; opacity: 0.6; }
 .stats-menu-btn:hover svg { opacity: 1; }
 
+/* ── Panel de favoritos (estilo estadísticas) ── */
+.favorites-panel {
+  position: absolute;
+  left: 14px;
+  bottom: 182px;
+  width: 300px;
+  max-width: calc(100vw - 28px);
+  max-height: calc(100vh - 220px);
+  background: rgba(15, 15, 15, 0.98);
+  border: 1px solid rgba(155, 107, 250, 0.14);
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.42);
+  z-index: 17;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+}
+.favorites-panel.open { display: flex; }
+
+.favorites-panel__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  flex-shrink: 0;
+}
+.favorites-panel__eyebrow {
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: rgba(250, 240, 107, 0.85);
+  margin-bottom: 3px;
+}
+.favorites-panel__title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -0.2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.favorites-panel__count {
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  color: rgba(250, 240, 107, 0.85);
+  font-weight: 400;
+}
+.favorites-panel__close {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(240, 240, 240, 0.8);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+.favorites-panel__close:hover {
+  background: rgba(155, 107, 250, 0.1);
+  border-color: rgba(155, 107, 250, 0.25);
+  color: #fff;
+}
+
+/* ── Lista de favoritos ── */
+.favorites-list {
+  overflow-y: auto;
+  flex: 1;
+  padding: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: #1a1a1a transparent;
+}
+
+.favorites-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 8px;
+  border-radius: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  transition: background 0.15s;
+}
+.favorites-item:hover { background: rgba(255, 255, 255, 0.03); }
+.favorites-item:last-child { border-bottom: none; }
+
+.favorites-item__info { flex: 1; min-width: 0; }
+.favorites-item__name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #e0e0e0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+.favorites-item__meta {
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  color: #555;
+  margin-bottom: 5px;
+}
+.favorites-item__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+.favorites-tag {
+  font-size: 9px;
+  font-family: 'DM Mono', monospace;
+  color: #666;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+.favorites-item__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.favorites-btn-open {
+  padding: 5px 9px;
+  border-radius: 7px;
+  border: 1px solid rgba(250, 240, 107, 0.28);
+  background: rgba(250, 240, 107, 0.08);
+  color: rgba(250, 240, 107, 0.85);
+  font-size: 10px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.favorites-btn-open:hover {
+  background: rgba(250, 240, 107, 0.15);
+  color: #fafa6b;
+}
+
+.favorites-status-label {
+  padding: 5px 9px;
+  border-radius: 7px;
+  border: 1px solid rgba(250, 240, 107, 0.35);
+  background: rgba(250, 240, 107, 0.1);
+  color: #fafa6b;
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* ── Estados vacío / cargando / error de favoritos ── */
+.favorites-empty,
+.favorites-loading,
+.favorites-error {
+  padding: 28px 16px;
+  text-align: center;
+  font-size: 12px;
+  color: #3a3a3a;
+  font-family: 'DM Mono', monospace;
+  line-height: 1.6;
+}
+
 /* ── Modal estadísticas ── */
 .stats-modal {
   position: absolute;

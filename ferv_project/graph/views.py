@@ -174,6 +174,19 @@ def discovery_list(request):
 
 
 @login_required
+def favorites_list(request):
+    """
+    GET /graph/api/favorites-list/
+    Devuelve los nodos marcados como favoritos del usuario.
+    """
+    nodes = GraphNode.objects.filter(
+        user=request.user, is_favorite=True
+    ).select_related('place').prefetch_related('place__tags')
+    serialized = GraphNodeSerializer(nodes, many=True).data
+    return JsonResponse({'nodes': list(serialized)}, status=200)
+
+
+@login_required
 @require_POST
 def add_to_discovery(request):
     """

@@ -129,6 +129,20 @@ async function fetchDiscoveryList() {
 }
 
 
+// ── fetchFavoritesList ────────────────────────────────────────
+//  Devuelve los nodos marcados como favoritos por el usuario.
+//  GET /graph/api/favorites-list/
+
+async function fetchFavoritesList() {
+  const resp = await fetch("/graph/api/favorites-list/", {
+    headers: { "Accept": "application/json" }
+  });
+  if (!resp.ok) throw new Error(`favorites-list error ${resp.status}`);
+  const data = await resp.json();
+  return { nodes: data.nodes.map(parseNode) };
+}
+
+
 // ── addToDiscoveryAPI ─────────────────────────────────────────
 //  Mueve un nodo a la lista de descubrimiento.
 //  POST /graph/api/add-to-discovery/ → { node_id: <int> }
