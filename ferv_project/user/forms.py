@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.utils.safestring import mark_safe
 
+
 from .models import (
     ACTIVITY_CHOICES,
     ATMOSPHERE_CHOICES,
@@ -74,11 +75,29 @@ class ProfileSetupForm(forms.ModelForm):
             'budget_range',
         )
 
+    def clean(self):
+        cleaned_data = super().clean()
+        if not cleaned_data.get('preferred_place_types'):
+            self.add_error('preferred_place_types', 'Por favor selecciona al menos un tipo de lugar.')
+        if not cleaned_data.get('preferred_atmospheres'):
+            self.add_error('preferred_atmospheres', 'Por favor selecciona al menos una atmósfera.')
+        if not cleaned_data.get('preferred_activities'):
+            self.add_error('preferred_activities', 'Por favor selecciona al menos una actividad.')
+        if not cleaned_data.get('budget_range'):
+            self.add_error('budget_range', 'Por favor selecciona un rango de presupuesto.')
+
+        return cleaned_data
+
     def save(self, commit=True):
+        if not self.is_valid():
+            raise ValueError("No se puede guardar un formulario inválido")
+
         user = super().save(commit=False)
         user.profile_completed = True
+
         if commit:
             user.save()
+
         return user
 
 # Formulario de inicio de sesión que extiende AuthenticationForm para personalizar los placeholders.

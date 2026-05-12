@@ -17,15 +17,14 @@ from collections import Counter
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST, require_http_methods
 from places.models import Place
 from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
 from .serializers import GraphNodeSerializer, GraphEdgeSerializer
 from .models import GraphNode, GraphEdge
+from django.contrib import messages
 
 log = logging.getLogger(__name__)
 
@@ -42,7 +41,11 @@ def welcome(request):
 
 @login_required
 def map_view(request):
-    return render(request, 'graph/map.html')
+    if not request.user.profile_completed:
+        messages.error(request, 'Debes completar tu perfil antes de acceder al mapa.')
+        return redirect('user:profile_setup')
+    else:
+        return render(request, 'graph/map.html')
 
 
 @login_required
