@@ -257,6 +257,24 @@ def user_stats(request):
 
 @login_required
 @require_http_methods(["PATCH"])
+def toggle_favorite(request, node_id):
+    """
+    PATCH /graph/api/toggle-favorite/<node_id>/
+    Invierte is_favorite en el GraphNode indicado.
+    Retorna { "is_favorite": bool }.
+    """
+    try:
+        node = GraphNode.objects.get(id=node_id, user=request.user)
+    except GraphNode.DoesNotExist:
+        return JsonResponse({'error': 'Nodo no encontrado.'}, status=404)
+
+    node.is_favorite = not node.is_favorite
+    node.save(update_fields=['is_favorite'])
+    return JsonResponse({'is_favorite': node.is_favorite}, status=200)
+
+
+@login_required
+@require_http_methods(["PATCH"])
 def mark_visited(request, node_id):
     """
     PATCH /graph/api/mark-visited/<node_id>/

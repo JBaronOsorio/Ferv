@@ -4,13 +4,15 @@
 //  DEPENDE DE: ferv-state.js, ferv-map.js (rerender), ferv-ui.js
 // ══════════════════════════════════════════════════════════════
 
-let activeFilters = { tags: [], neighborhood: null, minRating: 0 };
+let activeFilters = { tags: [], neighborhood: null, minRating: 0, onlyFavorites: false };
 
 function hasActiveFilters() {
-  return activeFilters.tags.length > 0 || activeFilters.neighborhood || activeFilters.minRating > 0;
+  return activeFilters.tags.length > 0 || activeFilters.neighborhood || activeFilters.minRating > 0 || activeFilters.onlyFavorites;
 }
 
 function matchesActiveFilters(node) {
+  if (activeFilters.onlyFavorites && !node.is_favorite) return false;
+
   const nodeTags = Array.isArray(node.tags) ? node.tags : [];
 
   if (activeFilters.tags.length) {
@@ -37,8 +39,13 @@ function setEmptyState(isFilteredEmpty) {
   const hint = emptyState.querySelector(".hint");
 
   if (isFilteredEmpty) {
-    if (title) title.textContent = "Sin lugares con estos filtros";
-    if (hint) hint.textContent = "Limpia los filtros para volver a ver todos los lugares";
+    if (activeFilters.onlyFavorites) {
+      if (title) title.textContent = "Sin lugares favoritos aún";
+      if (hint) hint.textContent = "Abre un lugar en tu mapa y márcalo como favorito con ☆";
+    } else {
+      if (title) title.textContent = "Sin lugares con estos filtros";
+      if (hint) hint.textContent = "Limpia los filtros para volver a ver todos los lugares";
+    }
     emptyState.style.display = "flex";
     return;
   }
@@ -143,7 +150,9 @@ function applyFilters() {
 }
 
 function clearFilters() {
-  activeFilters = { tags: [], neighborhood: null, minRating: 0 };
+  activeFilters = { tags: [], neighborhood: null, minRating: 0, onlyFavorites: false };
+  const favToggle = document.getElementById("filters-favorites");
+  if (favToggle) favToggle.classList.remove("active");
   syncFilterUI();
   rerender();
 }
@@ -206,6 +215,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   neighborhoodSelect?.addEventListener("change", () => {
     activeFilters.neighborhood = neighborhoodSelect.value || null;
+  });
+
+  document.getElementById("filters-favorites")?.addEventListener("click", () => {
+    activeFilters.onlyFavorites = !activeFilters.onlyFavorites;
+    document.getElementById("filters-favorites").classList.toggle("active", activeFilters.onlyFavorites);
+    updateFilterButtonState();
+    rerender();
   });
 
   document.addEventListener("keydown", event => {

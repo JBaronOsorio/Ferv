@@ -232,9 +232,10 @@ function rerender() {
     d3.zoom().scaleExtent([0.15, 4]).on("zoom", e => svgG.attr("transform", e.transform))
   );
 
-  const isSaved   = d => d.status === "in_graph";
-  const isVisited = d => d.status === "visited";
-  const isOnMap   = d => d.status === "in_graph" || d.status === "visited";
+  const isSaved      = d => d.status === "in_graph";
+  const isVisited    = d => d.status === "visited";
+  const isOnMap      = d => d.status === "in_graph" || d.status === "visited";
+  const isFavorite   = d => d.is_favorite === true;
 
   const visibleNodes = getFilteredVisibleNodes();
 
@@ -297,6 +298,13 @@ function rerender() {
       .on("end",   (ev, d) => { if (!ev.active) simulation.alphaTarget(0); d.fx = null; d.fy = null; })
     )
     .on("click", (ev, d) => { ev.stopPropagation(); openPanel(d, visibleEdges); });
+
+  // Anillo dorado para favoritos (va primero, queda detrás)
+  nodeEls.filter(isFavorite).append("circle")
+    .attr("r", 54).attr("fill", "none")
+    .attr("stroke", "#f5c842")
+    .attr("stroke-width", 1.8)
+    .attr("stroke-opacity", 0.75);
 
   // Anillo exterior punteado — en mapa y visitados (estilo diferente)
   nodeEls.filter(isOnMap).append("circle")
