@@ -315,6 +315,56 @@
 }
 .btn-remove.visible { display: block; }
 
+.panel-top-actions {
+  position: absolute;
+  top: 18px;
+  right: 52px;
+}
+
+.panel-remove-icon {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  color: #888;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.panel-remove-icon:hover {
+  background: rgba(255,80,80,0.12);
+  color: #ff6b6b;
+}
+
+/* ── Etiquetas de estado ── */
+.panel-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-label {
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.status-label.saved {
+  background: rgba(76, 175, 80, 0.15);
+  color: #754caf;
+}
+
+.status-label.visited {
+  background: rgba(33, 150, 243, 0.15);
+  color: #2196F3;
+}
+
+
 /* ── Filtros ── */
 .filters-fab {
   position: absolute;

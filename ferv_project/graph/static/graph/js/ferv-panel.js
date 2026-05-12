@@ -30,6 +30,21 @@ function openPanel(d, edges) {
   badge.style.borderColor = badgeColor + "33";
 
   document.getElementById("panel-name").textContent = d.name;
+
+  const statusLabel = document.getElementById("panel-status-label");
+
+  if (statusLabel) {
+    if (d.status === "visited") {
+      statusLabel.textContent = "Visitado";
+      statusLabel.className = "status-label visited";
+    } else if (d.status === "in_graph") {
+      statusLabel.textContent = "En tu mapa";
+      statusLabel.className = "status-label saved";
+    } else {
+      statusLabel.textContent = "";
+      statusLabel.className = "status-label";
+    }
+  }
   document.getElementById("panel-neighborhood").textContent = d.neighborhood || "Medellín";
 
   const tagsEl = document.getElementById("panel-tags");
@@ -73,18 +88,21 @@ function openPanel(d, edges) {
   const isVisited   = d.status === "visited";
 
   if (isVisited) {
-    addBtn.textContent  = "✓ Visitado";
-    addBtn.className    = "btn-add saved";
-    addBtn.disabled     = true;
-    discoverBtn.style.display = "none";
-    exploreBtn.style.display  = "block";
-    favBtn.style.display      = "block";
+    addBtn.style.display = "none";
+
+    discoverBtn.textContent = "↺ Volver a guardar en lista";
+    discoverBtn.className = "btn-discover-panel";
+    discoverBtn.disabled = false;
+    discoverBtn.style.display = "block";
+
+    exploreBtn.style.display = "block";
+    favBtn.style.display = "block";
+
     updateFavBtn(d);
-    removeBtn.classList.add("visible");
+    removeBtn.style.display = "flex";
+
   } else if (isSaved) {
-    addBtn.textContent  = "✓ En tu mapa";
-    addBtn.className    = "btn-add saved";
-    addBtn.disabled     = true;
+    addBtn.style.display = "none";
     discoverBtn.textContent  = "♡ Guardar en lista";
     discoverBtn.className    = "btn-discover-panel";
     discoverBtn.disabled     = false;
@@ -92,8 +110,9 @@ function openPanel(d, edges) {
     exploreBtn.style.display  = "block";
     favBtn.style.display      = "block";
     updateFavBtn(d);
-    removeBtn.classList.add("visible");
+    removeBtn.style.display = "flex";
   } else {
+    addBtn.style.display = "block";
     addBtn.textContent  = "+ Agregar a mi mapa";
     addBtn.className    = "btn-add";
     addBtn.disabled     = false;
@@ -103,7 +122,7 @@ function openPanel(d, edges) {
     discoverBtn.style.display = "";
     exploreBtn.style.display  = "none";
     favBtn.style.display      = "none";
-    removeBtn.classList.remove("visible");
+    removeBtn.style.display = "none";
   }
 
   document.getElementById("detail-panel").classList.add("open");

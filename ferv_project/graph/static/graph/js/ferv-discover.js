@@ -9,6 +9,28 @@
 let discoveryItems = [];
 let visitedModalTarget = null;
 
+// ── Persistencia de "visitado en lista" (localStorage) ────────
+
+const VISITED_IN_LIST_KEY = "ferv_visited_in_list";
+
+function getVisitedInList() {
+  try {
+    return new Set(JSON.parse(localStorage.getItem(VISITED_IN_LIST_KEY) || "[]"));
+  } catch { return new Set(); }
+}
+
+function saveVisitedInList(nodeId) {
+  const ids = getVisitedInList();
+  ids.add(String(nodeId));
+  localStorage.setItem(VISITED_IN_LIST_KEY, JSON.stringify([...ids]));
+}
+
+function clearVisitedInList(nodeId) {
+  const ids = getVisitedInList();
+  ids.delete(String(nodeId));
+  localStorage.setItem(VISITED_IN_LIST_KEY, JSON.stringify([...ids]));
+}
+
 // ── Drawer ────────────────────────────────────────────────────
 
 function openDiscoveryDrawer() {
@@ -31,6 +53,12 @@ async function loadDiscoveryList() {
   try {
     const data = await fetchDiscoveryList();
     discoveryItems = data.nodes;
+
+    const visitedIds = getVisitedInList();
+    discoveryItems.forEach(n => {
+      if (visitedIds.has(String(n.id))) n.locallyVisited = true;
+    });
+
     renderDiscoveryList();
   } catch (_err) {
     listEl.innerHTML = `
@@ -119,6 +147,7 @@ async function handleVisitedChoice(choice) {
   closeVisitedModal();
 
   if (choice === "keep") {
+    saveVisitedInList(nodeId);
     const target = discoveryItems.find(n => String(n.id) === String(nodeId));
     if (target) {
       target.locallyVisited = true;
@@ -138,6 +167,7 @@ async function handleVisitedChoice(choice) {
     try {
       const result = await markVisitedAPI(parseInt(nodeId));
 
+      clearVisitedInList(nodeId);
       discoveryItems = discoveryItems.filter(n => String(n.id) !== String(nodeId));
       renderDiscoveryList();
 
@@ -191,6 +221,7 @@ async function handleVisitedChoice(choice) {
 async function deleteDiscoveryItem(nodeId, placeId) {
   try {
     await deleteNodeById(parseInt(nodeId));
+    clearVisitedInList(nodeId);
     discoveryItems = discoveryItems.filter(n => String(n.id) !== String(nodeId));
     renderDiscoveryList();
     showToast("Lugar eliminado de tu lista");
