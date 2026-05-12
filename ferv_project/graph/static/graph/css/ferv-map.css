@@ -248,6 +248,31 @@
   cursor: default;
 }
 
+/* ── Botón "Marcar favorito" (solo in_graph / visited) ── */
+.btn-favorite {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(245, 200, 66, 0.25);
+  background: rgba(245, 200, 66, 0.06);
+  color: rgba(245, 200, 66, 0.7);
+  font-size: 12px;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  display: none;
+}
+.btn-favorite:hover {
+  background: rgba(245, 200, 66, 0.13);
+  border-color: rgba(245, 200, 66, 0.42);
+  color: #f5c842;
+}
+.btn-favorite.active {
+  background: rgba(245, 200, 66, 0.14);
+  border-color: rgba(245, 200, 66, 0.5);
+  color: #f5c842;
+}
+
 /* ── Botón "Explorar similares" (solo in_graph) ── */
 .btn-explore {
   width: 100%;

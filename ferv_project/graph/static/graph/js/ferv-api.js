@@ -27,7 +27,8 @@ function parseNode(n) {
     neighborhood: n.place?.neighborhood,
     rating:       n.place?.rating,
     tags:         (n.place?.tags || []).map(t => t.tag),
-    status:       n.status,   // "in_graph" | "recommendation"
+    status:       n.status,
+    is_favorite:  n.is_favorite ?? false,
   };
 }
 
@@ -232,6 +233,22 @@ async function fetchNodeBasedRecommendations(nodeId) {
     status:       n.status,
     rationale:    n.rationale,
   }));
+}
+
+
+// ── toggleFavoriteAPI ─────────────────────────────────────────
+//  Invierte is_favorite en un GraphNode.
+//  PATCH /graph/api/toggle-favorite/<nodeId>/
+//  Retorna { is_favorite: bool }
+
+async function toggleFavoriteAPI(nodeId) {
+  const resp = await fetch(`/graph/api/toggle-favorite/${nodeId}/`, {
+    method: "PATCH",
+    headers: { "X-CSRFToken": getCsrf(), "Accept": "application/json" },
+  });
+  const body = await resp.json().catch(() => ({}));
+  if (!resp.ok) throw new Error(`toggle-favorite error ${resp.status}: ${body.error || ""}`);
+  return body; // { is_favorite: bool }
 }
 
 

@@ -5,6 +5,18 @@
 //              ferv-map.js (saveNode, removeNode)
 // ══════════════════════════════════════════════════════════════
 
+function updateFavBtn(node) {
+  const btn = document.getElementById("panel-favorite-btn");
+  if (!btn) return;
+  if (node.is_favorite) {
+    btn.textContent = "★ Favorito";
+    btn.classList.add("active");
+  } else {
+    btn.textContent = "☆ Marcar favorito";
+    btn.classList.remove("active");
+  }
+}
+
 function openPanel(d, edges) {
   selectedD = d;
   const isSaved = d.status === "in_graph";
@@ -56,6 +68,7 @@ function openPanel(d, edges) {
   const addBtn      = document.getElementById("panel-add-btn");
   const discoverBtn = document.getElementById("panel-discover-btn");
   const exploreBtn  = document.getElementById("panel-explore-btn");
+  const favBtn      = document.getElementById("panel-favorite-btn");
   const removeBtn   = document.getElementById("panel-remove-btn");
   const isVisited   = d.status === "visited";
 
@@ -65,6 +78,8 @@ function openPanel(d, edges) {
     addBtn.disabled     = true;
     discoverBtn.style.display = "none";
     exploreBtn.style.display  = "block";
+    favBtn.style.display      = "block";
+    updateFavBtn(d);
     removeBtn.classList.add("visible");
   } else if (isSaved) {
     addBtn.textContent  = "✓ En tu mapa";
@@ -75,6 +90,8 @@ function openPanel(d, edges) {
     discoverBtn.disabled     = false;
     discoverBtn.style.display = "";
     exploreBtn.style.display  = "block";
+    favBtn.style.display      = "block";
+    updateFavBtn(d);
     removeBtn.classList.add("visible");
   } else {
     addBtn.textContent  = "+ Agregar a mi mapa";
@@ -85,6 +102,7 @@ function openPanel(d, edges) {
     discoverBtn.disabled     = false;
     discoverBtn.style.display = "";
     exploreBtn.style.display  = "none";
+    favBtn.style.display      = "none";
     removeBtn.classList.remove("visible");
   }
 
@@ -131,6 +149,31 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("panel-explore-btn").addEventListener("click", () => {
     if (!selectedD || (selectedD.status !== "in_graph" && selectedD.status !== "visited")) return;
     exploreFromNode(selectedD.place_id);
+  });
+
+  document.getElementById("panel-favorite-btn").addEventListener("click", async () => {
+    if (!selectedD || (selectedD.status !== "in_graph" && selectedD.status !== "visited")) return;
+
+    const prev = selectedD.is_favorite;
+    selectedD.is_favorite = !prev;
+    updateFavBtn(selectedD);
+    rerender();
+
+    try {
+      const result = await toggleFavoriteAPI(parseInt(selectedD.id));
+      selectedD.is_favorite = result.is_favorite;
+      updateFavBtn(selectedD);
+      rerender();
+      const msg = result.is_favorite
+        ? `"${trunc(selectedD.name, 18)}" marcado como favorito`
+        : `"${trunc(selectedD.name, 18)}" quitado de favoritos`;
+      showToast(msg);
+    } catch (_err) {
+      selectedD.is_favorite = prev;
+      updateFavBtn(selectedD);
+      rerender();
+      showToast("Error al actualizar favorito");
+    }
   });
 
   document.getElementById("panel-remove-btn").addEventListener("click", () => {
