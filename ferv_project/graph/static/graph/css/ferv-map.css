@@ -1307,6 +1307,18 @@
   color: #5bba6f;
 }
 
+.discovery-visited-label {
+  padding: 5px 9px;
+  border-radius: 7px;
+  border: 1px solid rgba(91, 186, 111, 0.35);
+  background: rgba(91, 186, 111, 0.1);
+  color: #5bba6f;
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  white-space: nowrap;
+  user-select: none;
+}
+
 .discovery-btn-delete {
   width: 26px;
   height: 26px;

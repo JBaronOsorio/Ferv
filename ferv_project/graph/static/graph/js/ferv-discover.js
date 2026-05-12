@@ -72,7 +72,10 @@ function renderDiscoveryList() {
           ${tagsHtml ? `<div class="discovery-item__tags">${tagsHtml}</div>` : ""}
         </div>
         <div class="discovery-item__actions">
-          <button class="discovery-btn-visited" data-idx="${i}" title="Ya fui">Ya fui</button>
+          ${n.locallyVisited
+            ? `<span class="discovery-visited-label">✓ Visitado</span>`
+            : `<button class="discovery-btn-visited" data-idx="${i}" title="Ya fui">Ya fui</button>`
+          }
           <button class="discovery-btn-delete" data-idx="${i}" title="Eliminar de la lista">×</button>
         </div>
       </div>`;
@@ -81,7 +84,7 @@ function renderDiscoveryList() {
   listEl.querySelectorAll(".discovery-btn-visited").forEach(btn => {
     btn.addEventListener("click", () => {
       const n = discoveryItems[parseInt(btn.dataset.idx)];
-      if (n) openVisitedModal(n.id, n.place_id, n.name);
+      if (n && !n.locallyVisited) openVisitedModal(n.id, n.place_id, n.name);
     });
   });
 
@@ -115,7 +118,15 @@ async function handleVisitedChoice(choice) {
   const { id: nodeId, place_id: placeId, name } = visitedModalTarget;
   closeVisitedModal();
 
-  if (choice === "keep") return;
+  if (choice === "keep") {
+    const target = discoveryItems.find(n => String(n.id) === String(nodeId));
+    if (target) {
+      target.locallyVisited = true;
+      renderDiscoveryList();
+    }
+    showToast(`"${trunc(name, 22)}" marcado como visitado`);
+    return;
+  }
 
   if (choice === "remove") {
     await deleteDiscoveryItem(nodeId, placeId);
