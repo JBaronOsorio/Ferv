@@ -1,0 +1,225 @@
+// ══════════════════════════════════════════════════════════════
+//  ferv-panel.js  — Panel lateral de detalle de nodo
+//
+//  DEPENDE DE: ferv-config.js, ferv-state.js,
+//              ferv-map.js (saveNode, removeNode)
+// ══════════════════════════════════════════════════════════════
+
+function updateFavBtn(node) {
+  const btn = document.getElementById("panel-favorite-btn");
+  if (!btn) return;
+  if (node.is_favorite) {
+    btn.textContent = "★ Favorito";
+    btn.classList.add("active");
+  } else {
+    btn.textContent = "☆ Marcar favorito";
+    btn.classList.remove("active");
+  }
+}
+
+function openPanel(d, edges) {
+  selectedD = d;
+  const isSaved = d.status === "in_graph";
+
+  const badgeColor = isSaved ? getSavedColor(d.neighborhood) : "rgba(255,255,255,0.35)";
+
+  const badge = document.getElementById("panel-badge");
+  badge.textContent = `• ${d.neighborhood || "Medellín"}`;
+  badge.style.color = badgeColor;
+  badge.style.background = badgeColor + "15";
+  badge.style.borderColor = badgeColor + "33";
+
+  document.getElementById("panel-name").textContent = d.name;
+
+  const statusLabel = document.getElementById("panel-status-label");
+
+  if (statusLabel) {
+    if (d.status === "visited") {
+      statusLabel.textContent = "Visitado";
+      statusLabel.className = "status-label visited";
+    } else if (d.status === "in_graph") {
+      statusLabel.textContent = "En tu mapa";
+      statusLabel.className = "status-label saved";
+    } else {
+      statusLabel.textContent = "";
+      statusLabel.className = "status-label";
+    }
+  }
+  document.getElementById("panel-neighborhood").textContent = d.neighborhood || "Medellín";
+
+  const tagsEl = document.getElementById("panel-tags");
+  tagsEl.innerHTML = "";
+  (d.tags || []).forEach(t => {
+    const s = document.createElement("span");
+    s.className = "tag";
+    s.textContent = t;
+    tagsEl.appendChild(s);
+  });
+
+  document.getElementById("panel-rating").textContent = d.rating ? `★ ${d.rating.toFixed(1)}` : "";
+
+  // Conexiones
+  const conns = edges.filter(e =>
+    e.source?.place_id === d.place_id || e.target?.place_id === d.place_id
+  );
+  const connEl   = document.getElementById("panel-connections");
+  const connList = document.getElementById("conn-list");
+  if (conns.length) {
+    connEl.style.display = "block";
+    connList.innerHTML = conns.map(e => {
+      const other      = e.source.place_id === d.place_id ? e.target : e.source;
+      const otherSaved = other?.status === "in_graph";
+      const col        = otherSaved ? getSavedColor(other?.neighborhood) : "rgba(255,255,255,0.25)";
+      return `<div class="conn-item">
+        <div class="conn-dot" style="background:${col};opacity:${otherSaved ? 1 : 0.5}"></div>
+        <span style="color:${col}">${trunc(other?.name || "", 17)}</span>
+        <span style="color:#444;font-size:10px"> · ${trunc(e.reason, 20)}</span>
+      </div>`;
+    }).join("");
+  } else {
+    connEl.style.display = "none";
+  }
+
+  const addBtn      = document.getElementById("panel-add-btn");
+  const discoverBtn = document.getElementById("panel-discover-btn");
+  const exploreBtn  = document.getElementById("panel-explore-btn");
+  const favBtn      = document.getElementById("panel-favorite-btn");
+  const removeBtn   = document.getElementById("panel-remove-btn");
+  const isVisited   = d.status === "visited";
+
+  if (isVisited) {
+    addBtn.style.display = "none";
+
+    discoverBtn.textContent = "↺ Volver a guardar en lista";
+    discoverBtn.className = "btn-discover-panel";
+    discoverBtn.disabled = false;
+    discoverBtn.style.display = "block";
+
+    exploreBtn.style.display = "block";
+    favBtn.style.display = "block";
+
+    updateFavBtn(d);
+    removeBtn.style.display = "flex";
+
+  } else if (isSaved) {
+    addBtn.style.display = "none";
+    discoverBtn.textContent  = "♡ Guardar en lista";
+    discoverBtn.className    = "btn-discover-panel";
+    discoverBtn.disabled     = false;
+    discoverBtn.style.display = "";
+    exploreBtn.style.display  = "block";
+    favBtn.style.display      = "block";
+    updateFavBtn(d);
+    removeBtn.style.display = "flex";
+  } else {
+    addBtn.style.display = "block";
+    addBtn.textContent  = "+ Agregar a mi mapa";
+    addBtn.className    = "btn-add";
+    addBtn.disabled     = false;
+    discoverBtn.textContent  = "♡ Guardar en lista";
+    discoverBtn.className    = "btn-discover-panel";
+    discoverBtn.disabled     = false;
+    discoverBtn.style.display = "";
+    exploreBtn.style.display  = "none";
+    favBtn.style.display      = "none";
+    removeBtn.style.display = "none";
+  }
+
+  document.getElementById("detail-panel").classList.add("open");
+}
+
+function closePanel() {
+  document.getElementById("detail-panel").classList.remove("open");
+  selectedD = null;
+}
+
+function openRemoveModal() {
+  if (!selectedD) return;
+
+  const modal = document.getElementById("remove-confirm-modal");
+  const nameEl = document.getElementById("remove-confirm-name");
+  if (!modal || !nameEl) return;
+
+  nameEl.textContent = selectedD.name || "este lugar";
+  modal.classList.add("open");
+  modal.setAttribute("aria-hidden", "false");
+}
+
+function closeRemoveModal() {
+  const modal = document.getElementById("remove-confirm-modal");
+  if (!modal) return;
+
+  modal.classList.remove("open");
+  modal.setAttribute("aria-hidden", "true");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("panel-add-btn").addEventListener("click", () => {
+    if (!selectedD || selectedD.status === "in_graph" || selectedD.status === "visited") return;
+    saveNode(selectedD.place_id);
+    closePanel();
+  });
+
+  document.getElementById("panel-discover-btn").addEventListener("click", () => {
+    if (!selectedD || selectedD.status === "discovery") return;
+    addToDiscovery(selectedD.place_id);
+  });
+
+  document.getElementById("panel-explore-btn").addEventListener("click", () => {
+    if (!selectedD || (selectedD.status !== "in_graph" && selectedD.status !== "visited")) return;
+    exploreFromNode(selectedD.place_id);
+  });
+
+  document.getElementById("panel-favorite-btn").addEventListener("click", async () => {
+    if (!selectedD || (selectedD.status !== "in_graph" && selectedD.status !== "visited")) return;
+
+    const prev = selectedD.is_favorite;
+    selectedD.is_favorite = !prev;
+    updateFavBtn(selectedD);
+    rerender();
+
+    try {
+      const result = await toggleFavoriteAPI(parseInt(selectedD.id));
+      selectedD.is_favorite = result.is_favorite;
+      updateFavBtn(selectedD);
+      rerender();
+      const msg = result.is_favorite
+        ? `"${trunc(selectedD.name, 18)}" marcado como favorito`
+        : `"${trunc(selectedD.name, 18)}" quitado de favoritos`;
+      showToast(msg);
+    } catch (_err) {
+      selectedD.is_favorite = prev;
+      updateFavBtn(selectedD);
+      rerender();
+      showToast("Error al actualizar favorito");
+    }
+  });
+
+  document.getElementById("panel-remove-btn").addEventListener("click", () => {
+    if (!selectedD) return;
+    openRemoveModal();
+  });
+
+  document.getElementById("remove-confirm-cancel").addEventListener("click", () => {
+    closeRemoveModal();
+  });
+
+  document.getElementById("remove-confirm-accept").addEventListener("click", () => {
+    if (!selectedD) return;
+    removeNode(selectedD.place_id);
+    closeRemoveModal();
+    closePanel();
+  });
+
+  document.getElementById("remove-confirm-modal").addEventListener("click", (event) => {
+    if (event.target.id === "remove-confirm-modal" || event.target.classList.contains("remove-modal__backdrop")) {
+      closeRemoveModal();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeRemoveModal();
+    }
+  });
+});

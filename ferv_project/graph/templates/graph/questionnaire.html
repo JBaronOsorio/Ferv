@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <title>Preference Questionnaire</title>
+    </head>
+    <body>
+        <h1>Preference questionnaire</h1>
+        <p>This information is used to create your initial preference graph.</p>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <fieldset>
+                <legend>Place types you enjoy</legend>
+                {{ form.place_types }}
+            </fieldset>
+
+            <fieldset>
+                <legend>Preferred ambiences</legend>
+                {{ form.ambiences }}
+            </fieldset>
+
+            <fieldset>
+                <legend>Favorite leisure activities</legend>
+                {{ form.activities }}
+            </fieldset>
+
+            <fieldset>
+                <legend>Usual budget range</legend>
+                {{ form.budget_range }}
+            </fieldset>
+
+            <button type="submit">Save profile</button>
+        </form>
+    </body>
+</html>

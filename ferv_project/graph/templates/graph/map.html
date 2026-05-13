@@ -1,0 +1,423 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ferv — Mapa</title>
+
+  <!-- Fuentes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- D3 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+
+  <!-- Módulos Ferv — respetar este orden -->
+  <script src="{% static 'graph/js/ferv-config.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-mock.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-state.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-api.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-map.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-search.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-panel.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-filters.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-discover.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-favorites.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-explore.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-export.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-stats.js' %}"></script>
+  <script src="{% static 'graph/js/ferv-ui.js' %}"></script>
+  
+  
+
+  <!-- Estilos del mapa -->
+  <link rel="stylesheet" href="{% static 'graph/css/ferv-map.css' %}">
+</head>
+<body>
+
+<div class="ferv-root">
+
+  <!-- ── Barra superior ── -->
+  <div class="topbar">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+          <circle cx="12" cy="9" r="2.5"/>
+        </svg>
+      </div>
+      <span class="logo-text">ferv</span>
+    </div>
+
+    <div class="search-wrap">
+      <input class="search-input" id="q-input" type="text"
+        placeholder="café tranquilo, bar con música, sushi..."
+        autocomplete="off"/>
+      <div class="spinner" id="spinner"></div>
+      <button class="btn-search" id="search-btn" onclick="runSearch()">Explorar</button>
+    </div>
+
+    <!-- Botón exportar -->
+    <button class="btn-export" id="export-btn" title="Exportar mapa como imagen">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      <span>Exportar</span>
+    </button>
+
+    <!-- Menú de usuario -->
+    <div class="user-menu" id="userMenu">
+  <div class="user-avatar" id="userAvatarBtn">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+         stroke="rgba(155,107,250,0.8)" stroke-width="2">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+      <circle cx="12" cy="7" r="4"/>
+    </svg>
+  </div>
+
+  <div class="user-dropdown" id="userDropdown">
+    <div class="user-info">
+      <div class="user-name">{{ request.user.get_full_name|default:request.user.username }}</div>
+      <div class="user-email">{{ request.user.email }}</div>
+    </div>
+    <a href="{% url 'user:profile' %}">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      Mi perfil
+    </a>
+
+    <!-- Lista de lugares marcados como favoritos -->
+    <button type="button" id="favorites-list-btn" class="stats-menu-btn">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2.25l2.89 5.86 6.47.94-4.68 4.56 1.1 6.44L12 16.98l-5.78 3.04 1.1-6.44-4.68-4.56 6.47-.94L12 2.25z"/>
+      </svg>
+      Mis favoritos
+    </button>
+
+
+    <button type="button" id="open-stats-btn" class="stats-menu-btn">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
+        <line x1="6" y1="20" x2="6" y2="14"/>
+      </svg>
+      Mis estadísticas
+    </button>
+    <!-- <a href="#">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+      Preferencias
+    </a> -->
+    
+    <form method="POST" action="{% url 'user:logout' %}" style="margin:0;padding:0;">
+      {% csrf_token %}
+      <button type="submit" class="logout-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Cerrar sesión
+      </button>
+    </form>
+      
+  </div>
+  </div>
+
+
+  </div>
+
+  <!-- ── Canvas del grafo ── -->
+  <div class="canvas-wrap">
+
+    <!-- Estado vacío -->
+    <div class="empty-state" id="empty-state">
+      <div class="empty-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="1.5">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </div>
+      <p>Tu mapa está vacío</p>
+      <p class="hint">Busca algo para empezar a explorar</p>
+    </div>
+
+    <!-- Overlay de carga (Pipeline B) -->
+    <div class="loading-overlay" id="loading-overlay" aria-hidden="true">
+      <div class="loading-overlay__spinner"></div>
+      <div class="loading-overlay__text">Construyendo tu mapa...</div>
+    </div>
+
+    <!-- SVG del grafo D3 -->
+    <svg id="ferv-svg"></svg>
+
+    <!-- Tags de búsquedas realizadas -->
+    <div class="query-tags" id="query-tags"></div>
+
+    <!-- HUD — contadores bottom-left -->
+    <div class="hud" id="hud" style="display:none">
+      <div class="hud-pill">
+        <div class="hud-dot" style="background:#9b6bfa"></div>
+        <b id="hud-suggested" style="color:#9b6bfa">0</b> sugeridos
+      </div>
+      <div class="hud-pill">
+        <div class="hud-dot" style="background:#3dd6c8"></div>
+        <b id="hud-saved" style="color:#3dd6c8">0</b> en mi mapa
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <!-- FAB Modo exploración -->
+    <button class="explore-fab" id="explore-fab" type="button" aria-controls="explore-panel" aria-expanded="false" title="Modo exploración">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+      </svg>
+    </button>
+
+    <!-- Panel modo exploración -->
+    <div class="explore-panel" id="explore-panel" aria-hidden="true">
+      <div class="explore-panel__header">
+        <div>
+          <div class="explore-panel__eyebrow">Modo exploración</div>
+          <div class="explore-panel__title">Sorpréndeme</div>
+        </div>
+        <button class="explore-panel__close" id="explore-panel-close" type="button" aria-label="Cerrar exploración">×</button>
+      </div>
+      <p class="explore-panel__desc">Descubre lugares que no esperarías encontrar según tu perfil habitual.</p>
+      <div class="explore-panel__section">
+        <div class="explore-panel__label">Qué tan diferente</div>
+        <input class="explore-slider" id="explore-heat" type="range" min="0" max="1" step="0.1" value="0.5">
+        <div class="explore-slider__meta">
+          <span>Cercano</span>
+          <span id="explore-heat-value">Moderado</span>
+          <span>Inesperado</span>
+        </div>
+      </div>
+      <button class="explore-run-btn" id="explore-run-btn" type="button">✦ Descubrir lugares</button>
+    </div>
+
+    <!-- FAB Lista de descubrimiento -->
+    <button class="discover-fab" id="discover-fab" type="button" title="Mi lista de descubrimiento">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+      </svg>
+      <span class="discover-fab__badge" id="discover-count-badge" style="display:none">0</span>
+    </button>
+
+    <!-- Panel lista de descubrimiento -->
+    <div class="discovery-panel" id="discovery-drawer" aria-hidden="true">
+      <div class="discovery-panel__header">
+        <div>
+          <div class="discovery-panel__eyebrow">Para visitar</div>
+          <div class="discovery-panel__title">
+            Mi lista
+            <span class="discovery-panel__count" id="discovery-header-count">0</span>
+          </div>
+        </div>
+        <button class="discovery-panel__close" id="discovery-drawer-close" type="button" aria-label="Cerrar lista">×</button>
+      </div>
+      <div class="discovery-list" id="discovery-list"></div>
+    </div>
+
+      <!-- Panel lista de favoritos -->
+      <div class="favorites-panel" id="favorites-drawer" aria-hidden="true">
+      <div class="favorites-panel__header">
+        <div>
+            <div class="favorites-panel__eyebrow">Favoritos</div>
+            <div class="favorites-panel__title">
+              Mis favoritos
+              <span class="favorites-panel__count" id="favorites-header-count">0</span>
+            </div>
+        </div>
+          <button class="favorites-panel__close" id="favorites-drawer-close" type="button" aria-label="Cerrar favoritos">×</button>
+      </div>
+        <div class="favorites-list" id="favorites-list"></div>
+    </div>
+
+    <button class="filters-fab" id="filters-fab" type="button" aria-controls="filters-panel" aria-expanded="false" title="Filtros">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 5h16l-6 7v5l-4 2v-7L4 5z"/>
+      </svg>
+    </button>
+
+    <div class="filters-panel" id="filters-panel" aria-hidden="true">
+      <div class="filters-panel__header">
+        <div>
+          <div class="filters-panel__eyebrow">Filtros</div>
+          <div class="filters-panel__title">Refina tu mapa</div>
+        </div>
+        <button class="filters-panel__close" id="filters-panel-close" type="button" aria-label="Cerrar filtros">×</button>
+      </div>
+
+      <div class="filters-panel__section">
+        <div class="filters-panel__label">Favoritos</div>
+        <button type="button" class="filters-tag" id="filters-favorites">★ Solo favoritos</button>
+      </div>
+
+      <div class="filters-panel__section">
+        <div class="filters-panel__label">Tag</div>
+        <div class="filters-tags" id="filters-tags"></div>
+      </div>
+
+      <div class="filters-panel__section">
+        <div class="filters-panel__label">Barrio</div>
+        <select class="filters-select" id="filters-neighborhood"></select>
+      </div>
+
+      <div class="filters-panel__section">
+        <div class="filters-panel__label">Rating mínimo</div>
+        <input class="filters-slider" id="filters-rating" type="range" min="0" max="5" step="0.5" value="0">
+        <div class="filters-slider__meta">
+          <span>0</span>
+          <span id="filters-rating-value">Cualquiera</span>
+          <span>5</span>
+        </div>
+      </div>
+
+      <div class="filters-panel__actions">
+        <button class="filters-btn filters-btn--ghost" id="filters-clear" type="button">Limpiar filtros</button>
+        <button class="filters-btn filters-btn--solid" id="filters-apply" type="button">Aplicar filtros</button>
+      </div>
+    </div>
+
+    <!-- Panel lateral de detalle de nodo -->
+    <div class="panel" id="detail-panel">
+      <button class="panel-close" onclick="closePanel()">×</button>
+
+      <div class="panel-top-actions">
+        <button class="panel-remove-icon" id="panel-remove-btn" title="Eliminar del mapa">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"/>
+            <path d="M19 6l-1 14H6L5 6"/>
+            <path d="M10 11v6"/>
+            <path d="M14 11v6"/>
+            <path d="M9 6V4h6v2"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="panel-badge" id="panel-badge"></div>
+      <div class="panel-title-row">
+        <div id="panel-name"></div>
+        <span id="panel-status-label" class="status-label"></span>
+      </div>
+      <div id="panel-neighborhood"></div>
+      <div id="panel-tags"></div>
+      <div class="panel-rating" id="panel-rating"></div>
+
+      <div class="panel-connections" id="panel-connections" style="display:none">
+        <h4>Conexiones</h4>
+        <div id="conn-list"></div>
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="panel-actions">
+        <button class="btn-add" id="panel-add-btn">+ Agregar a mi mapa</button>
+        <button class="btn-discover-panel" id="panel-discover-btn">♡ Lo quiero visitar</button>
+        <button class="btn-explore" id="panel-explore-btn"> Explorar similares</button>
+        <button class="btn-favorite" id="panel-favorite-btn">☆ Marcar favorito</button>
+      </div>
+    </div>
+
+    <!-- Panel de chat -->
+<div class="chat-panel" id="chatPanel">
+  <div class="panel-head">
+    <div class="panel-avatar">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2">
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+        <circle cx="12" cy="9" r="2.5"/>
+      </svg>
+    </div>
+    <div>
+      <div class="panel-chat-title">ferv chat</div>
+      <div class="panel-chat-sub">¿qué estás buscando hoy?</div>
+    </div>
+    <div class="panel-online-dot"></div>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-msg bot">Hola!! Cuéntame qué tipo de lugar te apetece y te ayudo a buscarlo.</div>
+  </div>
+  <div class="chat-panel-input-wrap">
+    <input class="chat-panel-input" id="chatInput" placeholder="busco un café tranquilo..." />
+    <button class="btn-chat-send" id="chatSendBtn">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+        <line x1="22" y1="2" x2="11" y2="13"/>
+        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+      </svg>
+    </button>
+  </div>
+  </div>
+
+    <!-- Burbuja flotante -->
+    <button class="chat-bubble" id="chatBubble">
+      <div class="notif-dot">1</div>
+      <svg class="bubble-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+      <svg class="bubble-icon-close" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+
+    <!-- Modal "Ya fui" — qué hacer con el lugar visitado -->
+    <div class="visited-modal" id="visited-modal" aria-hidden="true">
+      <div class="visited-modal__backdrop"></div>
+      <div class="visited-modal__dialog" role="dialog" aria-modal="true">
+        <div class="visited-modal__eyebrow">¡Qué bien que fuiste!</div>
+        <h3 class="visited-modal__title">¿Qué hacemos con <span id="visited-modal-name"></span>?</h3>
+        <div class="visited-modal__actions">
+          <button type="button" class="visited-modal__btn visited-modal__btn--keep" id="visited-modal-keep">Dejarlo en la lista</button>
+          <button type="button" class="visited-modal__btn visited-modal__btn--map" id="visited-modal-map">Pasarlo al mapa</button>
+          <button type="button" class="visited-modal__btn visited-modal__btn--remove" id="visited-modal-remove">Quitarlo de la lista</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de estadísticas -->
+    <div class="stats-modal" id="stats-modal" aria-hidden="true">
+      <div class="stats-modal__backdrop"></div>
+      <div class="stats-modal__dialog" role="dialog" aria-modal="true">
+        <div class="stats-modal__header">
+          <div>
+            <div class="stats-modal__eyebrow">Tu actividad</div>
+            <h3 class="stats-modal__title">Mis estadísticas</h3>
+          </div>
+          <button class="stats-modal__close" id="stats-modal-close" type="button" aria-label="Cerrar estadísticas">×</button>
+        </div>
+        <div id="stats-content"></div>
+      </div>
+    </div>
+
+    <!-- Modal de confirmación de eliminación -->
+    <div class="remove-modal" id="remove-confirm-modal" aria-hidden="true">
+      <div class="remove-modal__backdrop"></div>
+      <div class="remove-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="remove-confirm-title">
+        <div class="remove-modal__eyebrow">Confirmar acción</div>
+        <h3 class="remove-modal__title" id="remove-confirm-title">Eliminar del mapa</h3>
+        <p class="remove-modal__message">¿Eliminar <span id="remove-confirm-name"></span> de tu mapa?</p>
+        <div class="remove-modal__actions">
+          <button type="button" class="remove-modal__btn remove-modal__btn--cancel" id="remove-confirm-cancel">Cancelar</button>
+          <button type="button" class="remove-modal__btn remove-modal__btn--danger" id="remove-confirm-accept">Eliminar</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /canvas-wrap -->
+
+  <!-- Toast de confirmación -->
+  <div class="toast" id="toast"></div>
+
+</div><!-- /ferv-root -->
+
+
+
+</body>
+</html>

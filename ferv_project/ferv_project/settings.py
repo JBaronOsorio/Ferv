@@ -13,7 +13,9 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 from dotenv import load_dotenv
 import os
-load_dotenv()
+
+# load_dotenv(Path(__file__).resolve().parent.parent.parent / '.env')
+load_dotenv(override=False)  # Las variables del sistema operativo tienen prioridad
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,8 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'graph',
     'places',
+    'recommendation',
+    'user',
 ]
 
 MIDDLEWARE = [
@@ -80,11 +85,11 @@ WSGI_APPLICATION = 'ferv_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', 'ferv_db'),
-        'USER': os.getenv('DB_USER', 'ferv_user'),
-        'PASSWORD': os.getenv('DB_PASSWORD', ''),
-        'HOST': os.getenv('DB_HOST', 'localhost'),
-        'PORT': os.getenv('DB_PORT', '5432'),
+        'NAME': os.environ.get('DB_NAME', 'ferv_db'),
+        'USER': os.environ.get('DB_USER', 'postgres'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', '1234'),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'PORT': os.environ.get('DB_PORT', '5433'),
     }
 }
 
@@ -119,6 +124,14 @@ USE_I18N = True
 
 USE_TZ = True
 
+# Custom user model
+AUTH_USER_MODEL = 'user.FervUser'
+
+# Redirects
+LOGIN_URL = '/'
+LOGIN_REDIRECT_URL = '/graph/welcome/'
+LOGOUT_REDIRECT_URL = '/'
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
@@ -130,3 +143,54 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Recommendation system config
+
+EMBEDDING_MODELS = {
+    "gemini-embedding-001": {
+        "provider": "gemini-small",
+        "model_key": "gemini-embedding-001",
+        "name": "models/gemini-embedding-001",
+        "dimensions": 768,
+        "api_key_env_var": "GEMINI_API_KEY",
+    },
+    "gemini-embedding-001-large": {
+        "provider": "gemini-large",
+        "model_key": "gemini-embedding-001-large",
+        "name": "models/gemini-embedding-001",
+        "dimensions": 3072,
+        "api_key_env_var": "GEMINI_API_KEY",
+    },
+    "openai-text-embedding-3-small": {
+        "provider": "openai",
+        "model_key": "openai-text-embedding-3-small",
+        "name": "text-embedding-3-small",
+        "dimensions": 1536,
+        "api_key_env_var": "OPENAI_API_KEY",
+    }
+}
+
+LANGUAGE_MODELS = {
+    "gemini-2.5-flash": {
+        "provider": "gemini",
+        "name": "gemini-2.5-flash",
+        "api_key_env_var": "GEMINI_API_KEY",
+    },
+    "gemini-2.5-pro": {
+        "provider": "gemini",
+        "name": "gemini-2.5-pro",
+        "api_key_env_var": "GEMINI_API_KEY",
+    },
+    "openai-gpt-4o-mini": {
+        "provider": "openai",
+        "name": "gpt-4o-mini",
+        "api_key_env_var": "OPENAI_API_KEY",
+    }
+}
+
+RECOMMENDATION_CONFIGS = {
+    "default": {
+        "embedding_model": EMBEDDING_MODELS["gemini-embedding-001-large"],
+        "language_model": LANGUAGE_MODELS["gemini-2.5-flash"],
+    },
+}

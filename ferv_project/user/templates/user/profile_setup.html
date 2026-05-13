@@ -1,0 +1,108 @@
+{% extends "user/base.html" %}
+
+{% block title %}Cuéntanos sobre ti — Ferv{% endblock %}
+{% block subtitle %}Así podremos recomendarte lugares que realmente te gusten{% endblock %}
+
+{% block content %}
+
+<div class="progress">
+  <div class="progress__step progress__step--active"></div>
+  <div class="progress__step progress__step--active"></div>
+  <div class="progress__step"></div>
+</div>
+
+<form method="post" novalidate>
+  {% csrf_token %}
+
+  <!-- Tipos de lugar -->
+  <div class="choices__section">
+    <span class="choices__label">{{ form.preferred_place_types.label }}</span>
+    <span class="choices__help">{{ form.preferred_place_types.help_text }}</span>
+    <ul class="choices__grid">
+      {% for value, label in form.preferred_place_types.field.choices %}
+        <li>
+          <label>
+            <input type="checkbox"
+                   name="preferred_place_types"
+                   value="{{ value }}"
+                   {% if value in form.preferred_place_types.value %}checked{% endif %}>
+            <span>{{ label }}</span>
+          </label>
+        </li>
+      {% endfor %}
+    </ul>
+    {% if form.preferred_place_types.errors %}
+      <div class="form__error">{{ form.preferred_place_types.errors.0 }}</div>
+    {% endif %}
+  </div>
+
+  <!-- Ambientes -->
+  <div class="choices__section">
+    <span class="choices__label">{{ form.preferred_atmospheres.label }}</span>
+    <span class="choices__help">{{ form.preferred_atmospheres.help_text }}</span>
+    <ul class="choices__grid">
+      {% for value, label in form.preferred_atmospheres.field.choices %}
+        <li>
+          <label>
+            <input type="checkbox"
+                   name="preferred_atmospheres"
+                   value="{{ value }}"
+                   {% if value in form.preferred_atmospheres.value %}checked{% endif %}>
+            <span>{{ label }}</span>
+          </label>
+        </li>
+      {% endfor %}
+    </ul>
+    {% if form.preferred_atmospheres.errors %}
+      <div class="form__error">{{ form.preferred_atmospheres.errors.0 }}</div>
+    {% endif %}
+  </div>
+
+  <!-- Actividades -->
+  <div class="choices__section">
+    <span class="choices__label">{{ form.preferred_activities.label }}</span>
+    <span class="choices__help">{{ form.preferred_activities.help_text }}</span>
+    <ul class="choices__grid">
+      {% for value, label in form.preferred_activities.field.choices %}
+        <li>
+          <label>
+            <input type="checkbox"
+                   name="preferred_activities"
+                   value="{{ value }}"
+                   {% if value in form.preferred_activities.value %}checked{% endif %}>
+            <span>{{ label }}</span>
+          </label>
+        </li>
+      {% endfor %}
+    </ul>
+    {% if form.preferred_activities.errors %}
+      <div class="form__error">{{ form.preferred_activities.errors.0 }}</div>
+    {% endif %}
+  </div>
+
+  <!-- Presupuesto -->
+  <div class="choices__section">
+    <span class="choices__label">{{ form.budget_range.label }}</span>
+    <ul class="choices__grid">
+      {% for value, label in form.budget_range.field.choices %}
+        {% if value %}
+          <li>
+            <label>
+              <input type="radio"
+                     name="budget_range"
+                     value="{{ value }}"
+                     {% if value == form.budget_range.value %}checked{% endif %}>
+              <span>{{ label }}</span>
+            </label>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+    {% if form.budget_range.errors %}
+      <div class="form__error">{{ form.budget_range.errors.0 }}</div>
+    {% endif %}
+  </div>
+
+  <button type="submit" class="btn btn--primary">Empezar a descubrir →</button>
+</form>
+{% endblock %}
