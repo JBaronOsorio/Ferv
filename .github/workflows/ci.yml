@@ -68,4 +68,5 @@ jobs:
       - name: Ejecutar tests
         run: |
           cd ferv_project
+          python manage.py migrate --noinput
           pytest -v
