@@ -50,23 +50,22 @@ jobs:
 
       - name: Esperar PostgreSQL
         run: |
-          max_attempts=30
-          attempt=1
-
           until pg_isready -h localhost -p 5432 -U postgres
           do
-            if [ "$attempt" -ge "$max_attempts" ]; then
-              echo "PostgreSQL no estuvo listo después de $max_attempts intentos."
-              exit 1
-            fi
-
-            echo "Esperando PostgreSQL... intento $attempt de $max_attempts"
-            attempt=$((attempt + 1))
+            echo "Esperando PostgreSQL..."
             sleep 2
           done
-
+      
+      - name: Activar extensión pgvector
+        run: |
+          PGPASSWORD=postgres psql -h localhost -U postgres -d ferv_db -c "CREATE EXTENSION IF NOT EXISTS vector;"
+      
+      - name: Ejecutar migraciones
+        run: |
+          cd ferv_project
+          python manage.py migrate
+      
       - name: Ejecutar tests
         run: |
           cd ferv_project
-          python manage.py migrate --noinput
           pytest -v
