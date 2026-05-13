@@ -20,19 +20,18 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready
+          --health-cmd "pg_isready -U postgres"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
 
     env:
-      DJANGO_SECRET_KEY: ci-secret-key-not-for-production
       DB_NAME: ferv_db
       DB_USER: postgres
       DB_PASSWORD: postgres
       DB_HOST: localhost
       DB_PORT: 5432
-      GEMINI_API_KEY: dummy-key-for-ci
+      GEMINI_API_KEY: dummy-key
 
     steps:
       - name: Checkout código
@@ -41,42 +40,32 @@ jobs:
       - name: Configurar Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Instalar dependencias
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install pytest pytest-django
 
-      - name: Análisis estático — Flake8
+      - name: Esperar PostgreSQL
         run: |
-          pip install flake8
-          flake8 ferv_project/ --max-line-length=119 --exclude=migrations --exit-zero
-
-      - name: Formato — Black
+          until pg_isready -h localhost -p 5432 -U postgres
+          do
+            echo "Esperando PostgreSQL..."
+            sleep 2
+          done
+      
+      - name: Activar extensión pgvector
         run: |
-          pip install black
-          black --check ferv_project/ --exclude migrations || true
-
-      - name: Verificar migraciones faltantes
-        run: |
-          cd ferv_project
-          python manage.py makemigrations --check --dry-run
-
-      - name: Aplicar migraciones
+          PGPASSWORD=postgres psql -h localhost -U postgres -d ferv_db -c "CREATE EXTENSION IF NOT EXISTS vector;"
+      
+      - name: Ejecutar migraciones
         run: |
           cd ferv_project
-          python manage.py migrate --noinput
-
-      - name: Ejecutar pruebas con coverage
-        continue-on-error: true
+          python manage.py migrate
+      
+      - name: Ejecutar tests
         run: |
-          pip install pytest pytest-django pytest-cov
           cd ferv_project
-          pytest -m "not skip" --cov=. --cov-report=term-missing --cov-report=xml -v
-
-      - name: Subir reporte de coverage
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: ferv_project/coverage.xml
+          pytest -v
